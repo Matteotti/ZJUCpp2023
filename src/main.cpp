@@ -1,5 +1,7 @@
 #include "includes/main.h"
-#include "includes/player.h"
+#include <cstdio>
+#include <string>
+
 
 int main()
 {
@@ -18,5 +20,7 @@ int main()
         DrawText("Hello World", 190, 200, 20, LIGHTGRAY);
         EndDrawing();
         // End Draw
+
+
     }
 }
