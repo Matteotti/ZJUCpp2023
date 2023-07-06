@@ -3,6 +3,7 @@
 
 #include "raylib-cpp.hpp"
 #include <raymath.h>
+#include <iostream>
 
 #define PLAYER_MAX_HP 8
 #define PLAYER_MAX_MP 200
@@ -51,6 +52,7 @@ public:
     int HP = PLAYER_MAX_HP;
     int MP = PLAYER_MAX_MP;
     int jumpCount = 0;
+    float jumpCounter = 0.0f;
     float nailAttackCounter = 0.0f;
     float blackDashCounter = 0.0f;
     float dashCounter = 0.0f;
@@ -58,6 +60,7 @@ public:
     bool disableMoveControl = false;
     bool isGrounded = true;
     bool isJumping = false;
+    bool isFacingRight = true;
 
     Player(){};
 
@@ -82,24 +85,32 @@ public:
         {
             isGrounded = false;
             isJumping = true;
+            jumpCounter = PLAYER_JUMP_TIME;
         }
         else if (jumpCount == 0)
         {
             jumpCount++;
             isJumping = true;
+            jumpCounter = PLAYER_DOUBLE_JUMP_TIME;
         }
     }
 
     void PlayerStopJump()
     {
         isJumping = false;
+        jumpCounter = 0.0f;
     }
 
     void PlayerUpdateJump()
     {
-        if (isJumping)
+        if (isJumping && jumpCounter > 0.0f)
         {
             SetSpeed(raylib::Vector2(currentSpeed.x, PLAYER_JUMP_SPEED));
+            jumpCounter -= GetFrameTime();
+            if (jumpCounter <= 0.0f)
+            {
+                PlayerStopJump();
+            }
         }
     }
 
@@ -137,9 +148,35 @@ public:
 
     void UpdateAnimator()
     {
+        if (currentState == IDLE || currentState == WALKING || currentState == JUMPING || currentState == FALLING)
+        {
+            if (isGrounded)
+            {
+                if (currentSpeed.x == 0)
+                {
+                    currentState = IDLE;
+                }
+                else
+                {
+                    currentState = WALKING;
+                }
+            }
+            else
+            {
+                if (currentSpeed.y > 0)
+                {
+                    currentState = JUMPING;
+                }
+                else
+                {
+                    currentState = FALLING;
+                }
+            }
+        }
+        std::cout << "Current State: " << currentState << std::endl;
     }
 
-    void UpdatePlayerStatus()
+    void Update()
     {
         UpdatePosition(currentSpeed);
         UpdateAnimator();
