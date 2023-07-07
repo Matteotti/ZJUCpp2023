@@ -3,6 +3,7 @@
 
 #include "raylib-cpp.hpp"
 #include "includes/animation.h"
+#include "includes/customCollider.h"
 #include "raymath.hpp"
 #include <iostream>
 
@@ -62,10 +63,25 @@ public:
     float invincibleCounter = 0.0f;
     bool disableMoveControl = false;
     bool isGrounded = true;
+    bool isLeftWalled = false;
+    bool isRightWalled = false;
+    bool isCeilinged = false;
     bool isJumping = false;
     bool isFacingRight = true;
 
-    Player(){};
+    Player()
+    {
+    }
+
+    Player(std::string path_, int frameCount_, float frameWidth_, float frameHeight_, raylib::Vector2 position_, float colliderWidth_, float colliderHeight_)
+    {
+        this->playerAnimationInfo = AnimationInfo(path_, frameCount_, frameWidth_, frameHeight_);
+        this->position = position_;
+        raylib::Vector3 min = raylib::Vector3(position.x, position.y - colliderHeight_, 0);
+        raylib::Vector3 max = raylib::Vector3(position.x + colliderWidth_, position.y, 0);
+        raylib::BoundingBox collider = raylib::BoundingBox(min, max);
+        this->playerCollider = CustomCollider("player", collider, ColliderTag::PLAYER);
+    };
 
     void UpdatePosition(raylib::Vector2 speed)
     {
@@ -187,6 +203,20 @@ public:
     }
 };
 
+class PlayerWallCheck
+{
+public:
+    CustomCollider leftCollider;
+    CustomCollider rightCollider;
+    CustomCollider topCollider;
+    CustomCollider bottomCollider;
+
+    PlayerWallCheck()
+    {
+    }
+};
+
 Player knight;
+PlayerWallCheck knightWallCheck;
 
 #endif

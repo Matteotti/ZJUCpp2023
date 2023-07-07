@@ -1,5 +1,6 @@
 #include "includes/main.h"
 
+#pragma region Methods Declaration
 void GameInit();
 void Awake();
 void Start();
@@ -8,8 +9,14 @@ void LateUpdate();
 void Draw();
 void EndFrame();
 
+void DrawBackground();
 void DrawPlayer();
-void PlayerMove(Player &player);
+void DrawEnemy();
+void DrawMap();
+void DrawAttack();
+void DrawUI();
+void PlayerMove();
+#pragma endregion
 
 int main()
 {
@@ -32,6 +39,7 @@ int main()
     }
 }
 
+#pragma region Game Management Methods
 void GameInit()
 {
     raylib::Window(1600, 900, "Hollow Knight");
@@ -40,7 +48,7 @@ void GameInit()
 
 void Awake()
 {
-    knight = Player();
+    // knight = Player();
 }
 
 void Start()
@@ -63,19 +71,47 @@ void Draw()
     // Clear
     ClearBackground(WHITE);
     // sorting layer drawing
-    // 1.background
-    // 2.player
+    DrawBackground();
     DrawPlayer();
-    //...
-    // ?.attack
+    DrawEnemy();
+    DrawMap();
+    DrawAttack();
+    DrawUI();
     EndDrawing();
 }
 
 void EndFrame()
 {
 }
+#pragma endregion
 
+#pragma region Game Drawing Methods
+void DrawBackground()
+{
+}
 void DrawPlayer()
+{
+}
+void DrawEnemy()
+{
+}
+void DrawMap()
+{
+}
+void DrawAttack()
+{
+}
+void DrawUI()
+{
+}
+#pragma endregion
+
+#pragma region Game Logic Methods
+void InitPlayer()
+{
+}
+
+void InitMap()
 {
 }
 
@@ -129,3 +165,4 @@ void PlayerMove()
         knight.UpdateSpeed(raylib::Vector2(0, -PLAYER_GRAVITY));
     }
 }
+#pragma endregion

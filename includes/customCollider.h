@@ -41,6 +41,47 @@ public:
     ColliderTag colliderTag = NONE;
     ColliderType colliderType = BOX;
 
+    CustomCollider()
+    {
+    }
+
+    CustomCollider(std::string name_, raylib::BoundingBox colliderBox_, ColliderTag colliderTag_)
+    {
+        this->colliderName = name_;
+        this->colliderBox = colliderBox_;
+        this->colliderTag = colliderTag_;
+        this->colliderType = BOX;
+        colliderList.push_back(this);
+    }
+
+    CustomCollider(std::string name_, raylib::Ray ray_, ColliderTag colliderTag_)
+    {
+        this->colliderName = name_;
+        this->ray = ray_;
+        this->colliderTag = colliderTag_;
+        this->colliderType = RAY;
+        colliderList.push_back(this);
+    }
+
+    CustomCollider(std::string name_, raylib::Vector3 center_, float radius_, ColliderTag colliderTag_)
+    {
+        this->colliderName = name_;
+        this->center = center_;
+        this->radius = radius_;
+        this->colliderTag = colliderTag_;
+        this->colliderType = CIRCLE;
+        colliderList.push_back(this);
+    }
+
+    CustomCollider(std::string name_, raylib::Vector3 center_, ColliderTag colliderTag_)
+    {
+        this->colliderName = name_;
+        this->center = center_;
+        this->colliderTag = colliderTag_;
+        this->colliderType = POINT;
+        colliderList.push_back(this);
+    }
+
     bool CheckCollision(CustomCollider otherCollider)
     {
         return colliderBox.CheckCollision(otherCollider.colliderBox);
