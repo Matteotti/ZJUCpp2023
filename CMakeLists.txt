@@ -38,10 +38,11 @@ if (NOT raylib_cpp_FOUND)
     FetchContent_MakeAvailable(raylib_cpp)
 endif()
 
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/includes/.)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/includes/.h)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src/.cpp)
 include_directories(.)
 
-add_executable(CppGameJam src/main.cpp includes/ui.h)
+add_executable(CppGameJam src/main.cpp)
 
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})

@@ -2,7 +2,7 @@
 #define MAGIC_H
 
 #include "raylib-cpp.hpp"
-#include <raymath.h>
+#include "raymath.hpp"
 
 #define PLAYER_SHADE_SOUL_DAMAGE 2
 #define PLAYER_DESCENDING_DARK_DAMAGE 3

@@ -2,7 +2,8 @@
 #define PLAYER_H
 
 #include "raylib-cpp.hpp"
-#include <raymath.h>
+#include "includes/animation.h"
+#include "raymath.hpp"
 #include <iostream>
 
 #define PLAYER_MAX_HP 8
@@ -49,6 +50,8 @@ public:
     raylib::Vector2 position = raylib::Vector2(0, 0);
     raylib::Vector2 currentSpeed = raylib::Vector2(0, 0);
     AnimatorState currentState = AnimatorState::IDLE;
+    AnimationInfo playerAnimationInfo;
+    CustomCollider playerCollider;
     int HP = PLAYER_MAX_HP;
     int MP = PLAYER_MAX_MP;
     int jumpCount = 0;
@@ -183,5 +186,7 @@ public:
         PlayerUpdateJump();
     }
 };
+
+Player knight;
 
 #endif

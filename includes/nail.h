@@ -2,7 +2,7 @@
 #define NAIL_H
 
 #include "raylib-cpp.hpp"
-#include <raymath.h>
+#include "raymath.hpp"
 
 #define PLAYER_ATTACK_DAMAGE 1
 #define PLAYER_ATTACK_CONTINUOUS_TIME 1

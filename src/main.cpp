@@ -1,48 +1,85 @@
 #include "includes/main.h"
 
+void GameInit();
+void Awake();
+void Start();
+void Update();
+void LateUpdate();
 void Draw();
-void DrawPlayer();
+void EndFrame();
 
-void PlayerMove();
+void DrawPlayer();
+void PlayerMove(Player &player);
 
 int main()
 {
-    raylib::Window(1600, 900, "Hollow Knight");
-    SetTargetFPS(60);
 
-    Player knight = Player();
+    GameInit();
 
     while (!WindowShouldClose())
     {
-        // Update Data Here
-        PlayerMove(knight);
-        knight.Update();
-        // End Update
+        Awake();
 
-        // Draw Here
-        BeginDrawing();
+        Start();
+
+        Update(); // Update most of your data here
+
+        LateUpdate();
+
         Draw();
-        EndDrawing();
-        // End Draw
+
+        EndFrame();
     }
+}
+
+void GameInit()
+{
+    raylib::Window(1600, 900, "Hollow Knight");
+    SetTargetFPS(60);
+}
+
+void Awake()
+{
+    knight = Player();
+}
+
+void Start()
+{
+}
+
+void Update()
+{
+    PlayerMove();
+    knight.Update();
+}
+
+void LateUpdate()
+{
 }
 
 void Draw()
 {
+    BeginDrawing();
     // Clear
-
+    ClearBackground(WHITE);
     // sorting layer drawing
     // 1.background
     // 2.player
+    DrawPlayer();
     //...
     // ?.attack
+    EndDrawing();
+}
+
+void EndFrame()
+{
 }
 
 void DrawPlayer()
 {
 }
 
-void PlayerMove(Player &player)
+void PlayerMove()
 {
     int horizontalInput = 0;
     if (IsKeyPressed(KEY_A) || IsKeyPressed(KEY_LEFT))
@@ -63,21 +100,21 @@ void PlayerMove(Player &player)
     }
 
     // MOVE
-    if (player.isFacingRight * horizontalInput < 0)
+    if (knight.isFacingRight * horizontalInput < 0)
     {
-        player.isFacingRight = !player.isFacingRight;
+        knight.isFacingRight = !knight.isFacingRight;
     }
-    player.SetSpeed(raylib::Vector2(horizontalInput * PLAYER_SPEED, player.currentSpeed.y));
+    knight.SetSpeed(raylib::Vector2(horizontalInput * PLAYER_SPEED, knight.currentSpeed.y));
 
     if (IsKeyPressed(KEY_SPACE))
     {
         // JUMP
-        player.PlayerStartJump();
+        knight.PlayerStartJump();
     }
     else if (IsKeyReleased(KEY_SPACE))
     {
         // STOPJUMP
-        player.PlayerStopJump();
+        knight.PlayerStopJump();
     }
     if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
     {
@@ -87,8 +124,8 @@ void PlayerMove(Player &player)
     {
         // DASH
     }
-    if (!player.isGrounded)
+    if (!knight.isGrounded)
     {
-        player.UpdateSpeed(raylib::Vector2(0, -PLAYER_GRAVITY));
+        knight.UpdateSpeed(raylib::Vector2(0, -PLAYER_GRAVITY));
     }
 }

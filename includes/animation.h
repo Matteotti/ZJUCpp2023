@@ -2,12 +2,13 @@
 #define ANIMATION_H
 
 #include "raylib-cpp.hpp"
-#include "main.h"
+#include "raymath.hpp"
 class AnimationInfo
 {
 public:
     std::string path;
     raylib::Texture2D texture;
+    raylib::Vector2 position;
     int frameCount;
     float frameWidth;
     float frameHeight;
@@ -25,4 +26,4 @@ public:
     }
 };
 
-#endif
+#endif // ANIMATION_H
