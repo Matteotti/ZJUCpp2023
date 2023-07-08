@@ -26,6 +26,14 @@
 // void InitMapData();
 // #pragma endregion
 
+//@TODO: Add some game running logic to switch between scenes/main menu/pause menu - Hjuntao
+/**
+ * GameState currentState;
+ * switch(currentState){
+ * ...
+ * }
+ **/
+
 // int main()
 // {
 
