@@ -4,6 +4,10 @@ project(CppGameJam VERSION 0.1.0 LANGUAGES C CXX)
 include(CTest)
 enable_testing()
 
+set(CMAKE_TOOLCHAIN_FILE D:/vcpkg/scripts/buildsystems/vcpkg.cmake)
+
+set(CMAKE_CXX_STANDARD 17)
+
 # Generate compile_commands.json
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
@@ -42,7 +46,7 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR}/includes/.h)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src/.cpp)
 include_directories(.)
 
-add_executable(CppGameJam src/main.cpp)
+add_executable(CppGameJam src/main.cpp includes/ui.h)
 
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})

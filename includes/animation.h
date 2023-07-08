@@ -66,4 +66,4 @@ public:
     }
 };
 
-#endif // ANIMATION_H
+#endif //ANIMATION_H
