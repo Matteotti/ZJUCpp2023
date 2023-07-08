@@ -13,6 +13,7 @@ std::vector<CustomCollider *> colliderList;
 enum ColliderTag
 {
     PLAYER,
+    PLAYER_WALLCHECK,
     ENEMY,
     PLAYERATTACK,
     ENEMYATTACK,

@@ -5,15 +5,15 @@
 #ifndef CPPGAMEJAM_UI_H
 #define CPPGAMEJAM_UI_H
 
-
-
 #include "raylib-cpp.hpp"
 
-class UI{
+class UI
+{
 private:
     raylib::Texture2D texture;
     raylib::Vector2 position;
     raylib::Vector2 scale;
+
 public:
     UI(raylib::Texture2D texture, raylib::Vector2 position, raylib::Vector2 scale);
     void UI_DrawBackground();
@@ -23,8 +23,9 @@ public:
     void UpdateMP(int mp);
 };
 
-void UI::UI_DrawBackground() {
+void UI::UI_DrawBackground()
+{
     raylib::Image background = raylib::LoadImage("assets/UI/Background.png");
 }
 
-#endif //CPPGAMEJAM_UI_H
+#endif // CPPGAMEJAM_UI_H
