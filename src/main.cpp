@@ -76,9 +76,9 @@
 //     knightWallCheck.Update();
 //     // read in keyboard input and update player speed
 //     PlayerMove();
-//     // update player position, speed, animation
+//     // update player position, speed, test
 //     knight.Update();
-//     // update player animation
+//     // update player test
 //     knight.playerAnimationInfo.Update();
 // }
 
@@ -195,19 +195,23 @@
 // #pragma endregion
 
 #include "raylib-cpp.hpp"
+#include "includes/main.h"
+#include <iostream>
 
 int main()
 {
-    InitWindow(1800, 1400, "test");
+    InitWindow(1000, 1000, "test");
     SetTargetFPS(60);
 
-    raylib::Texture2D texture = raylib::Texture2D("assets/sprites/test.png");
+    AnimationInfo test = AnimationInfo("../assets/sprites/Knight/Idle.png", 9, 0.2f);
 
     while (!WindowShouldClose())
     {
         BeginDrawing();
         ClearBackground(RAYWHITE);
-        texture.Draw(500, 500);
+        test.DrawAnimation(raylib::Vector2(0, 0), true, raylib::Vector2(-65, 0));
+        test.DrawAnimation(raylib::Vector2(0, 0));
+        test.Update();
         EndDrawing();
     }
 }

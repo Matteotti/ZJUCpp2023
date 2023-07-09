@@ -21,14 +21,14 @@ public:
     AnimationInfo mapAnimationInfo;
     CustomCollider mapCollider;
 
-    Map(std::string mapName, std::string path, int frameCount, int frameWidth, int frameHeight)
+    Map(std::string mapName, std::string path, int frameCount)
     {
         this->mapName = mapName;
         this->path = path;
         this->frameCount = frameCount;
         this->frameWidth = frameWidth;
         this->frameHeight = frameHeight;
-        this->mapAnimationInfo = AnimationInfo(path, frameCount, frameWidth, frameHeight);
+        this->mapAnimationInfo = AnimationInfo(path, frameCount);
         raylib::Vector3 min = raylib::Vector3(position.x, position.y - height, 0);
         raylib::Vector3 max = raylib::Vector3(position.x + width, position.y, 0);
         this->mapCollider = CustomCollider(mapName, raylib::BoundingBox(min, max), ColliderTag::ENVIRONMENT);

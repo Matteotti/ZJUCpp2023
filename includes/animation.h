@@ -10,7 +10,6 @@ class AnimationInfo
 public:
     std::string path = "";
     raylib::Texture2D texture;
-    raylib::Vector2 position = raylib::Vector2(0, 0);
     int frameCount = 0;
     int currentFrame = 0;
     float frameWidth = 0;
@@ -22,13 +21,14 @@ public:
     {
     }
 
-    AnimationInfo(std::string path_, int frameCount_, float frameWidth_, float frameHeight_)
+    AnimationInfo(std::string path_, int frameCount_, float frameTime_ = ANIMATION_FRAME_TIME)
     {
         this->path = path_;
         this->frameCount = frameCount_;
-        this->frameWidth = frameWidth_;
-        this->frameHeight = frameHeight_;
+        this->frameTime = frameTime_;
         LoadTexture();
+        this->frameWidth = texture.width / frameCount_;
+        this->frameHeight = texture.height;
     }
 
     void LoadTexture()
@@ -36,14 +36,20 @@ public:
         texture = raylib::Texture2D(path);
     }
 
-    void DrawAnimation(raylib::Vector2 position, bool flipX = false)
+    void DrawAnimation(raylib::Vector2 position, bool flipX = false, raylib::Vector2 bias = raylib::Vector2(0, 0))
     {
+
+        if (flipX)
+        {
+            frameWidth *= -1;
+            position += bias;
+        }
         raylib::Rectangle sourceRec = raylib::Rectangle(currentFrame * frameWidth, 0.0f, frameWidth, frameHeight);
-        raylib::Rectangle destRec = raylib::Rectangle(position.x, position.y, frameWidth, frameHeight);
-        raylib::Vector2 origin = raylib::Vector2(frameCount * frameWidth / 2, frameHeight / 2);
-        float rotation = flipX ? 180.0f : 0.0f;
-        Color tint = WHITE;
-        texture.Draw(sourceRec, destRec, origin, rotation, tint);
+        texture.Draw(sourceRec, position);
+        if (flipX)
+        {
+            frameWidth *= -1;
+        }
     }
 
     void UpdateAnimationFramCount()
@@ -66,4 +72,4 @@ public:
     }
 };
 
-#endif //ANIMATION_H
+#endif // ANIMATION_H
