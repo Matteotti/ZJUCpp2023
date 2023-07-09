@@ -21,13 +21,16 @@ public:
     AnimationInfo mapAnimationInfo;
     CustomCollider mapCollider;
 
-    Map(std::string mapName, std::string path, int frameCount)
+    Map(std::string mapName, std::string path, int frameCount, int frameWidth, int frameHeight, raylib::Vector2 position, int width, int height)
     {
         this->mapName = mapName;
         this->path = path;
         this->frameCount = frameCount;
         this->frameWidth = frameWidth;
         this->frameHeight = frameHeight;
+        this->position = position;
+        this->width = width;
+        this->height = height;
         this->mapAnimationInfo = AnimationInfo(path, frameCount);
         raylib::Vector3 min = raylib::Vector3(position.x, position.y - height, 0);
         raylib::Vector3 max = raylib::Vector3(position.x + width, position.y, 0);
@@ -60,6 +63,6 @@ void Map::UpdatePlayer(Player& player)
     }
 }
 
-std::vector<Map> mapList;
+
 
 #endif // MAP_H
