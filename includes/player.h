@@ -79,9 +79,9 @@ public:
     {
     }
 
-    Player(std::string path_, int frameCount_, float frameWidth_, float frameHeight_, raylib::Vector2 position_)
+    Player(std::string path_, int frameCount_, raylib::Vector2 position_)
     {
-        this->playerAnimationInfo = AnimationInfo(path_, frameCount_, frameWidth_, frameHeight_);
+        this->playerAnimationInfo = AnimationInfo(path_, frameCount_);
         this->position = position_;
         raylib::Vector3 min = raylib::Vector3(position.x, position.y - PLAYER_WALLCHECK_HEIGHT, 0);
         raylib::Vector3 max = raylib::Vector3(position.x + PLAYER_WALLCHECK_WIDTH, position.y, 0);
@@ -203,7 +203,7 @@ public:
 
     void UpdatePlayerAnimation(std::string path_, int count_)
     {
-        playerAnimationInfo = AnimationInfo(path_, count_, playerAnimationInfo.frameWidth, playerAnimationInfo.frameHeight);
+        playerAnimationInfo = AnimationInfo(path_, count_);
     }
 
     void UpdateSpeedWithWallCheck()
