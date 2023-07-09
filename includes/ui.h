@@ -62,7 +62,6 @@ void UI::DrawUI() {
     hp_bar_texture = hp_bar.LoadTexture();
     mp_bar_texture = mp_bar.LoadTexture();
     DrawTexture(background_texture, background_position.x, background_position.y, WHITE);
-    //@TODO: Change the HP/MP bar from a rectangle to a covered texture
     //@TODO: Should the size of the HP/MP bar be Vector2 or float?
     DrawTexturePro(hp_bar_texture,
                    raylib::Rectangle(0, 0, hp_bar_size.x, hp_bar_size.y),
@@ -83,7 +82,7 @@ void UI::UpdateHP(const int &hp) {
 }
 
 void UI::UpdateMP(const int &mp) {
-    mp_bar_size.x = mp;
+    mp_bar_size.y = mp;
 }
 
 void UI::ClearUI() {
