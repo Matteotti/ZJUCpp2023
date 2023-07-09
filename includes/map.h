@@ -14,6 +14,7 @@ public:
     int frameCount = 0;
     int frameWidth = 0;
     int frameHeight = 0;
+    void UpdatePlayer(Player& player);
     raylib::Vector2 position;
     int width;
     int height;
@@ -37,7 +38,27 @@ public:
     {
         mapAnimationInfo.DrawAnimation(position);
     }
+
 };
+
+void Map::UpdatePlayer(Player& player)
+{
+    if (player.playerCollider.CheckCollision(mapCollider))
+    {
+        if (mapName == "wall")
+        {
+            player.currentSpeed.x = 0.0f;
+            player.position.x = mapCollider.colliderBox.min.x;
+        }
+        if (mapName == "ground" || mapName == "platform")
+        {
+            player.currentSpeed.y = 0.0f;
+            player.isGrounded = true;
+            player.position.y = mapCollider.colliderBox.max.y;
+            player.jumpCount = 0;
+        }
+    }
+}
 
 std::vector<Map> mapList;
 
