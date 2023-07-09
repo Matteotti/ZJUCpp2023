@@ -41,7 +41,7 @@ public:
 
 };
 
-void Map::UpdatePlayer(Player& player)
+void Map::UpdatePlayer(Player& player)  
 {
     if (player.playerCollider.CheckCollision(mapCollider))
     {
