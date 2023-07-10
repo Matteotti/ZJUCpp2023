@@ -6,6 +6,9 @@
 #include "includes/animation.h"
 #include "includes/customCollider.h"
 
+class Map;
+std::vector<Map> mapList;
+
 class Map
 {
 public:
@@ -14,27 +17,39 @@ public:
     int frameCount = 0;
     int frameWidth = 0;
     int frameHeight = 0;
-    void UpdatePlayer(Player& player);
     raylib::Vector2 position;
     int width;
     int height;
     AnimationInfo mapAnimationInfo;
     CustomCollider mapCollider;
 
-    Map(std::string mapName, std::string path, int frameCount, int frameWidth, int frameHeight, raylib::Vector2 position, int width, int height)
+    Map(std::string mapName, std::string path, int frameCount, raylib::Vector2 position)
     {
         this->mapName = mapName;
         this->path = path;
         this->frameCount = frameCount;
-        this->frameWidth = frameWidth;
-        this->frameHeight = frameHeight;
         this->position = position;
-        this->width = width;
-        this->height = height;
         this->mapAnimationInfo = AnimationInfo(path, frameCount);
+        this->width = mapAnimationInfo.texture.width / frameCount;
+        this->height = mapAnimationInfo.texture.height;
         raylib::Vector3 min = raylib::Vector3(position.x, position.y - height, 0);
         raylib::Vector3 max = raylib::Vector3(position.x + width, position.y, 0);
         this->mapCollider = CustomCollider(mapName, raylib::BoundingBox(min, max), ColliderTag::ENVIRONMENT);
+    }
+
+    // void DeleteMap()
+    // {
+    //     for (int i = 0; i < mapList.size(); i++)
+    //     {
+    //         if (mapList[i].mapName == mapName)
+    //         {
+    //             mapList.erase(mapList.begin() + i);
+    //         }
+    //     }
+    // }
+
+    Map(const Map &other)
+    {
     }
 
     void DrawMap()
@@ -42,27 +57,10 @@ public:
         mapAnimationInfo.DrawAnimation(position);
     }
 
-};
-
-void Map::UpdatePlayer(Player& player)  
-{
-    if (player.playerCollider.CheckCollision(mapCollider))
+    void Update()
     {
-        if (mapName == "wall")
-        {
-            player.currentSpeed.x = 0.0f;
-            player.position.x = mapCollider.colliderBox.min.x;
-        }
-        if (mapName == "ground" || mapName == "platform")
-        {
-            player.currentSpeed.y = 0.0f;
-            player.isGrounded = true;
-            player.position.y = mapCollider.colliderBox.max.y;
-            player.jumpCount = 0;
-        }
+        mapAnimationInfo.Update();
     }
-}
-
-
+};
 
 #endif // MAP_H

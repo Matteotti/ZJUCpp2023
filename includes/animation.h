@@ -1,7 +1,7 @@
 #ifndef ANIMATION_H
 #define ANIMATION_H
 
-#define ANIMATION_FRAME_TIME 0.1f
+#define ANIMATION_FRAME_TIME 0.2f
 
 #include "raylib-cpp.hpp"
 #include "raymath.hpp"

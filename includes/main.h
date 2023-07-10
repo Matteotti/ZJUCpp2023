@@ -1,3 +1,5 @@
+#include "raylib-cpp.hpp"
+#include "raymath.hpp"
 #include "includes/player.h"
 #include "includes/nail.h"
 #include "includes/magic.h"
