@@ -145,13 +145,6 @@ public:
     {
     }
 
-    void AttackTop_draw()
-    {
-    }
-
-    void AttackDown_draw()
-    {
-    }
 
     void PlayerShadeSoul()
     {
@@ -180,7 +173,6 @@ public:
     void PlayerDie()
     {
     }
-
     void UpdateAnimatorState()
     {
         if (currentState == IDLE || currentState == WALKING || currentState == JUMPING || currentState == FALLING)
@@ -229,6 +221,18 @@ public:
         case FALLING:
             UpdatePlayerAnimation("../assets/sprites/Knight/Fall.png", 3);
             // std::cout << "FALLING" << std::endl;
+            break;
+        case ATTACKING_TOP:
+            UpdatePlayerAnimation("../assets/sprites/Attack/attacktop.png", 5);
+            break;
+        case ATTACKING_BOTTOM:
+            UpdatePlayerAnimation("../assets/sprites/Attack/attackdown.png", 5);
+            break;
+        case ATTACKING_LEFT:
+            UpdatePlayerAnimation("../assets/sprites/Attack/attackleft.png", 5);
+            break;
+        case ATTACKING_RIGHT:
+            UpdatePlayerAnimation("../assets/sprites/Attack/attackright.png", 5);
             break;
         }
     }

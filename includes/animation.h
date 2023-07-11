@@ -100,7 +100,7 @@ public:
             if (currentFrame >= frameCount)
             {
                 if (!stop)
-                    currentFrame = 0;
+                    currentFrame = 0;                    
                 else if (stop)
                     currentFrame = frameCount - 1;
             }

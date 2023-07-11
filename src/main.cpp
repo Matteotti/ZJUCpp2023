@@ -16,7 +16,7 @@ void DrawEnemy();
 void DrawMap();
 void DrawAttackTop();
 void DrawAttackDown();
-void DrawAttack(AnimatorState currentState);
+void DrawAttack();
 void DrawUI();
 void DrawDebug();
 void PlayerMove();
@@ -86,6 +86,14 @@ void Update()
     knight.Update();
     // update player test
     knight.playerAnimationInfo.Update();
+
+    if (knight.currentState==ATTACKING_TOP||knight.currentState==ATTACKING_BOTTOM||knight.currentState==ATTACKING_LEFT||knight.currentState==ATTACKING_RIGHT)
+    {
+         if (knight.playerAnimationInfo.currentFrame+1==5)
+         {
+                knight.currentState=IDLE;
+         }
+    }
     // update all map animation
     for (int i = 0; i < mapList.size(); i++)
     {
@@ -107,7 +115,7 @@ void Draw()
     DrawPlayer();
     DrawEnemy();
     DrawMap();
-    DrawAttack(knight.currentState);
+    //DrawAttack();
     DrawUI();
     DrawDebug();
     EndDrawing();
@@ -130,15 +138,7 @@ void DrawEnemy()
 {
 }
 
-void DrawAttackTop()
-{
-    knight.AttackTop_draw();
-}
 
-void DrawAttackDown()
-{
-    knight.AttackDown_draw();
-}
 void DrawMap()
 {
     for (int i = 0; i < mapList.size(); i++)
@@ -147,17 +147,10 @@ void DrawMap()
     }
 }
 
-void DrawAttack(AnimatorState currentState)
+/* void DrawAttack()
 {
-    if (currentState == ATTACKING_TOP)
-    {
-        DrawAttackTop();
-    }
-    else if (currentState == ATTACKING_BOTTOM)
-    {
-        DrawAttackDown();
-    }
-}
+    knight.playerAnimationInfo.DrawAnimation(knight.position);
+} */
 
 void DrawUI()
 {
@@ -225,18 +218,45 @@ void PlayerMove()
     if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && IsKeyPressed(KEY_W))
     {
         // ATTACK_TOP
-        knight.currentState = ATTACKING_TOP;
+        if (knight.currentState != ATTACKING_TOP)
+        {
+            knight.currentState = ATTACKING_TOP;
+            knight.UpdateAnimatorState();
+        }
+
+
     }
-    if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && IsKeyPressed(KEY_S))
+    else if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && IsKeyPressed(KEY_S))
     {
         // ATTACK_BOTTOM
-        knight.currentState = ATTACKING_BOTTOM;
+        if (knight.currentState != ATTACKING_BOTTOM)
+        {
+            knight.currentState = ATTACKING_BOTTOM;
+            knight.UpdateAnimatorState();
+        }
+
+
     }
-    if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && IsKeyPressed(KEY_A))
+    else if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
     {
         // ATTACK_LEFT
-        knight.currentState = ATTACKING_LEFT;
+        if (knight.currentState != ATTACKING_LEFT)
+        {
+            knight.currentState = ATTACKING_LEFT;
+            knight.UpdateAnimatorState();
+        }
+
     }
+    /* if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
+    {
+        // ATTACK_RIGHT
+        if (knight.currentState != ATTACKING_RIGHT)
+        {
+            knight.currentState = ATTACKING_RIGHT;
+            knight.UpdateAnimatorState();
+        }
+
+    } */
     if (IsMouseButtonPressed(MOUSE_RIGHT_BUTTON))
     {
         // DASH
