@@ -5,97 +5,73 @@
 #ifndef CPPGAMEJAM_UI_H
 #define CPPGAMEJAM_UI_H
 
+#define HP_UNIT_WIDTH 0.5f
+#define MP_UNIT_HEIGHT 0.5f
+
+#define HP_BAR_POSITION_X 0
+#define HP_BAR_POSITION_Y 0
+#define MP_BAR_POSITION_X 0
+#define MP_BAR_POSITION_Y 0
+#define BACKGROUND_POSITION_X 0
+#define BACKGROUND_POSITION_Y 0
+
 
 #include "raylib-cpp.hpp"
+#include "animation.h"
 
-class UI {
+class UI{
 private:
-    raylib::Image background;
-    raylib::Image hp_bar;
-    raylib::Image mp_bar;
+    raylib::Texture HP_bar;
+    raylib::Texture MP_bar;
+    raylib::Texture Background;
 
-    raylib::Texture2D background_texture;
-    raylib::Texture2D hp_bar_texture;
-    raylib::Texture2D mp_bar_texture;
+    int HP_count;
+    int MP_count;
 
-    raylib::Vector2 background_position;
-    raylib::Vector2 hp_bar_position;
-    raylib::Vector2 mp_bar_position;
-
-    raylib::Vector2 background_size;
-    raylib::Vector2 hp_bar_size;
-    raylib::Vector2 mp_bar_size;
-
-    //@TODO: Add an animated topping of the mp bar, will finish upon the completion of the animation class
-    //animation::AnimationInfo mp_bar_topping;
+    AnimationInfo MP_bar_topping;
 
 public:
     UI();
-
     void DrawUI();
-
-    void UpdateHP(const int &hp);
-
-    void UpdateMP(const int &mp);
-
-    void ClearUI();//wipe the UI from the screen
-
-    void UnloadUI();//unload the UI from memory
+    void UpdateUI(const int HP, const int MP);
+    void UnloadUI();
 };
 
 UI::UI() {
-    //@TODO: Decide the exact position and size of the UI elements
-    background_position = raylib::Vector2(0, 0);
-    hp_bar_position = raylib::Vector2(0, 0);
-    mp_bar_position = raylib::Vector2(0, 0);
-    background_size = raylib::Vector2(0, 0);
-    hp_bar_size = raylib::Vector2(0, 0);
-    mp_bar_size = raylib::Vector2(0, 0);
-
-    background = LoadImage("assets/ui/background.png");
-    hp_bar = LoadImage("assets/ui/hp_bar.png");
-    mp_bar = LoadImage("assets/ui/mp_bar.png");
+    HP_bar = raylib::Texture("../assets/UI/HP_bar_full.png");
+    MP_bar = raylib::Texture("../assets/UI/MP_bar_full.png");
+    Background = raylib::Texture("../assets/UI/Background.png");
+    HP_count = 8;
+    MP_count = 100;
 }
 
 void UI::DrawUI() {
-    background_texture = LoadTextureFromImage(background);
-    hp_bar_texture = hp_bar.LoadTexture();
-    mp_bar_texture = mp_bar.LoadTexture();
-    DrawTexture(background_texture, background_position.x, background_position.y, WHITE);
-    //@TODO: Should the size of the HP/MP bar be Vector2 or float?
-    DrawTexturePro(hp_bar_texture,
-                   raylib::Rectangle(0, 0, hp_bar_size.x, hp_bar_size.y),
-                   raylib::Rectangle(hp_bar_position.x, hp_bar_position.y, hp_bar_size.x, hp_bar_size.y),
-                   raylib::Vector2(0, 0),
-                   0,
-                   WHITE);
-    DrawTexturePro(mp_bar_texture,
-                   raylib::Rectangle(0, 0, mp_bar_size.x, mp_bar_size.y),
-                   raylib::Rectangle(mp_bar_position.x, mp_bar_position.y, mp_bar_size.x, mp_bar_size.y),
-                   raylib::Vector2(0, 0),
-                   0,
-                   WHITE);
+    Background.Draw(BACKGROUND_POSITION_X, BACKGROUND_POSITION_Y);
+    HP_bar.Draw(
+            raylib::Rectangle(HP_BAR_POSITION_X, HP_BAR_POSITION_Y, HP_bar.width, HP_bar.height),
+            raylib::Rectangle(HP_BAR_POSITION_X, HP_BAR_POSITION_Y, HP_bar.width * HP_count, HP_bar.height),
+            raylib::Vector2(0, 0),
+            0,
+            raylib::Color(255, 255, 255, 255)
+            );
+    MP_bar.Draw(
+            raylib::Rectangle(MP_BAR_POSITION_X, MP_BAR_POSITION_Y, MP_bar.width, MP_bar.height),
+            raylib::Rectangle(MP_BAR_POSITION_X, MP_BAR_POSITION_Y, MP_bar.width, MP_bar.height * MP_count),
+            raylib::Vector2(0, 0),
+            0,
+            raylib::Color(255, 255, 255, 255)
+            );
 }
 
-void UI::UpdateHP(const int &hp) {
-    hp_bar_size.x = hp;
-}
-
-void UI::UpdateMP(const int &mp) {
-    mp_bar_size.y = mp;
-}
-
-void UI::ClearUI() {
-    UnloadTexture(background);
-    UnloadTexture(hp_bar);
-    UnloadTexture(mp_bar);
+void UI::UpdateUI(const int HP, const int MP) {
+    HP_count = HP;
+    MP_count = MP;
 }
 
 void UI::UnloadUI() {
-    UnloadImage(background);
-    UnloadImage(hp_bar);
-    UnloadImage(mp_bar);
+    HP_bar.Unload();
+    MP_bar.Unload();
+    Background.Unload();
 }
-
 
 #endif //CPPGAMEJAM_UI_H
