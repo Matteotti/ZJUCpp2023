@@ -46,6 +46,29 @@ public:
     {
     }
 
+    CustomCollider(const CustomCollider &customCollider_)
+    {
+        this->colliderName = customCollider_.colliderName;
+        this->colliderBox = customCollider_.colliderBox;
+        this->ray = customCollider_.ray;
+        this->center = customCollider_.center;
+        this->radius = customCollider_.radius;
+        this->colliderTag = customCollider_.colliderTag;
+        this->colliderType = customCollider_.colliderType;
+    }
+
+    CustomCollider &operator=(const CustomCollider &customCollider_)
+    {
+        this->colliderName = customCollider_.colliderName;
+        this->colliderBox = customCollider_.colliderBox;
+        this->ray = customCollider_.ray;
+        this->center = customCollider_.center;
+        this->radius = customCollider_.radius;
+        this->colliderTag = customCollider_.colliderTag;
+        this->colliderType = customCollider_.colliderType;
+        return *this;
+    }
+
     CustomCollider(const std::string &name_, raylib::BoundingBox colliderBox_, ColliderTag colliderTag_)
     {
         this->colliderName = name_;
