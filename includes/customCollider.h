@@ -64,7 +64,7 @@ public:
         return *this;
     }
 
-    CustomCollider(const std::string &name_, float x_, float y_, float height_, float width_, ColliderTag colliderTag_)
+    CustomCollider(const std::string &name_, float x_, float y_, float width_, float height_, ColliderTag colliderTag_)
     {
         this->colliderName = name_;
         this->colliderBox = raylib::Rectangle(x_, y_, width_, height_);
@@ -154,9 +154,24 @@ public:
         case RECT:
             colliderBox.x += delta.x;
             colliderBox.y += delta.y;
+            for (int i = 0; i < colliderList.size(); i++)
+            {
+                if (colliderList[i].colliderName == this->colliderName)
+                {
+                    colliderList[i].colliderBox.x += delta.x;
+                    colliderList[i].colliderBox.y += delta.y;
+                }
+            }
             break;
         case CIRCLE:
             center += delta;
+            for (int i = 0; i < colliderList.size(); i++)
+            {
+                if (colliderList[i].colliderName == this->colliderName)
+                {
+                    colliderList[i].center += delta;
+                }
+            }
             break;
         default:
             break;

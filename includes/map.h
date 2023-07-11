@@ -60,7 +60,7 @@ public:
         this->mapAnimationInfo = AnimationInfo(path, frameCount);
         this->width = mapAnimationInfo.texture.width / frameCount;
         this->height = mapAnimationInfo.texture.height;
-        this->mapCollider = CustomCollider(mapName, position.x, position.y - height, width, height, ColliderTag::ENVIRONMENT);
+        this->mapCollider = CustomCollider(mapName, position.x, position.y, width, height, ColliderTag::ENVIRONMENT);
         mapList.push_back(*this);
     }
 

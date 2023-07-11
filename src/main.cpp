@@ -75,6 +75,7 @@ void Update()
 {
     // read in keyboard input and update player speed
     PlayerMove();
+    // Update Jump Speed
     knight.PlayerUpdateJump();
     // use 4 colliders to check 4 directions of the player
     knightWallCheck.Update();
@@ -140,6 +141,11 @@ void DrawUI()
 }
 void DrawDebug()
 {
+    for (int i = 0; i < colliderList.size(); i++)
+    {
+        DrawRectangleLines(colliderList[i].colliderBox.x, colliderList[i].colliderBox.y, colliderList[i].colliderBox.width, colliderList[i].colliderBox.height, RED);
+    }
+    DrawRectangle(knightWallCheck.bottomCollider.colliderBox.x, knightWallCheck.bottomCollider.colliderBox.y, knightWallCheck.bottomCollider.colliderBox.width, knightWallCheck.bottomCollider.colliderBox.height, RED);
 }
 #pragma endregion
 
@@ -178,6 +184,11 @@ void PlayerMove()
     }
     knight.SetSpeed(raylib::Vector2(horizontalInput * PLAYER_SPEED, knight.currentSpeed.y));
 
+    if (knight.isGrounded)
+    {
+        knight.jumpCount = 0;
+    }
+
     if (IsKeyPressed(KEY_SPACE))
     {
         // JUMP
@@ -210,7 +221,9 @@ void InitLists()
 
 void InitMapData()
 {
-    Map("ground_1", "../assets/sprites/Map/road3.png", 1, raylib::Vector2(0, 880));
-    Map("ground_2", "../assets/sprites/Map/road3.png", 1, raylib::Vector2(279, 880));
+    Map("ground_1", "../assets/sprites/Map/road3.png", 1, raylib::Vector2(0, 700));
+    Map("ground_2", "../assets/sprites/Map/road3.png", 1, raylib::Vector2(279, 700));
+    Map("ground_3", "../assets/sprites/Map/road3.png", 1, raylib::Vector2(279, 600));
+    Map("ground_3", "../assets/sprites/Map/road3.png", 1, raylib::Vector2(279, 300));
 }
 #pragma endregion

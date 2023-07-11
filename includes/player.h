@@ -84,7 +84,7 @@ public:
     {
         this->playerAnimationInfo = AnimationInfo(path_, frameCount_);
         this->position = position_;
-        this->playerCollider = CustomCollider("player", position.x, position.y - PLAYER_WALLCHECK_HEIGHT, PLAYER_WALLCHECK_WIDTH, PLAYER_WALLCHECK_HEIGHT, ColliderTag::PLAYER);
+        this->playerCollider = CustomCollider("player", position.x, position.y, PLAYER_WALLCHECK_WIDTH, PLAYER_WALLCHECK_HEIGHT, ColliderTag::PLAYER);
     };
 
     void UpdatePosition()
@@ -111,7 +111,7 @@ public:
             isJumping = true;
             jumpCounter = PLAYER_JUMP_TIME;
         }
-        else if (jumpCount >= 0)
+        else if (jumpCount == 0)
         {
             jumpCount++;
             isJumping = true;
@@ -238,11 +238,11 @@ public:
         {
             SetSpeed(raylib::Vector2(0, currentSpeed.y));
         }
-        if (isCeilinged && currentSpeed.y > 0)
+        if (isCeilinged && currentSpeed.y < 0)
         {
             SetSpeed(raylib::Vector2(currentSpeed.x, 0));
         }
-        if (isGrounded && currentSpeed.y < 0)
+        if (isGrounded && currentSpeed.y > 0)
         {
             SetSpeed(raylib::Vector2(currentSpeed.x, 0));
         }
@@ -274,8 +274,8 @@ public:
     {
         leftCollider = CustomCollider("playerLeftWallCheck", knight.position.x - PLAYER_WALLCHECK_BIAS_X, knight.position.y, PLAYER_WALLCHECK_BIAS_X, PLAYER_WALLCHECK_HEIGHT, ColliderTag::PLAYER_WALLCHECK);
         rightCollider = CustomCollider("playerRightWallCheck", knight.position.x + PLAYER_WALLCHECK_WIDTH, knight.position.y, PLAYER_WALLCHECK_BIAS_X, PLAYER_WALLCHECK_HEIGHT, ColliderTag::PLAYER_WALLCHECK);
-        topCollider = CustomCollider("playerTopWallCheck", knight.position.x, knight.position.y, PLAYER_WALLCHECK_WIDTH, PLAYER_WALLCHECK_BIAS_Y, ColliderTag::PLAYER_WALLCHECK);
-        bottomCollider = CustomCollider("playerBottomWallCheck", knight.position.x, knight.position.y - PLAYER_WALLCHECK_HEIGHT, PLAYER_WALLCHECK_WIDTH, PLAYER_WALLCHECK_BIAS_Y, ColliderTag::PLAYER_WALLCHECK);
+        topCollider = CustomCollider("playerTopWallCheck", knight.position.x, knight.position.y - PLAYER_WALLCHECK_BIAS_Y, PLAYER_WALLCHECK_WIDTH, PLAYER_WALLCHECK_BIAS_Y, ColliderTag::PLAYER_WALLCHECK);
+        bottomCollider = CustomCollider("playerBottomWallCheck", knight.position.x, knight.position.y + PLAYER_WALLCHECK_HEIGHT, PLAYER_WALLCHECK_WIDTH, PLAYER_WALLCHECK_BIAS_Y, ColliderTag::PLAYER_WALLCHECK);
     }
 
     void UpdatePosition(raylib::Vector2 delta_)
@@ -296,10 +296,10 @@ public:
         knight.isRightWalled = right.size() > 0;
         knight.isCeilinged = top.size() > 0;
         knight.isGrounded = bottom.size() > 0;
-        if (knight.isLeftWalled || knight.isRightWalled || knight.isCeilinged || knight.isGrounded)
-        {
-            // std::cout << "Touched Wall" << std::endl;
-        }
+        // if (knight.isLeftWalled || knight.isRightWalled || knight.isCeilinged || knight.isGrounded)
+        // {
+        //     std::cout << "Left:" << knight.isLeftWalled << " Right:" << knight.isRightWalled << " Top:" << knight.isCeilinged << " Bottom:" << knight.isGrounded << std::endl;
+        // }
     }
 
     void Update()
