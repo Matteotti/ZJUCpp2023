@@ -109,7 +109,7 @@ void Draw()
     DrawMap();
     DrawAttack(knight.currentState);
     DrawUI();
-    DrawDebug();
+    // DrawDebug();
     EndDrawing();
 }
 

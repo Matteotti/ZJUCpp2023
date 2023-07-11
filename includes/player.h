@@ -147,10 +147,14 @@ public:
 
     void AttackTop_draw()
     {
+        playerAnimationInfo = AnimationInfo("F:/ZJUCpp2023/assets/Attack/AttackTop/hebing.png", 5, 0.3f);
+        playerAnimationInfo.DrawAnimation(position);
     }
 
     void AttackDown_draw()
     {
+        playerAnimationInfo = AnimationInfo("F:/Resources/Sprites/The Knight/Attack/向下攻击/hebing.png", 5, 0.3f);
+        playerAnimationInfo.DrawAnimation(position);
     }
 
     void PlayerShadeSoul()
