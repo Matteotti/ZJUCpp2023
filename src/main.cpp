@@ -14,7 +14,9 @@ void DrawBackground();
 void DrawPlayer();
 void DrawEnemy();
 void DrawMap();
-void DrawAttack();
+void DrawAttackTop();
+void DrawAttackDown();
+void DrawAttack(AnimatorState currentState);
 void DrawUI();
 void DrawDebug();
 void PlayerMove();
@@ -27,8 +29,10 @@ void InitMapData();
 
 #pragma region Global Variables
 int horizontalInput = 0;
+int mapListSize;
+std::vector<Map> mapList;
 #pragma endregion
-
+//mapList = std::vector<Map>();
 int main()
 {
 
@@ -104,7 +108,7 @@ void Draw()
     DrawPlayer();
     DrawEnemy();
     DrawMap();
-    DrawAttack();
+    DrawAttack(knight.currentState);
     DrawUI();
     DrawDebug();
     EndDrawing();
@@ -129,14 +133,34 @@ void DrawEnemy()
 void DrawMap()
 {
     // FIXME map can't be stored in a std::vector
-    // for (int i = 0; i < mapList.size(); i++)
-    // {
-    //     mapList[i].DrawMap();
-    // }
+    for (int i = 0; i < mapList.size(); i++)
+    {
+        mapList[i].DrawMap();
+    }
 }
-void DrawAttack()
+
+void DrawAttackTop()
 {
+    knight.AttackTop_draw();
 }
+
+void DrawAttackDown()
+{
+    knight.AttackDown_draw();
+}
+
+void DrawAttack(AnimatorState currentState)
+{
+    if (currentState == ATTACKING_TOP)
+    {
+        DrawAttackTop();
+    }
+    else if (currentState == ATTACKING_BOTTOM)
+    {
+        DrawAttackDown();
+    }
+}
+
 void DrawUI()
 {
 }
@@ -193,9 +217,20 @@ void PlayerMove()
         // STOPJUMP
         knight.PlayerStopJump();
     }
-    if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
+    if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && IsKeyPressed(KEY_W))
     {
-        // ATTACK
+        // ATTACK_TOP
+        knight.currentState = ATTACKING_TOP;
+    }
+    if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && IsKeyPressed(KEY_S))
+    {
+        // ATTACK_BOTTOM
+        knight.currentState = ATTACKING_BOTTOM;
+    }
+    if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && IsKeyPressed(KEY_A))
+    {
+        // ATTACK_LEFT
+        knight.currentState = ATTACKING_LEFT;
     }
     if (IsMouseButtonPressed(MOUSE_RIGHT_BUTTON))
     {
@@ -209,7 +244,7 @@ void PlayerMove()
 
 void InitLists()
 {
-    mapList = std::vector<Map>();
+    //mapList = std::vector<Map>();
     colliderList = std::vector<CustomCollider>();
 }
 
@@ -217,20 +252,20 @@ void InitMapData()
 {
     // FIXME map can't be stored in a std::vector
     // mapList = std::vector<Map>();
-    // mapList.push_back(Map("ground_1", "../assets/sprites/Map/road3.png", 1, raylib::Vector2(0, 880)));
-    // mapList.push_back(Map("ground_2", "../assets/sprites/Map/road3.png", 1, raylib::Vector2(279, 880)));
-    // mapList.push_back(Map("ground_3", "../assets/sprites/Map/road3.png", 1, raylib::Vector2(279 * 2, 880)));
-    // mapList.push_back(Map("ground_4", "../assets/sprites/Map/road3.png", 1, raylib::Vector2(279 * 3, 880)));
-    // mapList.push_back(Map("ground_5", "../assets/sprites/Map/road3.png", 1, raylib::Vector2(279 * 4, 880)));
-    // mapList.push_back(Map("ground_6", "../assets/sprites/Map/road3.png", 1, raylib::Vector2(279 * 5, 880)));
-    // mapList.push_back(Map("ground_7", "../assets/sprites/Map/road3.png", 1, raylib::Vector2(279 * 6, 880)));
-    // mapList.push_back(Map("ground_8", "../assets/sprites/Map/road3.png", 1, raylib::Vector2(279 * 7, 880)));
-    // mapList.push_back(Map("ground_9", "../assets/sprites/Map/road3.png", 1, raylib::Vector2(279 * 8, 880)));
-    // mapList.push_back(Map("ground_10", "../assets/sprites/Map/road3.png", 1, raylib::Vector2(279 * 9, 880)));
-    // mapList.push_back(Map("ground_11", "../assets/sprites/Map/road3.png", 1, raylib::Vector2(279 * 10, 880)));
-    // mapList.push_back(Map("ground_12", "../assets/sprites/Map/road3.png", 1, raylib::Vector2(279 * 11, 880)));
-
+    mapList.push_back(Map("ground_1", "../assets/sprites/Map/road3.png", 1, raylib::Vector2(0, 880)));
+    mapList.push_back(Map("ground_2", "../assets/sprites/Map/road3.png", 1, raylib::Vector2(279, 880)));
+    mapList.push_back(Map("ground_3", "../assets/sprites/Map/road3.png", 1, raylib::Vector2(279 * 2, 880)));
+    mapList.push_back(Map("ground_4", "../assets/sprites/Map/road3.png", 1, raylib::Vector2(279 * 3, 880)));
+    mapList.push_back(Map("ground_5", "../assets/sprites/Map/road3.png", 1, raylib::Vector2(279 * 4, 880)));
+    mapList.push_back(Map("ground_6", "../assets/sprites/Map/road3.png", 1, raylib::Vector2(279 * 5, 880)));
+    mapList.push_back(Map("ground_7", "../assets/sprites/Map/road3.png", 1, raylib::Vector2(279 * 6, 880)));
+    mapList.push_back(Map("ground_8", "../assets/sprites/Map/road3.png", 1, raylib::Vector2(279 * 7, 880)));
+    mapList.push_back(Map("ground_9", "../assets/sprites/Map/road3.png", 1, raylib::Vector2(279 * 8, 880)));
+    mapList.push_back(Map("ground_10", "../assets/sprites/Map/road3.png", 1, raylib::Vector2(279 * 9, 880)));
+    mapList.push_back(Map("ground_11", "../assets/sprites/Map/road3.png", 1, raylib::Vector2(279 * 10, 880)));
+    mapList.push_back(Map("ground_12", "../assets/sprites/Map/road3.png", 1, raylib::Vector2(279 * 11, 880)));
+    mapListSize = sizeof(mapList) / sizeof(mapList[0]);
     // the parameter min and max of raylib::BoundingBox is not specific, we dont know the position of the collider
-    CustomCollider ground = CustomCollider("ground", raylib::BoundingBox(raylib::Vector3(0, 200, 0), raylib::Vector3(1600, 300, 0)), ColliderTag::ENVIRONMENT);
+    CustomCollider ground = CustomCollider("ground", raylib::Rectangle(0,800,1600,200), ColliderTag::ENVIRONMENT);
 }
 #pragma endregion * /

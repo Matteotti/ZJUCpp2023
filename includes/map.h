@@ -7,7 +7,7 @@
 #include "includes/customCollider.h"
 
 class Map;
-std::vector<Map> mapList;
+//std::vector<Map> mapList;
 
 class Map
 {
@@ -18,8 +18,8 @@ public:
     int frameWidth = 0;
     int frameHeight = 0;
     raylib::Vector2 position;
-    int width;
-    int height;
+    float width;
+    float height;
     AnimationInfo mapAnimationInfo;
     CustomCollider mapCollider;
 
@@ -32,9 +32,8 @@ public:
         this->mapAnimationInfo = AnimationInfo(path, frameCount);
         this->width = mapAnimationInfo.texture.width / frameCount;
         this->height = mapAnimationInfo.texture.height;
-        raylib::Vector3 min = raylib::Vector3(position.x, position.y - height, 0);
-        raylib::Vector3 max = raylib::Vector3(position.x + width, position.y, 0);
-        this->mapCollider = CustomCollider(mapName, raylib::BoundingBox(min, max), ColliderTag::ENVIRONMENT);
+        raylib::Rectangle rectangle(position.x,position.y,this->width,this->height);
+        this->mapCollider = CustomCollider(mapName, rectangle, ColliderTag::ENVIRONMENT);
     }
 
     // void DeleteMap()
