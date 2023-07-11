@@ -28,7 +28,6 @@
 #define PLAYER_HURT_TIME 0.5f
 #define PLAYER_INVINCIBLE_TIME 1.0f
 
-#define PLAYER_WALLCHECK_RADIUS 0.5f
 #define PLAYER_WALLCHECK_BIAS_X 10.0f
 #define PLAYER_WALLCHECK_BIAS_Y 10.0f
 #define PLAYER_WALLCHECK_WIDTH 60.0f
@@ -85,16 +84,13 @@ public:
     {
         this->playerAnimationInfo = AnimationInfo(path_, frameCount_);
         this->position = position_;
-        raylib::Vector3 min = raylib::Vector3(position.x, position.y - PLAYER_WALLCHECK_HEIGHT, 0);
-        raylib::Vector3 max = raylib::Vector3(position.x + PLAYER_WALLCHECK_WIDTH, position.y, 0);
-        raylib::BoundingBox collider = raylib::BoundingBox(min, max);
-        this->playerCollider = CustomCollider("player", collider, ColliderTag::PLAYER);
+        this->playerCollider = CustomCollider("player", position.x, position.y - PLAYER_WALLCHECK_HEIGHT, PLAYER_WALLCHECK_WIDTH, PLAYER_WALLCHECK_HEIGHT, ColliderTag::PLAYER);
     };
 
     void UpdatePosition()
     {
         position += currentSpeed;
-        playerCollider.MoveCollider(raylib::Vector3(currentSpeed.x, currentSpeed.y, 0));
+        playerCollider.MoveCollider(raylib::Vector2(currentSpeed.x, currentSpeed.y));
     }
 
     void UpdateSpeed(Vector2 deltaSpeed)
@@ -276,33 +272,13 @@ public:
 
     PlayerWallCheck()
     {
-        raylib::Vector3 leftColliderPos;
-        raylib::Vector3 rightColliderPos;
-        raylib::Vector3 topColliderPos;
-        raylib::Vector3 bottomColliderPos;
-        leftColliderPos = raylib::Vector3(
-            knight.position.x - PLAYER_WALLCHECK_BIAS_X,
-            knight.position.y + PLAYER_WALLCHECK_HEIGHT / 2,
-            0);
-        rightColliderPos = raylib::Vector3(
-            knight.position.x + PLAYER_WALLCHECK_BIAS_X + PLAYER_WALLCHECK_WIDTH,
-            knight.position.y + PLAYER_WALLCHECK_HEIGHT / 2,
-            0);
-        topColliderPos = raylib::Vector3(
-            knight.position.x + PLAYER_WALLCHECK_WIDTH / 2,
-            knight.position.y - PLAYER_WALLCHECK_BIAS_Y,
-            0);
-        bottomColliderPos = raylib::Vector3(
-            knight.position.x + PLAYER_WALLCHECK_WIDTH / 2,
-            knight.position.y + PLAYER_WALLCHECK_BIAS_Y + PLAYER_WALLCHECK_HEIGHT,
-            0);
-        leftCollider = CustomCollider("playerLeftWallCheck", leftColliderPos, PLAYER_WALLCHECK_RADIUS, ColliderTag::PLAYER_WALLCHECK);
-        rightCollider = CustomCollider("playerRightWallCheck", rightColliderPos, PLAYER_WALLCHECK_RADIUS, ColliderTag::PLAYER_WALLCHECK);
-        topCollider = CustomCollider("playerTopWallCheck", topColliderPos, PLAYER_WALLCHECK_RADIUS, ColliderTag::PLAYER_WALLCHECK);
-        bottomCollider = CustomCollider("playerBottomWallCheck", bottomColliderPos, PLAYER_WALLCHECK_RADIUS, ColliderTag::PLAYER_WALLCHECK);
+        leftCollider = CustomCollider("playerLeftWallCheck", knight.position.x - PLAYER_WALLCHECK_BIAS_X, knight.position.y, PLAYER_WALLCHECK_BIAS_X, PLAYER_WALLCHECK_HEIGHT, ColliderTag::PLAYER_WALLCHECK);
+        rightCollider = CustomCollider("playerRightWallCheck", knight.position.x + PLAYER_WALLCHECK_WIDTH, knight.position.y, PLAYER_WALLCHECK_BIAS_X, PLAYER_WALLCHECK_HEIGHT, ColliderTag::PLAYER_WALLCHECK);
+        topCollider = CustomCollider("playerTopWallCheck", knight.position.x, knight.position.y, PLAYER_WALLCHECK_WIDTH, PLAYER_WALLCHECK_BIAS_Y, ColliderTag::PLAYER_WALLCHECK);
+        bottomCollider = CustomCollider("playerBottomWallCheck", knight.position.x, knight.position.y - PLAYER_WALLCHECK_HEIGHT, PLAYER_WALLCHECK_WIDTH, PLAYER_WALLCHECK_BIAS_Y, ColliderTag::PLAYER_WALLCHECK);
     }
 
-    void UpdatePosition(raylib::Vector3 delta_)
+    void UpdatePosition(raylib::Vector2 delta_)
     {
         leftCollider.MoveCollider(delta_);
         rightCollider.MoveCollider(delta_);
@@ -330,7 +306,7 @@ public:
     {
         UpdatePlayerWallCollisionInfo();
         knight.UpdateSpeedWithWallCheck();
-        UpdatePosition(raylib::Vector3(knight.currentSpeed.x, knight.currentSpeed.y, 0));
+        UpdatePosition(raylib::Vector2(knight.currentSpeed.x, knight.currentSpeed.y));
     }
 };
 

@@ -60,9 +60,7 @@ public:
         this->mapAnimationInfo = AnimationInfo(path, frameCount);
         this->width = mapAnimationInfo.texture.width / frameCount;
         this->height = mapAnimationInfo.texture.height;
-        raylib::Vector3 min = raylib::Vector3(position.x, position.y - height, 0);
-        raylib::Vector3 max = raylib::Vector3(position.x + width, position.y, 0);
-        this->mapCollider = CustomCollider(mapName, raylib::BoundingBox(min, max), ColliderTag::ENVIRONMENT);
+        this->mapCollider = CustomCollider(mapName, position.x, position.y - height, width, height, ColliderTag::ENVIRONMENT);
         mapList.push_back(*this);
     }
 
