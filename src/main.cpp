@@ -30,9 +30,8 @@ void InitMapData();
 #pragma region Global Variables
 int horizontalInput = 0;
 int mapListSize;
-std::vector<Map> mapList;
 #pragma endregion
-//mapList = std::vector<Map>();
+// mapList = std::vector<Map>();
 int main()
 {
     SetTraceLogLevel(LOG_NONE);
@@ -130,13 +129,6 @@ void DrawPlayer()
 void DrawEnemy()
 {
 }
-void DrawMap()
-{
-    for (int i = 0; i < mapList.size(); i++)
-    {
-        mapList[i].DrawMap();
-    }
-}
 
 void DrawAttackTop()
 {
@@ -146,6 +138,13 @@ void DrawAttackTop()
 void DrawAttackDown()
 {
     knight.AttackDown_draw();
+}
+void DrawMap()
+{
+    for (int i = 0; i < mapList.size(); i++)
+    {
+        mapList[i].DrawMap();
+    }
 }
 
 void DrawAttack(AnimatorState currentState)
@@ -250,7 +249,7 @@ void PlayerMove()
 
 void InitLists()
 {
-    //mapList = std::vector<Map>();
+    // mapList = std::vector<Map>();
     colliderList = std::vector<CustomCollider>();
 }
 

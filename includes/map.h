@@ -7,7 +7,7 @@
 #include "includes/customCollider.h"
 
 class Map;
-//std::vector<Map> mapList;
+std::vector<Map> mapList;
 
 class Map
 {
@@ -16,8 +16,8 @@ public:
     std::string path;
     int frameCount = 0;
     raylib::Vector2 position;
-    float width;
-    float height;
+    int width;
+    int height;
     AnimationInfo mapAnimationInfo;
     CustomCollider mapCollider;
 

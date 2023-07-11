@@ -93,20 +93,7 @@ public:
             }
         }
     }
-    /* bool check_rect(Rectangle rect_1,Rectangle rect_2)
-    {
-        if (rect_1.x <= rect_2.x + rect_2.width &&
-            rect_1.x + rect_1.width >= rect_2.x &&
-            rect_1.y <= rect_2.y + rect_2.height &&
-            rect_1.y + rect_1.height >= rect_2.y)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    } */
+
     bool CheckCollision(CustomCollider otherCollider)
     {
         if (this->colliderType == RECT && otherCollider.colliderType == RECT)
@@ -135,34 +122,9 @@ public:
         {
             if (colliderList[i].colliderName != this->colliderName)
             {
-                switch (colliderList[i].colliderType)
+                if (CheckCollision(colliderList[i]))
                 {
-                case BOX:
-                    if (CheckCollision(colliderList[i].colliderBox))
-                    {
-                        colliders.push_back(colliderList[i]);
-                    }
-                    break;
-                case CIRCLE:
-                    if (CheckCollision(colliderList[i].center, colliderList[i].radius))
-                    {
-                        colliders.push_back(colliderList[i]);
-                    }
-                    break;
-                case RAY:
-                    if (CheckCollision(colliderList[i].ray))
-                    {
-                        colliders.push_back(colliderList[i]);
-                    }
-                    break;
-                case POINT:
-                    if (CheckCollision(colliderList[i].center, POINT_WIDTH))
-                    {
-                        colliders.push_back(colliderList[i]);
-                    }
-                    break;
-                default:
-                    break;
+                    colliders.push_back(colliderList[i]);
                 }
             }
             return colliders;
@@ -176,34 +138,9 @@ public:
         {
             if (colliderList[i].colliderName != this->colliderName && colliderList[i].colliderTag == targetTag)
             {
-                switch (colliderList[i].colliderType)
+                if (CheckCollision(colliderList[i]))
                 {
-                case BOX:
-                    if (CheckCollision(colliderList[i].colliderBox))
-                    {
-                        colliders.push_back(colliderList[i]);
-                    }
-                    break;
-                case CIRCLE:
-                    if (CheckCollision(colliderList[i].center, colliderList[i].radius))
-                    {
-                        colliders.push_back(colliderList[i]);
-                    }
-                    break;
-                case RAY:
-                    if (CheckCollision(colliderList[i].ray))
-                    {
-                        colliders.push_back(colliderList[i]);
-                    }
-                    break;
-                case POINT:
-                    if (CheckCollision(colliderList[i].center, POINT_WIDTH))
-                    {
-                        colliders.push_back(colliderList[i]);
-                    }
-                    break;
-                default:
-                    break;
+                    colliders.push_back(colliderList[i]);
                 }
             }
         }
@@ -214,18 +151,27 @@ public:
     {
         switch (colliderType)
         {
-        case BOX:
-            colliderBox.min = Vector3Add(colliderBox.min, delta);
-            colliderBox.max = Vector3Add(colliderBox.min, delta);
+        case RECT:
+            colliderBox.x += delta.x;
+            colliderBox.y += delta.y;
+            for (int i = 0; i < colliderList.size(); i++)
+            {
+                if (colliderList[i].colliderName == this->colliderName)
+                {
+                    colliderList[i].colliderBox.x += delta.x;
+                    colliderList[i].colliderBox.y += delta.y;
+                }
+            }
             break;
         case CIRCLE:
             center += delta;
-            break;
-        case RAY:
-            ray.position = Vector3Add(colliderBox.min, delta);
-            break;
-        case POINT:
-            center += delta;
+            for (int i = 0; i < colliderList.size(); i++)
+            {
+                if (colliderList[i].colliderName == this->colliderName)
+                {
+                    colliderList[i].center += delta;
+                }
+            }
             break;
         default:
             break;

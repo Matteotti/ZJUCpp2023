@@ -10,11 +10,11 @@
 #define PLAYER_MAX_HP 8
 #define PLAYER_MAX_MP 200
 #define PLAYER_SPEED 5.0f
-#define PLAYER_JUMP_SPEED -2.0f
+#define PLAYER_JUMP_SPEED -5.0f
 #define PLAYER_JUMP_TIME 1.5f
 #define PLAYER_DOUBLE_JUMP_SPEED 5.0f
 #define PLAYER_DOUBLE_JUMP_TIME 1.5f
-#define PLAYER_GRAVITY 2.0f
+#define PLAYER_GRAVITY 10.0f
 #define PLAYER_DASH_SPEED 20.0f
 #define PLAYER_BLACK_DASH_SPEED 30.0f
 #define PLAYER_DASH_TIME 0.2f
@@ -31,7 +31,7 @@
 #define PLAYER_WALLCHECK_BIAS_X 10.0f
 #define PLAYER_WALLCHECK_BIAS_Y 10.0f
 #define PLAYER_WALLCHECK_WIDTH 60.0f
-#define PLAYER_WALLCHECK_HEIGHT 100.0f
+#define PLAYER_WALLCHECK_HEIGHT 130.0f
 
 #define PLAYER_ANIMATION_BIAS_X -60.0f
 
@@ -42,9 +42,10 @@ enum AnimatorState
     JUMPING,
     DOUBLE_JUMPING,
     FALLING,
+    ATTACKING_LEFT,
+    ATTACKING_RIGHT,
     ATTACKING_TOP,
     ATTACKING_BOTTOM,
-    ATTACKING_LEFT,
     SHADE_SOUL,
     DESCENDING_DARK,
     ABYSS_SHRIEK,
@@ -86,10 +87,7 @@ public:
     {
         this->playerAnimationInfo = AnimationInfo(path_, frameCount_);
         this->position = position_;
-        raylib::Vector3 min = raylib::Vector3(position.x, position.y - PLAYER_WALLCHECK_HEIGHT, 0);
-        raylib::Vector3 max = raylib::Vector3(position.x + PLAYER_WALLCHECK_WIDTH, position.y, 0);
-        raylib::BoundingBox collider = raylib::BoundingBox(min, max);
-        this->playerCollider = CustomCollider("player", collider, ColliderTag::PLAYER);
+        this->playerCollider = CustomCollider("player", position.x, position.y, PLAYER_WALLCHECK_WIDTH, PLAYER_WALLCHECK_HEIGHT, ColliderTag::PLAYER);
     };
 
     void UpdatePosition()
@@ -144,6 +142,14 @@ public:
     }
 
     void PlayerAttack()
+    {
+    }
+
+    void AttackTop_draw()
+    {
+    }
+
+    void AttackDown_draw()
     {
     }
 
@@ -263,17 +269,6 @@ public:
     {
         playerAnimationInfo.DrawAnimation(position, isFacingRight, raylib::Vector2(PLAYER_ANIMATION_BIAS_X, 0));
     }
-
-    void AttackTop_draw()
-    {
-        playerAnimationInfo=AnimationInfo("F:/ZJUCpp2023/assets/Attack/AttackTop/hebing.png", 5,0.3f);
-        playerAnimationInfo.DrawAnimation(position);
-    }
-    void AttackDown_draw()
-    {
-        playerAnimationInfo=AnimationInfo("F:/Resources/Sprites/The Knight/Attack/向下攻击/hebing.png",5,0.3f);
-        playerAnimationInfo.DrawAnimation(position);
-    }
 };
 
 Player knight;
@@ -288,30 +283,10 @@ public:
 
     PlayerWallCheck()
     {
-        raylib::Vector3 leftColliderPos;
-        raylib::Vector3 rightColliderPos;
-        raylib::Vector3 topColliderPos;
-        raylib::Vector3 bottomColliderPos;
-        leftColliderPos = raylib::Vector3(
-            knight.position.x - PLAYER_WALLCHECK_BIAS_X,
-            knight.position.y + PLAYER_WALLCHECK_HEIGHT / 2,
-            0);
-        rightColliderPos = raylib::Vector3(
-            knight.position.x + PLAYER_WALLCHECK_BIAS_X + PLAYER_WALLCHECK_WIDTH,
-            knight.position.y + PLAYER_WALLCHECK_HEIGHT / 2,
-            0);
-        topColliderPos = raylib::Vector3(
-            knight.position.x + PLAYER_WALLCHECK_WIDTH / 2,
-            knight.position.y - PLAYER_WALLCHECK_BIAS_Y,
-            0);
-        bottomColliderPos = raylib::Vector3(
-            knight.position.x + PLAYER_WALLCHECK_WIDTH / 2,
-            knight.position.y + PLAYER_WALLCHECK_BIAS_Y + PLAYER_WALLCHECK_HEIGHT,
-            0);
-        leftCollider = CustomCollider("playerLeftWallCheck", leftColliderPos, PLAYER_WALLCHECK_RADIUS, ColliderTag::PLAYER_WALLCHECK);
-        rightCollider = CustomCollider("playerRightWallCheck", rightColliderPos, PLAYER_WALLCHECK_RADIUS, ColliderTag::PLAYER_WALLCHECK);
-        topCollider = CustomCollider("playerTopWallCheck", topColliderPos, PLAYER_WALLCHECK_RADIUS, ColliderTag::PLAYER_WALLCHECK);
-        bottomCollider = CustomCollider("playerBottomWallCheck", bottomColliderPos, PLAYER_WALLCHECK_RADIUS, ColliderTag::PLAYER_WALLCHECK);
+        leftCollider = CustomCollider("playerLeftWallCheck", knight.position.x - PLAYER_WALLCHECK_BIAS_X, knight.position.y, PLAYER_WALLCHECK_BIAS_X, PLAYER_WALLCHECK_HEIGHT, ColliderTag::PLAYER_WALLCHECK);
+        rightCollider = CustomCollider("playerRightWallCheck", knight.position.x + PLAYER_WALLCHECK_WIDTH, knight.position.y, PLAYER_WALLCHECK_BIAS_X, PLAYER_WALLCHECK_HEIGHT, ColliderTag::PLAYER_WALLCHECK);
+        topCollider = CustomCollider("playerTopWallCheck", knight.position.x, knight.position.y - PLAYER_WALLCHECK_BIAS_Y, PLAYER_WALLCHECK_WIDTH, PLAYER_WALLCHECK_BIAS_Y, ColliderTag::PLAYER_WALLCHECK);
+        bottomCollider = CustomCollider("playerBottomWallCheck", knight.position.x, knight.position.y + PLAYER_WALLCHECK_HEIGHT, PLAYER_WALLCHECK_WIDTH, PLAYER_WALLCHECK_BIAS_Y, ColliderTag::PLAYER_WALLCHECK);
     }
 
     void UpdatePosition(raylib::Vector2 delta_)
