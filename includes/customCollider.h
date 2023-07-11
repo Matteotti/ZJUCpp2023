@@ -25,53 +25,51 @@ enum ColliderTag
 
 enum ColliderType
 {
-    BOX,
+    RECT,
     CIRCLE,
-    RAY,
-    POINT
 };
 
 class CustomCollider
 {
 public:
     std::string colliderName;
-    raylib::Rectangle colliderRectangle;
-    raylib::Ray ray;
+    raylib::Rectangle colliderBox;
     raylib::Vector2 center;
     float radius;
     ColliderTag colliderTag = NONE;
-    ColliderType colliderType = BOX;
+    ColliderType colliderType = RECT;
 
     CustomCollider()
     {
     }
 
-    CustomCollider(CustomCollider& otherCollider)
+    CustomCollider(const CustomCollider &customCollider_)
     {
-        this->colliderName=otherCollider.colliderName;
-        this->colliderRectangle=otherCollider.colliderRectangle;
-        this->ray=otherCollider.ray;
-        this->center=otherCollider.center;
-        this->radius=otherCollider.radius;
-        this->colliderTag=otherCollider.colliderTag;
-        this->colliderType=otherCollider.colliderType;
+        this->colliderName = customCollider_.colliderName;
+        this->colliderBox = customCollider_.colliderBox;
+        this->center = customCollider_.center;
+        this->radius = customCollider_.radius;
+        this->colliderTag = customCollider_.colliderTag;
+        this->colliderType = customCollider_.colliderType;
     }
 
-    CustomCollider(const std::string &name_, raylib::Rectangle colliderRectangle_, ColliderTag colliderTag_)
+    CustomCollider &operator=(const CustomCollider &customCollider_)
     {
-        this->colliderName = name_;
-        this->colliderRectangle = colliderRectangle_;
-        this->colliderTag = colliderTag_;
-        this->colliderType = BOX;
-        colliderList.push_back(*this);
+        this->colliderName = customCollider_.colliderName;
+        this->colliderBox = customCollider_.colliderBox;
+        this->center = customCollider_.center;
+        this->radius = customCollider_.radius;
+        this->colliderTag = customCollider_.colliderTag;
+        this->colliderType = customCollider_.colliderType;
+        return *this;
     }
 
-    CustomCollider(const std::string &name_, raylib::Ray ray_, ColliderTag colliderTag_)
+    CustomCollider(const std::string &name_, float x_, float y_, float width_, float height_, ColliderTag colliderTag_)
     {
         this->colliderName = name_;
-        this->ray = ray_;
+        this->colliderBox = raylib::Rectangle(x_, y_, width_, height_);
         this->colliderTag = colliderTag_;
-        this->colliderType = RAY;
+        this->colliderType = RECT;
         colliderList.push_back(*this);
     }
 
@@ -83,33 +81,6 @@ public:
         this->colliderTag = colliderTag_;
         this->colliderType = CIRCLE;
         colliderList.push_back(*this);
-    }
-
-    CustomCollider(const std::string &name_, raylib::Vector2 center_, ColliderTag colliderTag_)
-    {
-        this->colliderName = name_;
-        this->center = center_;
-        this->colliderTag = colliderTag_;
-        this->colliderType = POINT;
-        colliderList.push_back(*this);
-    }
-
-    CustomCollider& operator=(CustomCollider* otherCollider)
-    {
-        if (this==otherCollider)
-        {
-            return *this;
-        }
-        else
-        {
-            this->colliderName=otherCollider->colliderName;
-            this->colliderRectangle=otherCollider->colliderRectangle;
-            this->ray=otherCollider->ray;
-            this->center=otherCollider->center;
-            this->radius=otherCollider->radius;
-            this->colliderTag=otherCollider->colliderTag;
-            this->colliderType=otherCollider->colliderType;
-        }
     }
 
     void DeleteCollider()
@@ -138,28 +109,24 @@ public:
     } */
     bool CheckCollision(CustomCollider otherCollider)
     {
-        return colliderRectangle.CheckCollision(otherCollider.colliderRectangle);
+        if (this->colliderType == RECT && otherCollider.colliderType == RECT)
+        {
+            return CheckCollisionRecs(this->colliderBox, otherCollider.colliderBox);
+        }
+        else if (this->colliderType == CIRCLE && otherCollider.colliderType == CIRCLE)
+        {
+            return CheckCollisionCircles(this->center, this->radius, otherCollider.center, otherCollider.radius);
+        }
+        else if (this->colliderType == RECT && otherCollider.colliderType == CIRCLE)
+        {
+            return CheckCollisionCircleRec(otherCollider.center, otherCollider.radius, this->colliderBox);
+        }
+        else if (this->colliderType == CIRCLE && otherCollider.colliderType == RECT)
+        {
+            return CheckCollisionCircleRec(this->center, this->radius, otherCollider.colliderBox);
+        }
+        return false;
     }
-
-    bool CheckCollision(raylib::Rectangle targetRectangle)
-    {
-        return colliderRectangle.CheckCollision(targetRectangle);
-    }
-
-    /* bool CheckCollision(raylib::Ray targetRay)
-    {
-        return colliderBox.CheckCollision(targetRay);
-    } */
-
-    bool CheckCollision(raylib::Vector2 targetCenter, float targetRadius)
-    {
-        return colliderRectangle.CheckCollision(targetCenter, targetRadius);
-    }
-
-    bool CheckCollision(raylib::Vector2 Point)
-    {
-        return colliderRectangle.CheckCollision(Point);
-    }  
 
     std::vector<CustomCollider> CheckCollisionWithAll()
     {
@@ -171,7 +138,7 @@ public:
                 switch (colliderList[i].colliderType)
                 {
                 case BOX:
-                    if (CheckCollision(colliderList[i].colliderRectangle))
+                    if (CheckCollision(colliderList[i].colliderBox))
                     {
                         colliders.push_back(colliderList[i]);
                     }
@@ -182,24 +149,24 @@ public:
                         colliders.push_back(colliderList[i]);
                     }
                     break;
-                /*case RAY:
+                case RAY:
                     if (CheckCollision(colliderList[i].ray))
                     {
                         colliders.push_back(colliderList[i]);
                     }
-                    break; */
+                    break;
                 case POINT:
                     if (CheckCollision(colliderList[i].center, POINT_WIDTH))
                     {
                         colliders.push_back(colliderList[i]);
                     }
-                    break; 
+                    break;
                 default:
                     break;
                 }
             }
+            return colliders;
         }
-        return colliders;
     }
 
     std::vector<CustomCollider> CheckCollisionWithAll(ColliderTag targetTag)
@@ -212,7 +179,7 @@ public:
                 switch (colliderList[i].colliderType)
                 {
                 case BOX:
-                    if (CheckCollision(colliderList[i].colliderRectangle))
+                    if (CheckCollision(colliderList[i].colliderBox))
                     {
                         colliders.push_back(colliderList[i]);
                     }
@@ -223,18 +190,18 @@ public:
                         colliders.push_back(colliderList[i]);
                     }
                     break;
-                /* case RAY:
+                case RAY:
                     if (CheckCollision(colliderList[i].ray))
                     {
                         colliders.push_back(colliderList[i]);
                     }
-                    break; */
+                    break;
                 case POINT:
                     if (CheckCollision(colliderList[i].center, POINT_WIDTH))
                     {
                         colliders.push_back(colliderList[i]);
                     }
-                    break; 
+                    break;
                 default:
                     break;
                 }
@@ -248,16 +215,17 @@ public:
         switch (colliderType)
         {
         case BOX:
-            colliderRectangle.SetPosition(delta.Add(colliderRectangle.GetPosition()));
+            colliderBox.min = Vector3Add(colliderBox.min, delta);
+            colliderBox.max = Vector3Add(colliderBox.min, delta);
             break;
         case CIRCLE:
-            center=Vector2Add(center,delta);
+            center += delta;
             break;
-        /* case RAY:
+        case RAY:
             ray.position = Vector3Add(colliderBox.min, delta);
-            break; */
+            break;
         case POINT:
-            center=Vector2Add(center,delta);
+            center += delta;
             break;
         default:
             break;

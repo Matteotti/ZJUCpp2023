@@ -10,11 +10,11 @@
 #define PLAYER_MAX_HP 8
 #define PLAYER_MAX_MP 200
 #define PLAYER_SPEED 5.0f
-#define PLAYER_JUMP_SPEED -10.0f
+#define PLAYER_JUMP_SPEED -2.0f
 #define PLAYER_JUMP_TIME 1.5f
 #define PLAYER_DOUBLE_JUMP_SPEED 5.0f
 #define PLAYER_DOUBLE_JUMP_TIME 1.5f
-#define PLAYER_GRAVITY 9.0f
+#define PLAYER_GRAVITY 2.0f
 #define PLAYER_DASH_SPEED 20.0f
 #define PLAYER_BLACK_DASH_SPEED 30.0f
 #define PLAYER_DASH_TIME 0.2f
@@ -28,11 +28,12 @@
 #define PLAYER_HURT_TIME 0.5f
 #define PLAYER_INVINCIBLE_TIME 1.0f
 
-#define PLAYER_WALLCHECK_RADIUS 0.5f
 #define PLAYER_WALLCHECK_BIAS_X 10.0f
 #define PLAYER_WALLCHECK_BIAS_Y 10.0f
 #define PLAYER_WALLCHECK_WIDTH 60.0f
 #define PLAYER_WALLCHECK_HEIGHT 100.0f
+
+#define PLAYER_ANIMATION_BIAS_X -60.0f
 
 enum AnimatorState
 {
@@ -85,10 +86,10 @@ public:
     {
         this->playerAnimationInfo = AnimationInfo(path_, frameCount_);
         this->position = position_;
-        /* raylib::Vector3 min = raylib::Vector3(position.x, position.y - PLAYER_WALLCHECK_HEIGHT, 0);
-        raylib::Vector3 max = raylib::Vector3(position.x + PLAYER_WALLCHECK_WIDTH, position.y, 0); */
-        raylib::Rectangle rectangle(position.x,position.y,PLAYER_WALLCHECK_WIDTH,PLAYER_WALLCHECK_HEIGHT);
-        this->playerCollider = CustomCollider("player", rectangle, ColliderTag::PLAYER);
+        raylib::Vector3 min = raylib::Vector3(position.x, position.y - PLAYER_WALLCHECK_HEIGHT, 0);
+        raylib::Vector3 max = raylib::Vector3(position.x + PLAYER_WALLCHECK_WIDTH, position.y, 0);
+        raylib::BoundingBox collider = raylib::BoundingBox(min, max);
+        this->playerCollider = CustomCollider("player", collider, ColliderTag::PLAYER);
     };
 
     void UpdatePosition()
@@ -174,7 +175,7 @@ public:
     {
     }
 
-    void UpdateAnimator()
+    void UpdateAnimatorState()
     {
         if (currentState == IDLE || currentState == WALKING || currentState == JUMPING || currentState == FALLING)
         {
@@ -191,7 +192,7 @@ public:
             }
             else
             {
-                if (currentSpeed.y > 0)
+                if (currentSpeed.y < 0)
                 {
                     currentState = JUMPING;
                 }
@@ -201,12 +202,35 @@ public:
                 }
             }
         }
-        // std::cout << "Current State: " << currentState << std::endl;
+        switch (currentState)
+        {
+        case IDLE:
+            UpdatePlayerAnimation("../assets/sprites/Knight/Idle.png", 9);
+            // std::cout << "IDLE" << std::endl;
+            break;
+        case WALKING:
+            UpdatePlayerAnimation("../assets/sprites/Knight/Walk.png", 5);
+            // std::cout << "WALKING" << std::endl;
+            break;
+        case JUMPING:
+            UpdatePlayerAnimation("../assets/sprites/Knight/Jump.png", 9, ANIMATION_FRAME_TIME, true);
+            // std::cout << "JUMPING" << std::endl;
+            break;
+        case DOUBLE_JUMPING:
+            UpdatePlayerAnimation("../assets/sprites/Knight/KnightDoubleJump.png", 9);
+            // std::cout << "DOUBLE_JUMPING" << std::endl;
+            break;
+        case FALLING:
+            UpdatePlayerAnimation("../assets/sprites/Knight/Fall.png", 3);
+            // std::cout << "FALLING" << std::endl;
+            break;
+        }
     }
 
-    void UpdatePlayerAnimation(std::string path_, int count_)
+    void UpdatePlayerAnimation(std::string path_, int count_, float frameTime_ = ANIMATION_FRAME_TIME, bool stop_ = false)
     {
-        playerAnimationInfo = AnimationInfo(path_, count_);
+        if (path_ != playerAnimationInfo.path)
+            playerAnimationInfo = AnimationInfo(path_, count_, frameTime_, stop_);
     }
 
     void UpdateSpeedWithWallCheck()
@@ -219,11 +243,11 @@ public:
         {
             SetSpeed(raylib::Vector2(0, currentSpeed.y));
         }
-        if (isCeilinged && currentSpeed.y > 0)
+        if (isCeilinged && currentSpeed.y < 0)
         {
             SetSpeed(raylib::Vector2(currentSpeed.x, 0));
         }
-        if (isGrounded && currentSpeed.y < 0)
+        if (isGrounded && currentSpeed.y > 0)
         {
             SetSpeed(raylib::Vector2(currentSpeed.x, 0));
         }
@@ -231,13 +255,13 @@ public:
 
     void Update()
     {
-        UpdateAnimator();
+        UpdateAnimatorState();
         UpdatePosition();
     }
 
     void Draw()
     {
-        playerAnimationInfo.DrawAnimation(position, isFacingRight);
+        playerAnimationInfo.DrawAnimation(position, isFacingRight, raylib::Vector2(PLAYER_ANIMATION_BIAS_X, 0));
     }
 
     void AttackTop_draw()
@@ -264,22 +288,26 @@ public:
 
     PlayerWallCheck()
     {
-        raylib::Vector2 leftColliderPos;
-        raylib::Vector2 rightColliderPos;
-        raylib::Vector2 topColliderPos;
-        raylib::Vector2 bottomColliderPos;
-        leftColliderPos = raylib::Vector2(
+        raylib::Vector3 leftColliderPos;
+        raylib::Vector3 rightColliderPos;
+        raylib::Vector3 topColliderPos;
+        raylib::Vector3 bottomColliderPos;
+        leftColliderPos = raylib::Vector3(
             knight.position.x - PLAYER_WALLCHECK_BIAS_X,
-            knight.position.y + PLAYER_WALLCHECK_HEIGHT / 2);
-        rightColliderPos = raylib::Vector2(
+            knight.position.y + PLAYER_WALLCHECK_HEIGHT / 2,
+            0);
+        rightColliderPos = raylib::Vector3(
             knight.position.x + PLAYER_WALLCHECK_BIAS_X + PLAYER_WALLCHECK_WIDTH,
-            knight.position.y + PLAYER_WALLCHECK_HEIGHT / 2);
-        topColliderPos = raylib::Vector2(
+            knight.position.y + PLAYER_WALLCHECK_HEIGHT / 2,
+            0);
+        topColliderPos = raylib::Vector3(
             knight.position.x + PLAYER_WALLCHECK_WIDTH / 2,
-            knight.position.y - PLAYER_WALLCHECK_BIAS_Y);
-        bottomColliderPos = raylib::Vector2(
+            knight.position.y - PLAYER_WALLCHECK_BIAS_Y,
+            0);
+        bottomColliderPos = raylib::Vector3(
             knight.position.x + PLAYER_WALLCHECK_WIDTH / 2,
-            knight.position.y + PLAYER_WALLCHECK_BIAS_Y + PLAYER_WALLCHECK_HEIGHT);
+            knight.position.y + PLAYER_WALLCHECK_BIAS_Y + PLAYER_WALLCHECK_HEIGHT,
+            0);
         leftCollider = CustomCollider("playerLeftWallCheck", leftColliderPos, PLAYER_WALLCHECK_RADIUS, ColliderTag::PLAYER_WALLCHECK);
         rightCollider = CustomCollider("playerRightWallCheck", rightColliderPos, PLAYER_WALLCHECK_RADIUS, ColliderTag::PLAYER_WALLCHECK);
         topCollider = CustomCollider("playerTopWallCheck", topColliderPos, PLAYER_WALLCHECK_RADIUS, ColliderTag::PLAYER_WALLCHECK);
@@ -304,10 +332,10 @@ public:
         knight.isRightWalled = right.size() > 0;
         knight.isCeilinged = top.size() > 0;
         knight.isGrounded = bottom.size() > 0;
-        if (knight.isLeftWalled || knight.isRightWalled || knight.isCeilinged || knight.isGrounded)
-        {
-            std::cout << "Touched Wall" << std::endl;
-        }
+        // if (knight.isLeftWalled || knight.isRightWalled || knight.isCeilinged || knight.isGrounded)
+        // {
+        //     std::cout << "Left:" << knight.isLeftWalled << " Right:" << knight.isRightWalled << " Top:" << knight.isCeilinged << " Bottom:" << knight.isGrounded << std::endl;
+        // }
     }
 
     void Update()
