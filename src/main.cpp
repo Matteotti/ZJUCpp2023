@@ -117,7 +117,7 @@ void Draw()
     DrawMap();
     //DrawAttack();
     DrawUI();
-    DrawDebug();
+    // DrawDebug();
     EndDrawing();
 }
 
