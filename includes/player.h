@@ -31,7 +31,7 @@
 #define PLAYER_WALLCHECK_BIAS_X 10.0f
 #define PLAYER_WALLCHECK_BIAS_Y 10.0f
 #define PLAYER_WALLCHECK_WIDTH 60.0f
-#define PLAYER_WALLCHECK_HEIGHT 130.0f
+#define PLAYER_WALLCHECK_HEIGHT 120.0f
 
 #define PLAYER_ANIMATION_BIAS_X -60.0f
 
@@ -63,6 +63,7 @@ public:
     AnimatorState currentState = AnimatorState::IDLE;
     AnimationInfo playerAnimationInfo;
     CustomCollider playerCollider;
+    Player *player = nullptr;
     int HP = PLAYER_MAX_HP;
     int MP = PLAYER_MAX_MP;
     int jumpCount = 0;
@@ -78,6 +79,7 @@ public:
     bool isCeilinged = false;
     bool isJumping = false;
     bool isFacingRight = false;
+    bool isDead = false;
 
     Player()
     {
@@ -88,7 +90,8 @@ public:
         this->playerAnimationInfo = AnimationInfo(path_, frameCount_);
         this->position = position_;
         this->playerCollider = CustomCollider("player", position.x, position.y, PLAYER_WALLCHECK_WIDTH, PLAYER_WALLCHECK_HEIGHT, ColliderTag::PLAYER);
-    };
+        player = this;
+    }
 
     void UpdatePosition()
     {
@@ -145,7 +148,6 @@ public:
     {
     }
 
-
     void PlayerShadeSoul()
     {
     }
@@ -166,13 +168,20 @@ public:
     {
     }
 
-    void PlayerHurt()
+    void PlayerHurt(int damage)
     {
+        HP -= damage;
+        if (HP <= 0)
+        {
+            HP = 0;
+            PlayerDie();
+        }
     }
 
     void PlayerDie()
     {
     }
+
     void UpdateAnimatorState()
     {
         if (currentState == IDLE || currentState == WALKING || currentState == JUMPING || currentState == FALLING)
