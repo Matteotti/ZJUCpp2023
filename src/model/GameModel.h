@@ -5,14 +5,17 @@
 #ifndef CPPGAMEJAM_GAMEMODEL_H
 #define CPPGAMEJAM_GAMEMODEL_H
 
-class GameModel {
+class GameModel
+{
 public:
     int score;
     bool gameOver;
 
     GameModel();
-    void increaseScore();
-    void setGameOver(bool value);
+    int GetScore();
+    void SetScore(int value);
+    bool GetGameOver();
+    void SetGameOver(bool value);
 };
 
-#endif //CPPGAMEJAM_GAMEMODEL_H
+#endif // CPPGAMEJAM_GAMEMODEL_H

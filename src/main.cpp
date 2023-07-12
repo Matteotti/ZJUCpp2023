@@ -13,7 +13,8 @@
 #include "view/GameView.h"
 #include "viewModel/GameViewModel.h"
 
-int main() {
+int main()
+{
     const int screenWidth = 800;
     const int screenHeight = 450;
 
@@ -25,22 +26,21 @@ int main() {
 
     SetTargetFPS(60);
 
-    while (!WindowShouldClose()) {
-        if (!model.gameOver) {
-            if (IsKeyPressed(KEY_SPACE)) {
-                viewModel.increaseScore();
-            }
+    viewModel.Bind();
 
-            if (IsKeyPressed(KEY_ENTER)) {
-                viewModel.setGameOver(true);
-            }
+    while (!WindowShouldClose())
+    {
+        if (!model.gameOver)
+        {
+            view.UpdateScore();
+            view.GameOver();
         }
 
         BeginDrawing();
 
         ClearBackground(RAYWHITE);
 
-        viewModel.updateView();
+        view.draw(model.score, model.gameOver);
 
         EndDrawing();
     }

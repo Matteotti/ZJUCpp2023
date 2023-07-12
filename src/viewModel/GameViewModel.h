@@ -8,17 +8,22 @@
 #include "../model/GameModel.h"
 #include "../view/GameView.h"
 
-class GameViewModel {
+class GameViewModel
+{
 private:
-    GameModel* model;
-    GameView* view;
+    GameModel *model;
+    GameView *view;
 
 public:
-    GameViewModel(GameModel* model, GameView* view);
+    GameViewModel(GameModel *model, GameView *view);
+    void Bind();
+    std::function<void()> getUpdateViewCommand();
+    std::function<void()> getIncreaseScoreCommand();
+    std::function<void(bool)> getSetGameOverCommand();
 
     void updateView();
     void increaseScore();
     void setGameOver(bool value);
 };
 
-#endif //CPPGAMEJAM_GAMEVIEWMODEL_H
+#endif // CPPGAMEJAM_GAMEVIEWMODEL_H

@@ -6,10 +6,22 @@
 
 GameModel::GameModel() : score(0), gameOver(false) {}
 
-void GameModel::increaseScore() {
-    score++;
+int GameModel::GetScore()
+{
+    return score;
 }
 
-void GameModel::setGameOver(bool value) {
+void GameModel::SetScore(int value)
+{
+    score = value;
+}
+
+bool GameModel::GetGameOver()
+{
+    return gameOver;
+}
+
+void GameModel::SetGameOver(bool value)
+{
     gameOver = value;
 }
