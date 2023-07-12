@@ -46,12 +46,10 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR}/includes/.h)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src/.cpp)
 include_directories(.)
 
-add_executable(CppGameJam src/main.cpp includes/ui.h includes/menu.h includes/animation.h includes/nail.h includes/player.h includes/main.h includes/map.h includes/button.h)
-add_executable(CppGameJamTest src/test.cpp includes/ui.h includes/menu.h includes/animation.h includes/nail.h includes/player.h includes/main.h includes/map.h includes/button.h)
+add_executable(CppGameJam src/main.cpp src/main.cpp src/model/GameModel.h src/model/GameModel.cpp src/viewModel/GameViewModel.cpp src/viewModel/GameViewModel.h src/view/GameView.cpp src/view/GameView.h src/view/GameView.h src/view/GameView.h src/view/GameView.h src/view/GameView.h)
 
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
 include(CPack)
 
 target_link_libraries(${PROJECT_NAME} raylib raylib_cpp)
-target_link_libraries(CppGameJamTest raylib raylib_cpp)
