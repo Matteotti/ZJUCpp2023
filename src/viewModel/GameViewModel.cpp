@@ -19,17 +19,26 @@ void GameViewModel::Bind()
 
 std::function<void()> GameViewModel::getUpdateViewCommand()
 {
-    return std::bind(&GameViewModel::updateView, this);
+    return [this]() -> void
+    {
+        this->updateView();
+    };
 }
 
 std::function<void()> GameViewModel::getIncreaseScoreCommand()
 {
-    return std::bind(&GameViewModel::increaseScore, this);
+    return [this]() -> void
+    {
+        this->increaseScore();
+    };
 }
 
 std::function<void(bool)> GameViewModel::getSetGameOverCommand()
 {
-    return std::bind(&GameViewModel::setGameOver, this, std::placeholders::_1);
+    return [this](bool value) -> void
+    {
+        this->setGameOver(value);
+    };
 }
 
 void GameViewModel::updateView()

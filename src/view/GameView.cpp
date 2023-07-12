@@ -20,7 +20,7 @@ void GameView::UpdateScore()
 {
     if (IsKeyPressed(KEY_SPACE))
     {
-        updateViewCommand();
+        increaseScoreCommand();
     }
 }
 
@@ -32,15 +32,15 @@ void GameView::GameOver()
     }
 }
 
-std::function<void()> GameView::setUpdateViewCommand(std::function<void()> command)
+void GameView::setUpdateViewCommand(std::function<void()> command)
 {
-    return updateViewCommand = command;
+    updateViewCommand = command;
 }
-std::function<void()> GameView::setIncreaseScoreCommand(std::function<void()> command)
+void GameView::setIncreaseScoreCommand(std::function<void()> command)
 {
-    return increaseScoreCommand = command;
+    increaseScoreCommand = command;
 }
-std::function<void(bool)> GameView::setSetGameOverCommand(std::function<void(bool)> command)
+void GameView::setSetGameOverCommand(std::function<void(bool)> command)
 {
-    return setGameOverCommand = command;
+    setGameOverCommand = command;
 }

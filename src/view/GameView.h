@@ -15,9 +15,9 @@ public:
     void draw(int score, bool gameOver);
     void UpdateScore();
     void GameOver();
-    std::function<void()> setUpdateViewCommand(std::function<void()> command);
-    std::function<void()> setIncreaseScoreCommand(std::function<void()> command);
-    std::function<void(bool)> setSetGameOverCommand(std::function<void(bool)> command);
+    void setUpdateViewCommand(std::function<void()> command);
+    void setIncreaseScoreCommand(std::function<void()> command);
+    void setSetGameOverCommand(std::function<void(bool)> command);
 
 private:
     std::function<void()> updateViewCommand;
