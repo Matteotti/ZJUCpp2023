@@ -177,6 +177,37 @@ public:
             break;
         }
     }
+
+    void MoveColliderTo(raylib::Vector2 target)
+    {
+        switch (colliderType)
+        {
+        case RECT:
+            colliderBox.x = target.x;
+            colliderBox.y = target.y;
+            for (int i = 0; i < colliderList.size(); i++)
+            {
+                if (colliderList[i].colliderName == this->colliderName)
+                {
+                    colliderList[i].colliderBox.x = target.x;
+                    colliderList[i].colliderBox.y = target.y;
+                }
+            }
+            break;
+        case CIRCLE:
+            center = target;
+            for (int i = 0; i < colliderList.size(); i++)
+            {
+                if (colliderList[i].colliderName == this->colliderName)
+                {
+                    colliderList[i].center = target;
+                }
+            }
+            break;
+        default:
+            break;
+        }
+    }
 };
 
 #endif // INCLUDES_COLLIDER_H

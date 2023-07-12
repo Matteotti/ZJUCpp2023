@@ -87,12 +87,12 @@ void Update()
     // update player test
     knight.playerAnimationInfo.Update();
 
-    if (knight.currentState==ATTACKING_TOP||knight.currentState==ATTACKING_BOTTOM||knight.currentState==ATTACKING_LEFT||knight.currentState==ATTACKING_RIGHT)
+    if (knight.currentState == ATTACKING_TOP || knight.currentState == ATTACKING_BOTTOM || knight.currentState == ATTACKING_LEFT || knight.currentState == ATTACKING_RIGHT)
     {
-         if (knight.playerAnimationInfo.currentFrame+1==5)
-         {
-                knight.currentState=IDLE;
-         }
+        if (knight.playerAnimationInfo.currentFrame + 1 == 5)
+        {
+            knight.currentState = IDLE;
+        }
     }
     // update all map animation
     for (int i = 0; i < mapList.size(); i++)
@@ -115,7 +115,7 @@ void Draw()
     DrawPlayer();
     DrawEnemy();
     DrawMap();
-    //DrawAttack();
+    // DrawAttack();
     DrawUI();
     // DrawDebug();
     EndDrawing();
@@ -137,7 +137,6 @@ void DrawPlayer()
 void DrawEnemy()
 {
 }
-
 
 void DrawMap()
 {
@@ -215,7 +214,7 @@ void PlayerMove()
         // STOPJUMP
         knight.PlayerStopJump();
     }
-    if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && IsKeyPressed(KEY_W))
+    if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && IsKeyDown(KEY_W))
     {
         // ATTACK_TOP
         if (knight.currentState != ATTACKING_TOP)
@@ -223,10 +222,8 @@ void PlayerMove()
             knight.currentState = ATTACKING_TOP;
             knight.UpdateAnimatorState();
         }
-
-
     }
-    else if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && IsKeyPressed(KEY_S))
+    else if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && IsKeyDown(KEY_S))
     {
         // ATTACK_BOTTOM
         if (knight.currentState != ATTACKING_BOTTOM)
@@ -234,8 +231,6 @@ void PlayerMove()
             knight.currentState = ATTACKING_BOTTOM;
             knight.UpdateAnimatorState();
         }
-
-
     }
     else if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
     {
@@ -245,7 +240,6 @@ void PlayerMove()
             knight.currentState = ATTACKING_LEFT;
             knight.UpdateAnimatorState();
         }
-
     }
     /* if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
     {
