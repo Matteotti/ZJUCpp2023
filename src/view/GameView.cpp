@@ -7,15 +7,17 @@
 #include <string>
 
 void GameView::draw(int score, bool gameOver) {
-    BeginDrawing();
+    //BeginDrawing();
 
     //ClearBackground(RAYWHITE);
 
     DrawText("Game View", 10, 10, 20, BLACK);
 
+    DrawText(("Score: "+std::to_string(score)).c_str(), 10, 40, 20, BLACK);
+
     if (gameOver) {
         DrawText("Game Over", 10, 70, 20, RED);
     }
 
-    EndDrawing();
+    //EndDrawing();
 }
