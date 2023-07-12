@@ -34,13 +34,13 @@ void GameView::GameOver()
 
 std::function<void()> GameView::setUpdateViewCommand(std::function<void()> command)
 {
-    updateViewCommand = command;
+    return updateViewCommand = command;
 }
 std::function<void()> GameView::setIncreaseScoreCommand(std::function<void()> command)
 {
-    increaseScoreCommand = command;
+    return increaseScoreCommand = command;
 }
 std::function<void(bool)> GameView::setSetGameOverCommand(std::function<void(bool)> command)
 {
-    setGameOverCommand = command;
+    return setGameOverCommand = command;
 }
