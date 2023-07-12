@@ -42,7 +42,9 @@ void Menu::DrawMenu() {
 }
 
 void Menu::UpdateMenu() {
-
+    for (auto &button: buttons) {
+        button.UpdateButton();
+    }
 }
 
 
