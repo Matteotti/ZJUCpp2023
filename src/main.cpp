@@ -19,32 +19,23 @@ int main()
     InitWindow(screenWidth, screenHeight, "MVVM Example");
 
     GameModel model;
-    model.setScore(10);
 
     GameView view;
     GameViewModel viewModel;
 
     viewModel.setModel(&model);
-    view.setCommon(model.getGameCommonPtr());
+    view.setCommon(model.GetGameCommonPtr());
 
     SetTargetFPS(60);
 
-    view.setIncreaseScoreCommand(viewModel.getIncreaseScoreCommand());
-    view.setSetGameOverCommand(viewModel.getSetGameOverCommand());
-
     while (!WindowShouldClose())
     {
-        if (!view.getGameCommonPtr()->getGameOver())
-        {
-            view.UpdateScore();
-            view.GameOver();
-        }
 
         BeginDrawing();
 
         ClearBackground(RAYWHITE);
 
-        view.drawExample(view.getGameCommonPtr()->getScore(), view.getGameCommonPtr()->getGameOver());
+        // view.draw(view.getGameCommonPtr()->getScore(), view.getGameCommonPtr()->getGameOver());
 
         EndDrawing();
     }

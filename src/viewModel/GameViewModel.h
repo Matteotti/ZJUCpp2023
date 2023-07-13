@@ -7,6 +7,9 @@
 
 #include "../model/GameModel.h"
 #include "../../includes/direction.h"
+#include "raylib-cpp.hpp"
+#include "raylib.h"
+#include <iostream>
 #include <functional>
 
 class GameViewModel
@@ -17,8 +20,12 @@ private:
 public:
     explicit GameViewModel();
     void setModel(GameModel *model);
-    std::function<void()> getIncreaseScoreCommand();
-    std::function<void(bool)> getSetGameOverCommand();
+    std::function<void(direction)> getMovePlayerCommand();
+    std::function<void()> getPlayerStartJump();
+    std::function<void()> getPlayerStopJump();
+    std::function<void()> getPlayerUpdateJumpSpeed();
+    std::function<void()> getPlayerCheckWall();
+    std::function<void()> getPlayerAniamtorUpdate();
 };
 
 #endif // CPPGAMEJAM_GAMEVIEWMODEL_H

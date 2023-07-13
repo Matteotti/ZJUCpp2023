@@ -12,21 +12,18 @@
 class GameCommon
 {
 private:
-    int score;
-    bool gameOver;
+    raylib::Vector2 playerPosition = raylib::Vector2(0, 0);
+    raylib::Rectangle playerSourceRect;
+    raylib::Texture2DUnmanaged playerTexture;
 
 public:
     GameCommon();
-
-    GameCommon(int score, bool gameOver);
-
-    int getScore();
-
-    void setScore(int score);
-
-    bool getGameOver();
-
-    void setGameOver(bool gameOver);
+    raylib::Vector2 GetPlayerPosition();
+    void SetPlayerPosition(raylib::Vector2 position);
+    raylib::Rectangle GetPlayerSourceRect();
+    void SetPlayerSourceRect(raylib::Rectangle sourceRect);
+    raylib::Texture2DUnmanaged GetPlayerTexture();
+    void SetPlayerTexture(raylib::Texture2DUnmanaged texture);
 };
 
 #endif // CPPGAMEJAM_GAMECOMMON_H
