@@ -6,24 +6,27 @@
 
 GameCommon::GameCommon() {}
 
-GameCommon::GameCommon(int score, bool gameOver) : score(0), gameOver(false) {}
-
-int GameCommon::getScore()
+raylib::Vector2 GameCommon::GetPlayerPosition()
 {
-    return score;
+    return playerPosition;
 }
-
-void GameCommon::setScore(int score)
+void GameCommon::SetPlayerPosition(raylib::Vector2 position)
 {
-    this->score = score;
+    playerPosition = position;
 }
-
-bool GameCommon::getGameOver()
+raylib::Rectangle GameCommon::GetPlayerSourceRect()
 {
-    return gameOver;
+    return playerSourceRect;
 }
-
-void GameCommon::setGameOver(bool gameOver)
+void GameCommon::SetPlayerSourceRect(raylib::Rectangle sourceRect)
 {
-    this->gameOver = gameOver;
+    playerSourceRect = sourceRect;
+}
+raylib::Texture2DUnmanaged GameCommon::GetPlayerTexture()
+{
+    return playerTexture;
+}
+void GameCommon::SetPlayerTexture(raylib::Texture2DUnmanaged texture)
+{
+    playerTexture = texture;
 }

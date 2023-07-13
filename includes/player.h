@@ -55,14 +55,12 @@ enum AnimatorState
     DEAD
 };
 
-typedef struct PlayerStruct
+typedef struct PlayerStructInModel
 {
-    raylib::Vector2 position = raylib::Vector2(0, 0);
     raylib::Vector2 currentSpeed = raylib::Vector2(0, 0);
     AnimatorState currentState = AnimatorState::IDLE;
-    AnimationInfo playerAnimationInfo;
-    CustomCollider playerCollider;
-    Player *player = nullptr;
+    AnimationInfo *playerAnimationInfo = NULL;
+    CustomCollider *playerCollider = NULL;
     int HP = PLAYER_MAX_HP;
     int MP = PLAYER_MAX_MP;
     int jumpCount = 0;
@@ -79,14 +77,14 @@ typedef struct PlayerStruct
     bool isJumping = false;
     bool isFacingRight = false;
     bool isDead = false;
-} Player;
+} PlayerInModel;
 
 typedef struct PlayerWallCheckStruct
 {
-    CustomCollider leftCollider;
-    CustomCollider rightCollider;
-    CustomCollider topCollider;
-    CustomCollider bottomCollider;
+    CustomCollider *leftCollider;
+    CustomCollider *rightCollider;
+    CustomCollider *topCollider;
+    CustomCollider *bottomCollider;
 } PlayerWallCheck;
 
 #endif

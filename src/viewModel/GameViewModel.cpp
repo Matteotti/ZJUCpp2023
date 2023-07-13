@@ -3,30 +3,40 @@
 //
 
 #include "GameViewModel.h"
-#include <iostream>
 #include <functional>
 
-GameViewModel::GameViewModel(){}
+GameViewModel::GameViewModel() {}
 
 void GameViewModel::setModel(GameModel *model)
 {
     this->model = model;
 }
 
-std::function<void()> GameViewModel::getIncreaseScoreCommand()
+std::function<void(direction)> GameViewModel::getMovePlayerCommand()
 {
-    return [this]() -> void
+    return [this](direction command) -> void
     {
-        std::cout << "increase score" << std::endl;
-        model->setScore(model->getScore() + 1);
-    };
-}
-
-std::function<void(bool)> GameViewModel::getSetGameOverCommand()
-{
-    return [this](bool value) -> void
-    {
-        std::cout << "set game over" << std::endl;
-        model->setGameOver(value);
+        if (model->GetPlayerIsFacingRight() && command == direction::LEFT)
+        {
+            model->SetPlayerIsFacingRight(false);
+        }
+        else if (!model->GetPlayerIsFacingRight() && command == direction::RIGHT)
+        {
+            model->SetPlayerIsFacingRight(true);
+        }
+        switch (command)
+        {
+        case LEFT:
+            model->SetPlayerSpeed(raylib::Vector2(-PLAYER_SPEED, model->GetPlayerSpeed().y));
+            break;
+        case RIGHT:
+            model->SetPlayerSpeed(raylib::Vector2(PLAYER_SPEED, model->GetPlayerSpeed().y));
+            break;
+        case STILL:
+            model->SetPlayerSpeed(raylib::Vector2(0, model->GetPlayerSpeed().y));
+            break;
+        default:
+            break;
+        }
     };
 }

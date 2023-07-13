@@ -32,22 +32,14 @@ int main()
 
     SetTargetFPS(60);
 
-    view.setIncreaseScoreCommand(viewModel.getIncreaseScoreCommand());
-    view.setSetGameOverCommand(viewModel.getSetGameOverCommand());
-
     while (!WindowShouldClose())
     {
-        if (!view.getGameCommonPtr()->getGameOver())
-        {
-            view.UpdateScore();
-            view.GameOver();
-        }
 
         BeginDrawing();
 
         ClearBackground(RAYWHITE);
 
-        view.draw(view.getGameCommonPtr()->getScore(), view.getGameCommonPtr()->getGameOver());
+        // view.draw(view.getGameCommonPtr()->getScore(), view.getGameCommonPtr()->getGameOver());
 
         EndDrawing();
     }
