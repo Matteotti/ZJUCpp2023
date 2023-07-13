@@ -23,6 +23,22 @@ void GameModel::SetPlayerPosition(raylib::Vector2 position)
 {
     gameCommonPtr->SetPlayerPosition(position);
 }
+raylib::Rectangle GameModel::GetPlayerSourceRec()
+{
+    return gameCommonPtr->GetPlayerSourceRect();
+}
+void GameModel::SetPlayerSourceRec(raylib::Rectangle sourceRec)
+{
+    gameCommonPtr->SetPlayerSourceRect(sourceRec);
+}
+raylib::Texture2DUnmanaged GameModel::GetPlayerTexture()
+{
+    return gameCommonPtr->GetPlayerTexture();
+}
+void GameModel::SetPlayerTexture(raylib::Texture2DUnmanaged texture)
+{
+    gameCommonPtr->SetPlayerTexture(texture);
+}
 raylib::Vector2 GameModel::GetPlayerSpeed()
 {
     return player->currentSpeed;
@@ -30,6 +46,59 @@ raylib::Vector2 GameModel::GetPlayerSpeed()
 void GameModel::SetPlayerSpeed(raylib::Vector2 speed)
 {
     player->currentSpeed = speed;
+}
+std::string GameModel::GetPlayerColliderName()
+{
+    return player->playerCollider->colliderName;
+}
+void GameModel::SetPlayerColliderName(std::string name)
+{
+    player->playerCollider->colliderName = name;
+}
+raylib::Rectangle GameModel::GetPlayerColliderBox()
+{
+    return player->playerCollider->colliderBox;
+}
+void GameModel::SetPlayerColliderBox(raylib::Rectangle colliderBox_)
+{
+    player->playerCollider->colliderBox = colliderBox_;
+}
+void GameModel::SetPlayerColliderBoxPosition(raylib::Vector2 deltaPosition)
+{
+    player->playerCollider->colliderBox.x += deltaPosition.x;
+    player->playerCollider->colliderBox.y += deltaPosition.y;
+}
+raylib::Vector2 GameModel::GetPlayerColliderCenter()
+{
+    return player->playerCollider->center;
+}
+void GameModel::SetPlayerColliderCenter(raylib::Vector2 center_)
+{
+    player->playerCollider->center = center_;
+}
+float GameModel::GetPlayerColliderRadius()
+{
+    return player->playerCollider->radius;
+}
+void GameModel::SetPlayerColliderRadius(float radius_)
+{
+    player->playerCollider->radius = radius_;
+}
+ColliderTag GameModel::GetPlayerColliderTag()
+{
+    return player->playerCollider->colliderTag;
+}
+void GameModel::SetPlayerColliderTag(ColliderTag tag)
+{
+    player->playerCollider->colliderTag = tag;
+}
+ColliderType GameModel::GetPlayerColliderType()
+{
+    return player->playerCollider->colliderType;
+}
+void GameModel::SetPlayerColliderType(ColliderType type)
+{
+    player->playerCollider->colliderType = type;
 }
 AnimatorState GameModel::GetPlayerAnimatorState()
 {
@@ -62,6 +131,14 @@ int GameModel::GetPlayerJumpCount()
 void GameModel::SetPlayerJumpCount(int jumpCount)
 {
     player->jumpCount = jumpCount;
+}
+float GameModel::GetPlayerJumpCounter()
+{
+    return player->jumpCounter;
+}
+void GameModel::SetPlayerJumpCounter(float jumpCounter)
+{
+    player->jumpCounter = jumpCounter;
 }
 bool GameModel::GetPlayerIsGrounded()
 {
@@ -174,5 +251,94 @@ float GameModel::GetPlayerAnimationFrameTimeCounter()
 void GameModel::SetPlayerAnimationFrameTimeCounter(float frameTimeCounter)
 {
     player->playerAnimationInfo->frameTimeCounter = frameTimeCounter;
+}
+std::vector<CustomCollider *> GameModel::GetColliders()
+{
+    return colliders_;
+}
+void GameModel::SetColliders(std::vector<CustomCollider *> colliders)
+{
+    colliders_ = colliders;
+}
+void GameModel::AddCollider(CustomCollider *collider)
+{
+    colliders_.push_back(collider);
+}
+void GameModel::RemoveCollider(CustomCollider *collider)
+{
+    for (int i = 0; i < colliders_.size(); i++)
+    {
+        if (collider->colliderName == colliders_[i]->colliderName)
+        {
+            colliders_.erase(colliders_.begin() + i);
+        }
+    }
+}
+void GameModel::ClearColliders()
+{
+    colliders_.clear();
+}
+void GameModel::UpdateColliderPosition(std::string name, raylib::Vector2 position)
+{
+    for (int i = 0; i < colliders_.size(); i++)
+    {
+        if (colliders_[i]->colliderName == name)
+        {
+            colliders_[i]->colliderBox.x = position.x;
+            colliders_[i]->colliderBox.y = position.y;
+        }
+    }
+}
+CustomCollider *GameModel::GetLeftWallCheck()
+{
+    return leftWallCheck_;
+}
+void GameModel::SetLeftWallCheck(CustomCollider *leftWallCheck)
+{
+    leftWallCheck_ = leftWallCheck;
+}
+void GameModel::SetLeftWallCheckPosition(raylib::Vector2 deltaPosition)
+{
+    rightWallCheck_->colliderBox.x += deltaPosition.x;
+    rightWallCheck_->colliderBox.y += deltaPosition.y;
+}
+CustomCollider *GameModel::GetRightWallCheck()
+{
+    return rightWallCheck_;
+}
+void GameModel::SetRightWallCheck(CustomCollider *rightWallCheck)
+{
+    rightWallCheck_ = rightWallCheck;
+}
+void GameModel::SetRightWallCheckPosition(raylib::Vector2 deltaPosition)
+{
+    rightWallCheck_->colliderBox.x += deltaPosition.x;
+    rightWallCheck_->colliderBox.y += deltaPosition.y;
+}
+CustomCollider *GameModel::GetCeilingCheck()
+{
+    return ceilingCheck_;
+}
+void GameModel::SetCeilingCheck(CustomCollider *ceilingCheck)
+{
+    ceilingCheck_ = ceilingCheck;
+}
+void GameModel::SetCeilingCheckPosition(raylib::Vector2 deltaPosition)
+{
+    ceilingCheck_->colliderBox.x += deltaPosition.x;
+    ceilingCheck_->colliderBox.y += deltaPosition.y;
+}
+CustomCollider *GameModel::GetGroundCheck()
+{
+    return groundCheck_;
+}
+void GameModel::SetGroundCheck(CustomCollider *groundCheck)
+{
+    groundCheck_ = groundCheck;
+}
+void GameModel::SetGroundCheckPosition(raylib::Vector2 deltaPosition)
+{
+    groundCheck_->colliderBox.x += deltaPosition.x;
+    groundCheck_->colliderBox.y += deltaPosition.y;
 }
 #pragma endregion
