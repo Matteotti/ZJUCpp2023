@@ -46,7 +46,7 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR}/includes/.h)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src/.cpp)
 include_directories(.)
 
-add_executable(CppGameJam src/main.cpp src/main.cpp src/model/GameModel.h src/model/GameModel.cpp src/viewModel/GameViewModel.cpp src/viewModel/GameViewModel.h src/view/GameView.cpp src/view/GameView.h src/view/GameView.h src/view/GameView.h src/view/GameView.h src/view/GameView.h src/common/GameCommon.cpp src/common/GameCommon.h src/common/GameCommon.h src/common/GameCommon.cpp)
+add_executable(CppGameJam src/main.cpp src/main.cpp src/model/GameModel.h src/model/GameModel.cpp src/viewModel/GameViewModel.cpp src/viewModel/GameViewModel.h src/view/GameView.cpp src/view/GameView.h src/view/GameView.h src/view/GameView.h src/view/GameView.h src/view/GameView.h src/common/GameCommon.cpp src/common/GameCommon.h src/common/GameCommon.h src/common/GameCommon.cpp includes/direction.h includes/direction.h)
 
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})

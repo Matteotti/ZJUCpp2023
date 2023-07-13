@@ -6,6 +6,9 @@
 #define CPPGAMEJAM_GAMEMODEL_H
 
 #include <memory>
+#include <string>
+#include <malloc.h>
+#include "raylib.h"
 #include "../common/GameCommon.h"
 #include "../../includes/animation.h"
 #include "../../includes/customCollider.h"

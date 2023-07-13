@@ -1,13 +1,12 @@
-#ifndef DIRECTION_H
-#define DIRECTION_H
+#ifndef CPPGAMEJAM_DIRECTION_H
+#define CPPGAMEJAM_DIRECTION_H
 
 enum direction
 {
-    STILL,
     UP,
     DOWN,
     LEFT,
     RIGHT
-}
+};
 
-#endif // DIRECTION_H
+#endif // CPPGAMEJAM_DIRECTION_H
