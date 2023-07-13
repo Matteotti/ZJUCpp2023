@@ -3,6 +3,7 @@
 
 enum direction
 {
+    STILL,
     UP,
     DOWN,
     LEFT,

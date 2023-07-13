@@ -19,13 +19,12 @@ int main()
     InitWindow(screenWidth, screenHeight, "MVVM Example");
 
     GameModel model;
-    model.setScore(10);
 
     GameView view;
     GameViewModel viewModel;
 
     viewModel.setModel(&model);
-    view.setCommon(model.getGameCommonPtr());
+    view.setCommon(model.GetGameCommonPtr());
 
     SetTargetFPS(60);
 
