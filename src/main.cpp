@@ -7,13 +7,9 @@
 #include <memory>
 
 #include "raylib.h"
-#include "raylib-cpp.hpp"
-
-#include "raylib.h"
 #include "model/GameModel.h"
 #include "view/GameView.h"
 #include "viewModel/GameViewModel.h"
-#include "common/GameCommon.h"
 
 int main()
 {
@@ -23,12 +19,13 @@ int main()
     InitWindow(screenWidth, screenHeight, "MVVM Example");
 
     GameModel model;
+    model.setScore(10);
 
     GameView view;
     GameViewModel viewModel;
 
     viewModel.setModel(&model);
-    view.setCommon(model.GetGameCommonPtr());
+    view.setCommon(model.getGameCommonPtr());
 
     SetTargetFPS(60);
 
@@ -47,7 +44,7 @@ int main()
 
         ClearBackground(RAYWHITE);
 
-        view.draw(view.getGameCommonPtr()->getScore(), view.getGameCommonPtr()->getGameOver());
+        view.drawExample(view.getGameCommonPtr()->getScore(), view.getGameCommonPtr()->getGameOver());
 
         EndDrawing();
     }

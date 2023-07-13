@@ -9,11 +9,6 @@
 #include "raylib-cpp.hpp"
 #include "raylib.h"
 
-struct Player
-{
-
-}
-
 class GameCommon
 {
 private:

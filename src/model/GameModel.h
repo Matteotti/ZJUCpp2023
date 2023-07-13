@@ -6,10 +6,12 @@
 #define CPPGAMEJAM_GAMEMODEL_H
 
 #include <memory>
+#include <string>
+#include <malloc.h>
+#include "raylib.h"
 #include "../common/GameCommon.h"
 
-class GameModel
-{
+class GameModel {
 
 private:
     std::shared_ptr<GameCommon> gameCommonPtr;
@@ -19,7 +21,7 @@ public:
 
     GameModel(int score, bool gameOver);
 
-    std::shared_ptr<GameCommon> GetGameCommonPtr();
+    std::shared_ptr<GameCommon> getGameCommonPtr();
 
     void setScore(int score);
 

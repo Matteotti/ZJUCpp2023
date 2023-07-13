@@ -2,4 +2,3 @@ build/
 .vscode/
 cmake-build-debug/
 vcpkg.json
-src/test.cpp
