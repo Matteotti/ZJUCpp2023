@@ -39,13 +39,24 @@ void GameView::GameOver()
     }
 }
 
+//executes every frame
 void GameView::UpdatePlayerMove()
 {
-    if (IsKeyPressed(KEY_LEFT)){
-        playerMoveCommand(LEFT);
+    if(!(IsKeyDown(KEY_LEFT)&&IsKeyDown(KEY_RIGHT))){
+        if (IsKeyDown(KEY_LEFT))
+        {
+            playerMoveCommand(LEFT);
+        } else if (IsKeyDown(KEY_RIGHT))
+        {
+            playerMoveCommand(RIGHT);
+        }
     }
-    if (IsKeyPressed(KEY_RIGHT)){
-        playerMoveCommand(RIGHT);
+    if((!IsKeyDown(KEY_LEFT))&&IsKeyReleased(KEY_RIGHT)){
+        playerMoveCommand(STILL);
+    } else if((!IsKeyDown(KEY_RIGHT))&&IsKeyReleased(KEY_LEFT)){
+        playerMoveCommand(STILL);
+    } else if(IsKeyReleased(KEY_LEFT)&&IsKeyReleased(KEY_RIGHT)){
+        playerMoveCommand(STILL);
     }
 }
 
@@ -57,7 +68,11 @@ void GameView::UpdatePlayerJump()
     }
 }
 
+void GameView::UpdatePlayerAttack() {
+    if(IsKeyPressed(KEY_Z)){
 
+    }
+}
 
 void GameView::drawTexture(
         raylib::TextureUnmanaged texture,
@@ -85,4 +100,9 @@ void GameView::setPlayerMoveCommand(std::function<void(direction)> command)
 void GameView::setPlayerJumpCommand(std::function<void()> command)
 {
     playerJumpCommand = command;
+}
+
+void GameView::setPlayerAttackCommand(std::function<void(int)> command)
+{
+    playerAttackCommand = command;
 }

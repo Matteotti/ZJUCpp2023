@@ -6,6 +6,7 @@
 #define CPPGAMEJAM_GAMEVIEWMODEL_H
 
 #include "../model/GameModel.h"
+#include "../../includes/direction.h"
 #include <functional>
 
 class GameViewModel
