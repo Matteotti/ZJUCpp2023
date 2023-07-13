@@ -8,10 +8,10 @@
 #include <memory>
 #include "../common/GameCommon.h"
 
-class GameModel {
+class GameModel
+{
 
 private:
-
     std::shared_ptr<GameCommon> gameCommonPtr;
 
 public:

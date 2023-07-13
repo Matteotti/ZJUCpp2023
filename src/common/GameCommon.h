@@ -6,10 +6,17 @@
 #define CPPGAMEJAM_GAMECOMMON_H
 
 #include <memory>
+#include "raylib-cpp.hpp"
+#include "raylib.h"
 
-class GameCommon {
+struct Player
+{
+
+}
+
+class GameCommon
+{
 private:
-
     int score;
     bool gameOver;
 
@@ -27,5 +34,4 @@ public:
     void setGameOver(bool gameOver);
 };
 
-
-#endif //CPPGAMEJAM_GAMECOMMON_H
+#endif // CPPGAMEJAM_GAMECOMMON_H
