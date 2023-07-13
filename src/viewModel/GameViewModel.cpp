@@ -12,6 +12,7 @@ void GameViewModel::setModel(GameModel *model)
     this->model = model;
 }
 
+// TODO: ReadInDirection
 std::function<void(direction)> GameViewModel::getMovePlayerCommand()
 {
     return [this](direction command) -> void
@@ -40,3 +41,13 @@ std::function<void(direction)> GameViewModel::getMovePlayerCommand()
         }
     };
 }
+// TODO: ExecuteWhenSpaceIsPressed
+std::function<void()> GameViewModel::getPlayerStartJump()
+{
+}
+// TODO: ExecuteWhenSpaceIsReleased
+std::function<void()> GameViewModel::getPlayerStopJump();
+// TODO: ExecuteAlways
+std::function<void()> GameViewModel::getPlayerUpdateJumpSpeed();
+std::function<void()> GameViewModel::getPlayerCheckWall();
+std::function<void()> GameViewModel::getPlayerAniamtorUpdate();
