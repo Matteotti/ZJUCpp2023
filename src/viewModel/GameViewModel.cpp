@@ -6,30 +6,19 @@
 #include <iostream>
 #include <functional>
 
-GameViewModel::GameViewModel(GameModel *model, GameView *view) : model(model), view(view)
-{
-}
+GameViewModel::GameViewModel(){}
 
-void GameViewModel::Bind()
+void GameViewModel::setModel(GameModel *model)
 {
-    view->setUpdateViewCommand(getUpdateViewCommand());
-    view->setIncreaseScoreCommand(getIncreaseScoreCommand());
-    view->setSetGameOverCommand(getSetGameOverCommand());
-}
-
-std::function<void()> GameViewModel::getUpdateViewCommand()
-{
-    return [this]() -> void
-    {
-        this->updateView();
-    };
+    this->model = model;
 }
 
 std::function<void()> GameViewModel::getIncreaseScoreCommand()
 {
     return [this]() -> void
     {
-        this->increaseScore();
+        std::cout << "increase score" << std::endl;
+        model->GetGameCommonPtr()->setScore(model->GetGameCommonPtr()->getScore() + 1);
     };
 }
 
@@ -37,23 +26,7 @@ std::function<void(bool)> GameViewModel::getSetGameOverCommand()
 {
     return [this](bool value) -> void
     {
-        this->setGameOver(value);
+        std::cout << "set game over" << std::endl;
+        model->GetGameCommonPtr()->setGameOver(value);
     };
-}
-
-void GameViewModel::updateView()
-{
-    view->draw(model->score, model->gameOver);
-}
-
-void GameViewModel::increaseScore()
-{
-    std::cout << "increase score" << std::endl;
-    model->SetScore(model->GetScore() + 1);
-}
-
-void GameViewModel::setGameOver(bool value)
-{
-    std::cout << "set game over" << std::endl;
-    model->SetGameOver(value);
 }

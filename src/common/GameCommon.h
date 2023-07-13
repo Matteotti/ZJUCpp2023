@@ -5,8 +5,27 @@
 #ifndef CPPGAMEJAM_GAMECOMMON_H
 #define CPPGAMEJAM_GAMECOMMON_H
 
-class GameCommon {
+#include <memory>
 
+class GameCommon {
+private:
+
+    int score;
+    bool gameOver;
+
+public:
+    GameCommon();
+
+    GameCommon(int score, bool gameOver);
+
+    int getScore();
+
+    void setScore(int score);
+
+    bool getGameOver();
+
+    void setGameOver(bool gameOver);
 };
+
 
 #endif //CPPGAMEJAM_GAMECOMMON_H

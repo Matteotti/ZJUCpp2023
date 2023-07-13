@@ -4,24 +4,14 @@
 
 #include "GameModel.h"
 
-GameModel::GameModel() : score(0), gameOver(false) {}
-
-int GameModel::GetScore()
-{
-    return score;
+GameModel::GameModel(){
+    this->gameCommonPtr = std::make_shared<GameCommon>(0, false);
 }
 
-void GameModel::SetScore(int value)
-{
-    score = value;
+GameModel::GameModel(int score, bool gameOver) {
+    this->gameCommonPtr = std::make_shared<GameCommon>(score, gameOver);
 }
 
-bool GameModel::GetGameOver()
-{
-    return gameOver;
-}
-
-void GameModel::SetGameOver(bool value)
-{
-    gameOver = value;
+std::shared_ptr<GameCommon> GameModel::GetGameCommonPtr() {
+    return gameCommonPtr;
 }

@@ -5,17 +5,22 @@
 #ifndef CPPGAMEJAM_GAMEMODEL_H
 #define CPPGAMEJAM_GAMEMODEL_H
 
-class GameModel
-{
-public:
-    int score;
-    bool gameOver;
+#include <memory>
+#include "../common/GameCommon.h"
 
+class GameModel {
+
+private:
+
+    std::shared_ptr<GameCommon> gameCommonPtr;
+
+public:
     GameModel();
-    int GetScore();
-    void SetScore(int value);
-    bool GetGameOver();
-    void SetGameOver(bool value);
+
+    GameModel(int score, bool gameOver);
+
+    std::shared_ptr<GameCommon> GetGameCommonPtr();
+
 };
 
 #endif // CPPGAMEJAM_GAMEMODEL_H
