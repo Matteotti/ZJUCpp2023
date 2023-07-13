@@ -18,7 +18,7 @@ std::function<void()> GameViewModel::getIncreaseScoreCommand()
     return [this]() -> void
     {
         std::cout << "increase score" << std::endl;
-        model->GetGameCommonPtr()->setScore(model->GetGameCommonPtr()->getScore() + 1);
+        model->setScore(model->getScore() + 1);
     };
 }
 
@@ -27,6 +27,6 @@ std::function<void(bool)> GameViewModel::getSetGameOverCommand()
     return [this](bool value) -> void
     {
         std::cout << "set game over" << std::endl;
-        model->GetGameCommonPtr()->setGameOver(value);
+        model->setGameOver(value);
     };
 }

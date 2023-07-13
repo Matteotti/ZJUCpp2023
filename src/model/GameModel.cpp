@@ -15,3 +15,19 @@ GameModel::GameModel(int score, bool gameOver) {
 std::shared_ptr<GameCommon> GameModel::GetGameCommonPtr() {
     return gameCommonPtr;
 }
+
+void GameModel::setScore(int score) {
+    this->gameCommonPtr->setScore(score);
+}
+
+int GameModel::getScore() {
+    return this->gameCommonPtr->getScore();
+}
+
+void GameModel::setGameOver(bool gameOver) {
+    this->gameCommonPtr->setGameOver(gameOver);
+}
+
+bool GameModel::getGameOver() {
+    return this->gameCommonPtr->getGameOver();
+}

@@ -21,6 +21,13 @@ public:
 
     std::shared_ptr<GameCommon> GetGameCommonPtr();
 
+    void setScore(int score);
+
+    int getScore();
+
+    void setGameOver(bool gameOver);
+
+    bool getGameOver();
 };
 
 #endif // CPPGAMEJAM_GAMEMODEL_H

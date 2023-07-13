@@ -9,6 +9,10 @@
 
 GameView::GameView() {}
 
+void GameView::setCommon(std::shared_ptr<GameCommon> gameCommonPtr) {
+    this->gameCommonPtr = gameCommonPtr;
+}
+
 void GameView::draw(int score, bool gameOver)
 {
     DrawText("MVVM test", 10, 10, 20, BLACK);
