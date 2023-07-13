@@ -15,12 +15,16 @@
 class GameView
 {
 private:
+    int HorizontalInput = 0;
+    int VerticalInput = 0;
+
     std::function<void()> updateViewCommand;
     std::function<void()> increaseScoreCommand;
     std::function<void(bool)> setGameOverCommand;
 
     std::function<void(direction)> playerMoveCommand;
     std::function<void()> playerJumpCommand;
+    std::function<void(int)> playerAttackCommand;
 
     std::shared_ptr<GameCommon> gameCommonPtr;
 
@@ -44,6 +48,7 @@ public:
     void setSetGameOverCommand(std::function<void(bool)> command);
     void setPlayerMoveCommand(std::function<void(direction)> command);
     void setPlayerJumpCommand(std::function<void()> command);
+    void setPlayerAttackCommand(std::function<void(int)> command);
 
     std::shared_ptr<GameCommon> getGameCommonPtr() {
         return gameCommonPtr;
