@@ -175,4 +175,120 @@ void GameModel::SetPlayerAnimationFrameTimeCounter(float frameTimeCounter)
 {
     player->playerAnimationInfo->frameTimeCounter = frameTimeCounter;
 }
+
+
+
+
+
+
+void GameModel::SetAnimationInfoPath(std::string path)
+{
+    animationInfo->path = path;
+}
+
+void GameModel::SetAnimationInfoFrameCount(int frameCount)
+{
+    animationInfo->frameCount = frameCount;
+}
+
+
+void MapModel::SetAnimationInfoPath(std::string path)
+{
+    mapAnimationInfo->path = path;
+}
+
+void MapModel::SetAnimationInfoFrameCount(int frameCount)
+{
+    mapAnimationInfo->frameCount = frameCount;
+}
+
+void MapModel::SetAnimationInfoCurrentFrame(int currentFrame)
+{
+    mapAnimationInfo->currentFrame = currentFrame;
+}
+
+void MapModel::SetAnimationInfoFrameTime(float frameTime)
+{
+    mapAnimationInfo->frameTime = frameTime;
+}
+
+void MapModel::SetAnimationInfoFrameTimeCounter(float frameTimeCounter)
+{
+    mapAnimationInfo->frameTimeCounter = frameTimeCounter;
+}
+
+void MapModel::SetAnimationInfoStop(bool stop)
+{
+    mapAnimationInfo->stop = stop;
+}
+
+void MapModel::SetAnimationInfoFrameWidth(float frameWidth)
+{
+    mapAnimationInfo->frameWidth = frameWidth;
+}
+
+void MapModel::SetAnimationInfoFrameHeight(float frameHeight)
+{
+    mapAnimationInfo->frameHeight = frameHeight;
+}
+
+/* void MapModel::LoadTexture(std::string path)
+{
+    mapCommonPtr->SetPlayerTexture(raylib::Texture2DUnmanaged(path));
+} */
+
+void MapModel::SetColliderName(std::string name)
+{
+    mapCollider->colliderName=name;
+}
+
+void MapModel::SetColliderColliderBox(float x,float y,float width,float height)
+{
+    mapCollider->colliderBox = raylib::Rectangle(x, y, width, height);
+}
+
+void MapModel::SetColliderType(ColliderType type)
+{
+    mapCollider->colliderType = type;
+}
+
+void MapModel::SetColliderTag(ColliderTag tag)
+{
+    mapCollider->colliderTag = tag;
+}
+
+void MapModel::SetColliderCenter(raylib::Vector2 center)
+{
+    mapCollider->center = center;
+}
+
+void MapModel::SetColliderRadius(float radius)
+{
+    mapCollider->radius = radius;
+}
+
+MapModel::MapModel(const std::string &mapName, std::string path, int frameCount, raylib::Vector2 position)
+{
+    this->mapName = mapName;
+    this->mapCommonPtr = std::make_shared<MapCommon>(position, path, frameCount);
+    this->SetAnimationInfoPath(path);
+    this->SetAnimationInfoFrameCount(frameCount);
+    this->mapCommonPtr->SetPlayerTexture(raylib::Texture2DUnmanaged(path));
+    this->width = mapCommonPtr->GetPlayerTexture().width / frameCount;
+    this->height = mapCommonPtr->GetPlayerTexture().height;
+    this->SetColliderName(mapName);
+    this->SetColliderColliderBox(position.x,position.y, width, height);
+    this->SetColliderTag(ColliderTag::ENVIRONMENT);
+    maplist.push_back(*this);
+}
+
+std::shared_ptr<MapCommon> MapModel::GetMapCommonPtr() {
+    return mapCommonPtr;
+}
+
+std::string MapModel::GetMapName() {
+    return mapName;
+}
+
+
 #pragma endregion

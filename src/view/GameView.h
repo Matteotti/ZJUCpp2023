@@ -27,6 +27,10 @@ private:
     std::function<void(int)> playerAttackCommand;
 
     std::shared_ptr<GameCommon> gameCommonPtr;
+    
+
+    std::function<void()> attackTopCommand;
+    std::function<void()> attackDownCommand;
 
 public:
     GameView();
@@ -53,6 +57,12 @@ public:
     std::shared_ptr<GameCommon> getGameCommonPtr() {
         return gameCommonPtr;
     }
+    
+
+    void Attack();
+    void setAttackTopCommand(std::function<void()> command);
+    void setAttackDownCommand(std::function<void()> command);
+
 };
 
 #endif // CPPGAMEJAM_GAMEVIEW_H

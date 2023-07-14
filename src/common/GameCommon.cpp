@@ -30,3 +30,26 @@ void GameCommon::SetPlayerTexture(raylib::Texture2DUnmanaged texture)
 {
     playerTexture = texture;
 }
+
+
+raylib::Vector2 MapCommon::getPosition() const {
+    return position;
+}
+
+std::string MapCommon::getPath() const {
+    return path;
+}
+
+int MapCommon::getFrameCount() const {
+    return frameCount;
+}
+
+raylib::Texture2DUnmanaged MapCommon::GetPlayerTexture() {
+    return mapTexture;
+}
+
+void MapCommon::SetPlayerTexture(raylib::Texture2DUnmanaged texture) {
+    mapTexture = texture;
+}
+
+

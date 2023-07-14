@@ -102,7 +102,35 @@ void GameView::setPlayerJumpCommand(std::function<void()> command)
     playerJumpCommand = command;
 }
 
-void GameView::setPlayerAttackCommand(std::function<void(int)> command)
+/* void GameView::setPlayerAttackCommand(std::function<void(int)> command)
 {
     playerAttackCommand = command;
+} */
+
+
+
+
+
+void GameView::Attack()
+{
+    if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && IsKeyDown(KEY_W))
+    {
+        attackTopCommand();
+    }
+    else if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && IsKeyDown(KEY_S))
+    {
+        attackDownCommand();
+    }
 }
+
+void GameView::setAttackTopCommand(std::function<void()> command)
+{
+    attackTopCommand = command;
+}
+
+void GameView::setAttackDownCommand(std::function<void()> command)
+{
+    attackDownCommand = command;
+}
+
+

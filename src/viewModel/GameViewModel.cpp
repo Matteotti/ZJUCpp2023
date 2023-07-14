@@ -11,6 +11,10 @@ void GameViewModel::setModel(GameModel *model)
 {
     this->model = model;
 }
+void GameViewModel::setMapModel(MapModel *mapModel)
+{
+    this->mapModel = mapModel;
+}
 
 // TODO: ReadInDirection
 std::function<void(direction)> GameViewModel::getMovePlayerCommand()
@@ -46,8 +50,54 @@ std::function<void()> GameViewModel::getPlayerStartJump()
 {
 }
 // TODO: ExecuteWhenSpaceIsReleased
-std::function<void()> GameViewModel::getPlayerStopJump();
+std::function<void()> GameViewModel::getPlayerStopJump()
+{
+}
 // TODO: ExecuteAlways
-std::function<void()> GameViewModel::getPlayerUpdateJumpSpeed();
-std::function<void()> GameViewModel::getPlayerCheckWall();
-std::function<void()> GameViewModel::getPlayerAniamtorUpdate();
+std::function<void()> GameViewModel::getPlayerUpdateJumpSpeed()
+{
+
+}
+std::function<void()> GameViewModel::getPlayerCheckWall()
+{
+
+}
+std::function<void()> GameViewModel::getPlayerAniamtorUpdate()
+{
+    
+}
+
+
+
+std::function<void(AnimatorState)> GameViewModel::getAttackTopCommand()
+{
+    return [this](AnimatorState currentstate) -> void
+    {
+        if (currentstate != ATTACKING_TOP)
+        {
+            model->SetPlayerAnimatorState(ATTACKING_TOP);
+        }
+    };
+}
+std::function<void(AnimatorState)> GameViewModel::getAttackDownCommand()
+{
+    return [this](AnimatorState currentstate) -> void
+    {
+        if (currentstate != ATTACKING_BOTTOM)
+        {
+            model->SetPlayerAnimatorState(ATTACKING_BOTTOM);
+        }
+    };
+}
+
+
+void GameViewModel::DeleteMap()
+{
+    for (int i = 0; i < maplist.size(); i++)
+    {
+        if (maplist[i].GetMapName() == mapModel->GetMapName())
+        {
+            maplist.erase(maplist.begin() + i);
+        }
+    }
+}

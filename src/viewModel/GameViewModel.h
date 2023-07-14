@@ -16,16 +16,24 @@ class GameViewModel
 {
 private:
     GameModel *model;
+    MapModel *mapModel;
 
 public:
     explicit GameViewModel();
     void setModel(GameModel *model);
+    void setMapModel(MapModel *mapModel);
     std::function<void(direction)> getMovePlayerCommand();
     std::function<void()> getPlayerStartJump();
     std::function<void()> getPlayerStopJump();
     std::function<void()> getPlayerUpdateJumpSpeed();
     std::function<void()> getPlayerCheckWall();
     std::function<void()> getPlayerAniamtorUpdate();
+
+
+    std::function<void(AnimatorState)> getAttackTopCommand();
+    std::function<void(AnimatorState)> getAttackDownCommand();
+    void DeleteMap();
+
 };
 
 #endif // CPPGAMEJAM_GAMEVIEWMODEL_H

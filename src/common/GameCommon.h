@@ -26,4 +26,24 @@ public:
     void SetPlayerTexture(raylib::Texture2DUnmanaged texture);
 };
 
+
+class MapCommon
+{
+private:
+    raylib::Vector2 position;
+    std::string path;
+    int frameCount = 0;
+    raylib::Texture2DUnmanaged mapTexture;
+public:
+    raylib::Vector2 getPosition() const;
+    std::string getPath() const;
+    int getFrameCount() const;
+
+    raylib::Texture2DUnmanaged GetPlayerTexture();
+    void SetPlayerTexture(raylib::Texture2DUnmanaged texture);
+
+
+};
+
+
 #endif // CPPGAMEJAM_GAMECOMMON_H
