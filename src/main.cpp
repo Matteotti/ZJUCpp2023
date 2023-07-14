@@ -24,7 +24,7 @@ int main()
     GameViewModel viewModel;
 
     viewModel.setModel(&model);
-    view.setCommon(model.GetGameCommonPtr());
+    view.SetCommon(model.GetGameCommonPtr());
 
     SetTargetFPS(60);
 
