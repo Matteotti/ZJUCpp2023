@@ -36,11 +36,13 @@ private:
     std::string mapName;
     std::string path;
     int frameCount = 0;
-    int width;
-    int height;
+    int mapWidth;
+    int mapHeight;
     AnimationInfo* mapAnimationInfo;
     CustomCollider* mapCollider;
     std::vector<MapCommon> maplist;
+    std::vector<int> mapWidthList;
+    std::vector<int> mapHeightList;
 
 
 public:
@@ -131,7 +133,7 @@ public:
     //friend class MapModel; 
 
     //map
-    void SetMapModel(const std::string &mapName, std::string path, int frameCount, raylib::Vector2 positionn);
+    void SetMapModel(const std::string mapName, std::string path, int frameCount, raylib::Vector2 positionn);
     std::shared_ptr<MapCommon> GetMapCommonPtr();
     std::string GetMapName();
 
@@ -150,8 +152,14 @@ public:
     void SetColliderRadius(float radius);
     void SetColliderTag(ColliderTag tag);
     void SetColliderType(ColliderType type);
+    void SetMapName(std::string mapname);
+    void SetMapWidth(float width);
+    void SetMapHeight(float height);
+    int GetMapWidth(int index);
+    int GetMapHeight(int index);
 
-    //std::vector<MapCommon> getMaplist() const;
+
+    std::vector<MapCommon> getMaplist() const;
 };
 
 

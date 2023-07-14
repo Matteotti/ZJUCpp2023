@@ -49,14 +49,7 @@ void GameView::UpdatePlayerAttack() {
     }
 }
 
-void GameView::drawTexture(
-        raylib::TextureUnmanaged texture,
-        raylib::Vector2 position,
-        raylib::Rectangle src
-)
-{
-    texture.Draw(src, position, WHITE);
-}
+
 
 void GameView::setIncreaseScoreCommand(std::function<void()> command)
 {
@@ -106,6 +99,17 @@ void GameView::setAttackTopCommand(std::function<void()> command)
 void GameView::setAttackDownCommand(std::function<void()> command)
 {
     attackDownCommand = command;
+}
+
+void GameView::Draw(
+        std::string path,
+        raylib::Vector2 position,
+        raylib::Rectangle src
+)
+{
+    raylib::Texture2DUnmanaged temp = LoadTexture(path.c_str());
+    temp.Draw(src, position);
+    //temp.Unload();
 }
 
 
