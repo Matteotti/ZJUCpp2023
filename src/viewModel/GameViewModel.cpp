@@ -11,10 +11,10 @@ void GameViewModel::setModel(GameModel *model)
 {
     this->model = model;
 }
-void GameViewModel::setMapModel(MapModel *mapModel)
+/* void GameViewModel::setMapModel(MapModel *mapModel)
 {
     this->mapModel = mapModel;
-}
+} */
 
 std::vector<CustomCollider *> GameViewModel::CheckCollisionWithAll(CustomCollider *target, ColliderTag targetTag)
 {
@@ -67,13 +67,13 @@ std::function<void(direction)> GameViewModel::getMovePlayerCommand()
 {
     return [this](direction command) -> void
     {
-        if (model->GetPlayerIsFacingRight() && command == direction::LEFT)
+        if (model->GetGameCommonPtr()->GetPlayerIsFacingRight() && command == direction::LEFT)
         {
-            model->SetPlayerIsFacingRight(false);
+            model->GetGameCommonPtr()->SetPlayerIsFacingRight(false);
         }
-        else if (!model->GetPlayerIsFacingRight() && command == direction::RIGHT)
+        else if (!model->GetGameCommonPtr()->GetPlayerIsFacingRight() && command == direction::RIGHT)
         {
-            model->SetPlayerIsFacingRight(true);
+            model->GetGameCommonPtr()->SetPlayerIsFacingRight(true);
         }
         switch (command)
         {
@@ -274,19 +274,19 @@ std::function<void(raylib::Vector2)> GameViewModel::getUpdateAnimationRect()
 {
     return [this](raylib::Vector2 bias = raylib::Vector2(0, 0)) -> void
     {
-        if (model->GetPlayerIsFacingRight())
+        if (model->GetGameCommonPtr()->GetPlayerIsFacingRight())
         {
             model->SetPlayerAnimationFrameWidth(-1 * model->GetPlayerAnimationFrameWidth());
             model->SetPlayerPosition(raylib::Vector2(model->GetPlayerPosition().x + bias.x, model->GetPlayerPosition().y + bias.y));
             model->SetPlayerAnimationCurrentFrame(model->GetPlayerAnimationFrameCount() - model->GetPlayerAnimationCurrentFrame() - 1);
         }
-        if (model->GetPlayerIsFacingRight() && model->GetPlayerAnimationCurrentFrame() == 0 && model->GetPlayerAnimationIsStop())
+        if (model->GetGameCommonPtr()->GetPlayerIsFacingRight() && model->GetPlayerAnimationCurrentFrame() == 0 && model->GetPlayerAnimationIsStop())
             model->SetPlayerAnimationCurrentFrame(1);
         raylib::Rectangle sourceRec = raylib::Rectangle(model->GetPlayerAnimationCurrentFrame() * model->GetPlayerAnimationFrameWidth(), 0.0f, model->GetPlayerAnimationFrameWidth(), model->GetPlayerAnimationFrameHeight());
         model->SetPlayerSourceRec(sourceRec);
-        if (model->GetPlayerIsFacingRight() && model->GetPlayerAnimationCurrentFrame() == 1 && model->GetPlayerAnimationIsStop())
+        if (model->GetGameCommonPtr()->GetPlayerIsFacingRight() && model->GetPlayerAnimationCurrentFrame() == 1 && model->GetPlayerAnimationIsStop())
             model->SetPlayerAnimationCurrentFrame(0);
-        if (model->GetPlayerIsFacingRight())
+        if (model->GetGameCommonPtr()->GetPlayerIsFacingRight())
         {
             model->SetPlayerAnimationFrameWidth(-1 * model->GetPlayerAnimationFrameWidth());
             model->SetPlayerAnimationCurrentFrame(model->GetPlayerAnimationFrameCount() - model->GetPlayerAnimationCurrentFrame() - 1);
@@ -319,13 +319,13 @@ std::function<void(AnimatorState)> GameViewModel::getAttackDownCommand()
 }
 
 
-void GameViewModel::DeleteMap()
+/* void GameViewModel::DeleteMap()
 {
-    for (int i = 0; i < maplist.size(); i++)
+    for (int i = 0; i < model->getMaplist().size(); i++)
     {
-        if (maplist[i].GetMapName() == mapModel->GetMapName())
+        if (maplist[i].GetMapName() == model->GetMapName())
         {
             maplist.erase(maplist.begin() + i);
         }
     }
-}
+} */

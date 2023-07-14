@@ -7,8 +7,8 @@
 #include "customCollider.h"
 #include <iostream>
 
-#define PLAYER_MAX_HP 8
-#define PLAYER_MAX_MP 200
+/* #define PLAYER_MAX_HP 8
+#define PLAYER_MAX_MP 200 */
 #define PLAYER_SPEED 5.0f
 #define PLAYER_JUMP_SPEED -5.0f
 #define PLAYER_JUMP_TIME 1.5f
@@ -61,8 +61,8 @@ typedef struct PlayerStructInModel
     AnimatorState currentState = AnimatorState::IDLE;
     AnimationInfo *playerAnimationInfo = NULL;
     CustomCollider *playerCollider = NULL;
-    int HP = PLAYER_MAX_HP;
-    int MP = PLAYER_MAX_MP;
+/*     int HP = PLAYER_MAX_HP;
+    int MP = PLAYER_MAX_MP; */
     int jumpCount = 0;
     float jumpCounter = 0.0f;
     float nailAttackCounter = 0.0f;
@@ -75,7 +75,7 @@ typedef struct PlayerStructInModel
     bool isRightWalled = false;
     bool isCeilinged = false;
     bool isJumping = false;
-    bool isFacingRight = false;
+    //bool isFacingRight = false;
     bool isDead = false;
 } PlayerInModel;
 

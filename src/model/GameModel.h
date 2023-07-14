@@ -16,6 +16,7 @@
 #include "../../includes/player.h"
 #include "../../includes/animation.h"
 
+
 class GameModel
 {
 
@@ -28,6 +29,18 @@ private:
     CustomCollider *groundCheck_;
     std::vector<CustomCollider *> colliders_;
     AnimationInfo *animationInfo;
+
+
+    //map
+    std::shared_ptr<MapCommon> mapCommonPtr;
+    std::string mapName;
+    std::string path;
+    int frameCount = 0;
+    int width;
+    int height;
+    AnimationInfo* mapAnimationInfo;
+    CustomCollider* mapCollider;
+    std::vector<MapCommon> maplist;
 
 
 public:
@@ -57,10 +70,10 @@ public:
     void SetPlayerColliderType(ColliderType type);
     AnimatorState GetPlayerAnimatorState();
     void SetPlayerAnimatorState(AnimatorState state);
-    int GetPlayerHP();
+/*     int GetPlayerHP();
     void SetPlayerHP(int hp);
     int GetPlayerMP();
-    void SetPlayerMP(int mp);
+    void SetPlayerMP(int mp); */
     int GetPlayerJumpCount();
     void SetPlayerJumpCount(int jumpCount);
     float GetPlayerJumpCounter();
@@ -75,8 +88,8 @@ public:
     void SetPlayerIsCeilinged(bool isCeilinged);
     bool GetPlayerIsJumping();
     void SetPlayerIsJumping(bool isJumping);
-    bool GetPlayerIsFacingRight();
-    void SetPlayerIsFacingRight(bool isFacingRight);
+/*     bool GetPlayerIsFacingRight();
+    void SetPlayerIsFacingRight(bool isFacingRight); */
     std::string GetPlayerAnimationPath();
     void SetPlayerAnimationPath(std::string path);
     bool GetPlayerAnimationIsStop();
@@ -115,26 +128,15 @@ public:
 
     void SetAnimationInfoPath(std::string path);
     void SetAnimationInfoFrameCount(int frameCount);
-};
+    //friend class MapModel; 
 
-
-class MapModel {
-private:
-    std::shared_ptr<MapCommon> mapCommonPtr;
-    std::string mapName;
-    std::string path;
-    int frameCount = 0;
-    int width;
-    int height;
-    AnimationInfo* mapAnimationInfo;
-    CustomCollider* mapCollider;
-public:
-    MapModel(const std::string &mapName, std::string path, int frameCount, raylib::Vector2 positionn);
+    //map
+    void SetMapModel(const std::string &mapName, std::string path, int frameCount, raylib::Vector2 positionn);
     std::shared_ptr<MapCommon> GetMapCommonPtr();
     std::string GetMapName();
 
-    void SetAnimationInfoPath(std::string path);
-    void SetAnimationInfoFrameCount(int frameCount);
+    void SetMapAnimationInfoPath(std::string path);
+    void SetMapAnimationInfoFrameCount(int frameCount);
     void SetAnimationInfoCurrentFrame(int currentFrame);
     void SetAnimationInfoFrameTimeCounter(float frameTimeCounter);
     void SetAnimationInfoFrameTime(float frameTime);
@@ -149,10 +151,9 @@ public:
     void SetColliderTag(ColliderTag tag);
     void SetColliderType(ColliderType type);
 
-    //void LoadTexture(std::string path);
-
-
+    //std::vector<MapCommon> getMaplist() const;
 };
-std::vector<MapModel> maplist;
+
+
 
 #endif // CPPGAMEJAM_GAMEMODEL_H

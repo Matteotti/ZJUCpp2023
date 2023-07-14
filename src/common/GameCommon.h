@@ -8,13 +8,17 @@
 #include <memory>
 #include "raylib-cpp.hpp"
 #include "raylib.h"
-
+#define PLAYER_MAX_HP 8
+#define PLAYER_MAX_MP 200
 class GameCommon
 {
 private:
     raylib::Vector2 playerPosition = raylib::Vector2(0, 0);
     raylib::Rectangle playerSourceRect;
     raylib::Texture2DUnmanaged playerTexture;
+    bool isFacingRight = false;
+    int HP = PLAYER_MAX_HP;
+    int MP = PLAYER_MAX_MP;
 
 public:
     GameCommon();
@@ -24,6 +28,14 @@ public:
     void SetPlayerSourceRect(raylib::Rectangle sourceRect);
     raylib::Texture2DUnmanaged GetPlayerTexture();
     void SetPlayerTexture(raylib::Texture2DUnmanaged texture);
+    bool GetPlayerIsFacingRight();
+    void SetPlayerIsFacingRight(bool isFacingRight);
+    int GetPlayerHP();
+    void SetPlayerHP(int hp);
+    int GetPlayerMP();
+    void SetPlayerMP(int mp);
+
+
 };
 
 
@@ -35,12 +47,15 @@ private:
     int frameCount = 0;
     raylib::Texture2DUnmanaged mapTexture;
 public:
+    MapCommon();
     raylib::Vector2 getPosition() const;
     std::string getPath() const;
     int getFrameCount() const;
-
-    raylib::Texture2DUnmanaged GetPlayerTexture();
-    void SetPlayerTexture(raylib::Texture2DUnmanaged texture);
+    raylib::Texture2DUnmanaged GetMapTexture();
+    void SetMapTexture(raylib::Texture2DUnmanaged texture);
+    void SetMapPosition(raylib::Vector2 position);
+    void SetMappath(std::string path);
+    void SetMapFrameCount(int frameCount);
 
 
 };

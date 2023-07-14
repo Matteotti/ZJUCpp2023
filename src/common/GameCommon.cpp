@@ -44,12 +44,50 @@ int MapCommon::getFrameCount() const {
     return frameCount;
 }
 
-raylib::Texture2DUnmanaged MapCommon::GetPlayerTexture() {
+raylib::Texture2DUnmanaged MapCommon::GetMapTexture() {
     return mapTexture;
 }
 
-void MapCommon::SetPlayerTexture(raylib::Texture2DUnmanaged texture) {
+void MapCommon::SetMapTexture(raylib::Texture2DUnmanaged texture) {
     mapTexture = texture;
+}
+
+bool GameCommon::GetPlayerIsFacingRight()
+{
+    return isFacingRight;
+}
+void GameCommon::SetPlayerIsFacingRight(bool isFacingRight)
+{
+    this->isFacingRight = isFacingRight;
+}
+
+int GameCommon::GetPlayerHP()
+{
+    return HP;
+}
+void GameCommon::SetPlayerHP(int hp)
+{
+    HP = hp;
+}
+int GameCommon::GetPlayerMP()
+{
+    return MP;
+}
+void GameCommon::SetPlayerMP(int mp)
+{
+    MP = mp;
+}
+
+void MapCommon::SetMapPosition(raylib::Vector2 position) {
+    this->position = position;
+}
+
+void MapCommon::SetMappath(std::string path) {
+    this->path = path;
+}
+
+void MapCommon::SetMapFrameCount(int frameCount) {
+    this->frameCount = frameCount;
 }
 
 
