@@ -45,7 +45,7 @@ int main()
     model.SetPlayerIsFacingRight(false);
     AnimationInfo *playerAnimationInfo = reinterpret_cast<AnimationInfo *>(malloc(sizeof(AnimationInfo)));
     model.SetPlayerAnimationInfo(playerAnimationInfo);
-    model.SetPlayerAnimationPath("../../assets/sprites/Knight/Idle.png");
+    model.SetPlayerAnimationPath("../assets/sprites/Knight/Idle.png");
     model.SetPlayerAnimationFrameCount(9);
     model.SetPlayerAnimationCurrentFrame(0);
     model.SetPlayerAnimationFrameTimeCounter(0.0f);
