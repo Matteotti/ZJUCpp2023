@@ -16,7 +16,6 @@ class GameViewModel
 {
 private:
     GameModel *model;
-    MapModel *mapModel;
 
 public:
     explicit GameViewModel();
@@ -26,7 +25,7 @@ public:
     std::vector<CustomCollider *> CheckCollisionWithAll(CustomCollider *target);
     void UpdateAnimationInfo(std::string path, int frameCount, float frameTime_, bool stop_);
 
-    void setMapModel(MapModel *mapModel);
+    //void setMapModel(MapModel *mapModel);
     std::function<void(direction)> getMovePlayerCommand();
     std::function<void()> getPlayerStartJump();
     std::function<void()> getPlayerStopJump();
@@ -41,7 +40,7 @@ public:
 
     std::function<void(AnimatorState)> getAttackTopCommand();
     std::function<void(AnimatorState)> getAttackDownCommand();
-    void DeleteMap();
+    //void DeleteMap();
 
 };
 
