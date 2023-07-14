@@ -35,8 +35,6 @@ public:
     void SetPlayerPosition(raylib::Vector2 position);
     raylib::Rectangle GetPlayerSourceRec();
     void SetPlayerSourceRec(raylib::Rectangle sourceRec);
-    raylib::Texture2DUnmanaged GetPlayerTexture();
-    void SetPlayerTexture(raylib::Texture2DUnmanaged texture);
     raylib::Vector2 GetPlayerSpeed();
     void SetPlayerSpeed(raylib::Vector2 speed);
     std::string GetPlayerColliderName();
@@ -96,6 +94,8 @@ public:
     void RemoveCollider(CustomCollider *collider);
     void ClearColliders();
     void UpdateColliderPosition(std::string name, raylib::Vector2 position);
+    CustomCollider *GetPlayerCollider();
+    void SetPlayerCollider(CustomCollider *collider);
     CustomCollider *GetLeftWallCheck();
     void SetLeftWallCheck(CustomCollider *leftWallCheck);
     void SetLeftWallCheckPosition(raylib::Vector2 deltaPosition);

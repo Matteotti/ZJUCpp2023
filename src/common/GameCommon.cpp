@@ -22,11 +22,11 @@ void GameCommon::SetPlayerSourceRect(raylib::Rectangle sourceRect)
 {
     playerSourceRect = sourceRect;
 }
-raylib::Texture2DUnmanaged GameCommon::GetPlayerTexture()
+std::string GameCommon::GetPlayerAnimPath()
 {
-    return playerTexture;
+    return playerAnimPath;
 }
-void GameCommon::SetPlayerTexture(raylib::Texture2DUnmanaged texture)
+void GameCommon::SetPlayerAnimPath(std::string path)
 {
-    playerTexture = texture;
+    playerAnimPath = path;
 }

@@ -14,7 +14,7 @@ class GameCommon
 private:
     raylib::Vector2 playerPosition = raylib::Vector2(0, 0);
     raylib::Rectangle playerSourceRect;
-    raylib::Texture2DUnmanaged playerTexture;
+    std::string playerAnimPath;
 
 public:
     GameCommon();
@@ -22,8 +22,8 @@ public:
     void SetPlayerPosition(raylib::Vector2 position);
     raylib::Rectangle GetPlayerSourceRect();
     void SetPlayerSourceRect(raylib::Rectangle sourceRect);
-    raylib::Texture2DUnmanaged GetPlayerTexture();
-    void SetPlayerTexture(raylib::Texture2DUnmanaged texture);
+    std::string GetPlayerAnimPath();
+    void SetPlayerAnimPath(std::string path);
 };
 
 #endif // CPPGAMEJAM_GAMECOMMON_H

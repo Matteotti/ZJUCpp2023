@@ -31,14 +31,6 @@ void GameModel::SetPlayerSourceRec(raylib::Rectangle sourceRec)
 {
     gameCommonPtr->SetPlayerSourceRect(sourceRec);
 }
-raylib::Texture2DUnmanaged GameModel::GetPlayerTexture()
-{
-    return gameCommonPtr->GetPlayerTexture();
-}
-void GameModel::SetPlayerTexture(raylib::Texture2DUnmanaged texture)
-{
-    gameCommonPtr->SetPlayerTexture(texture);
-}
 raylib::Vector2 GameModel::GetPlayerSpeed()
 {
     return player->currentSpeed;
@@ -190,11 +182,11 @@ void GameModel::SetPlayerIsFacingRight(bool isFacingRight)
 }
 std::string GameModel::GetPlayerAnimationPath()
 {
-    return player->playerAnimationInfo->path;
+    return gameCommonPtr->GetPlayerAnimPath();
 }
 void GameModel::SetPlayerAnimationPath(std::string path)
 {
-    player->playerAnimationInfo->path = path;
+    gameCommonPtr->SetPlayerAnimPath(path);
 }
 bool GameModel::GetPlayerAnimationIsStop()
 {
@@ -288,6 +280,14 @@ void GameModel::UpdateColliderPosition(std::string name, raylib::Vector2 positio
             colliders_[i]->colliderBox.y = position.y;
         }
     }
+}
+CustomCollider *GameModel::GetPlayerCollider()
+{
+    return player->playerCollider;
+}
+void GameModel::SetPlayerCollider(CustomCollider *collider)
+{
+    player->playerCollider = collider;
 }
 CustomCollider *GameModel::GetLeftWallCheck()
 {

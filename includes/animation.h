@@ -8,7 +8,6 @@
 #include "iostream"
 typedef struct AnimationInfoInModelStruct
 {
-    std::string path = "";
     bool stop = false;
     int frameCount = 0;
     int currentFrame = 0;
