@@ -53,16 +53,6 @@ int MapCommon::getFrameCount() const
     return frameCount;
 }
 
-raylib::Texture2DUnmanaged MapCommon::GetMapTexture()
-{
-    return mapTexture;
-}
-
-void MapCommon::SetMapTexture(raylib::Texture2DUnmanaged texture)
-{
-    mapTexture = texture;
-}
-
 bool GameCommon::GetPlayerIsFacingRight()
 {
     return isFacingRight;
@@ -103,3 +93,12 @@ void MapCommon::SetMapFrameCount(int frameCount)
 {
     this->frameCount = frameCount;
 }
+
+MapCommon::MapCommon(raylib::Vector2 position, std::string path, int frameCount) {
+    this->position = position;
+    this->path = path;
+    this->frameCount = frameCount;
+}
+
+
+

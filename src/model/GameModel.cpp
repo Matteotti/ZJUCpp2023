@@ -7,6 +7,10 @@
 GameModel::GameModel()
 {
     this->gameCommonPtr = std::make_shared<GameCommon>();
+    this->animationInfo = new AnimationInfo();
+    this->mapCollider = new CustomCollider();
+    this->mapAnimationInfo = new AnimationInfo();
+
 }
 
 std::shared_ptr<GameCommon> GameModel::GetGameCommonPtr()
@@ -350,50 +354,34 @@ void GameModel::SetGroundCheckPosition(raylib::Vector2 deltaPosition)
     groundCheck_->colliderBox.y += deltaPosition.y;
 }
 
+
+
+
+
+
+/* void GameModel::SetAnimationInfoPath(std::string path)
+{
+    animationInfo->path = path;
+}
+
 void GameModel::SetAnimationInfoFrameCount(int frameCount)
 {
     animationInfo->frameCount = frameCount;
 }
+ */
 
 void GameModel::SetMapAnimationInfoPath(std::string path)
 {
-    mapCommonPtr->SetMappath(path);
+    this->path = path;
 }
 
 void GameModel::SetMapAnimationInfoFrameCount(int frameCount)
 {
-    mapAnimationInfo->frameCount = frameCount;
+    this->frameCount = frameCount;
 }
 
-void GameModel::SetAnimationInfoCurrentFrame(int currentFrame)
-{
-    mapAnimationInfo->currentFrame = currentFrame;
-}
 
-void GameModel::SetAnimationInfoFrameTime(float frameTime)
-{
-    mapAnimationInfo->frameTime = frameTime;
-}
 
-void GameModel::SetAnimationInfoFrameTimeCounter(float frameTimeCounter)
-{
-    mapAnimationInfo->frameTimeCounter = frameTimeCounter;
-}
-
-void GameModel::SetAnimationInfoStop(bool stop)
-{
-    mapAnimationInfo->stop = stop;
-}
-
-void GameModel::SetAnimationInfoFrameWidth(float frameWidth)
-{
-    mapAnimationInfo->frameWidth = frameWidth;
-}
-
-void GameModel::SetAnimationInfoFrameHeight(float frameHeight)
-{
-    mapAnimationInfo->frameHeight = frameHeight;
-}
 
 /* void GameModel::LoadTexture(std::string path)
 {
@@ -430,20 +418,37 @@ void GameModel::SetColliderRadius(float radius)
     mapCollider->radius = radius;
 }
 
-void GameModel::SetMapModel(const std::string &mapName, std::string path, int frameCount, raylib::Vector2 position)
+void GameModel::SetMapName(std::string mapname)
 {
+    this->mapName = mapname;
+}
+
+void GameModel::SetMapWidth(float width)
+{
+    this->mapWidth = width;
+}
+
+void GameModel::SetMapHeight(float height)
+{
+    this->mapHeight = height;
+}
+
+void GameModel::SetMapModel(const std::string mapName, std::string path, int frameCount, raylib::Vector2 position)
+{
+    
     this->mapName = mapName;
-    this->mapCommonPtr->SetMappath(path);
-    this->mapCommonPtr->SetMapPosition(position);
-    this->mapCommonPtr->SetMapFrameCount(frameCount);
-    // this->mapCommonPtr = std::make_shared<MapCommon>(position, path, frameCount);
-    //    this->SetAnimationInfoPath(path);
-    this->SetAnimationInfoFrameCount(frameCount);
-    this->mapCommonPtr->SetMapTexture(raylib::Texture2DUnmanaged(path));
-    this->width = mapCommonPtr->GetMapTexture().width / frameCount;
-    this->height = mapCommonPtr->GetMapTexture().height;
+    this->mapCommonPtr = std::make_shared<MapCommon>(position, path, frameCount);
+    //this->mapCommonPtr = std::make_shared<MapCommon>(position, path, frameCount);
+    this->SetMapAnimationInfoPath(path);
+    this->SetMapAnimationInfoFrameCount(frameCount);
+    raylib::Texture2DUnmanaged texture = raylib::Texture2DUnmanaged(path);
+    //this->mapCommonPtr->SetMapTexture(raylib::Texture2DUnmanaged(path));
+    this->mapWidth=texture.width / frameCount;
+    this->mapHeight=texture.height;
+    this->mapWidthList.push_back(mapWidth);
+    this->mapHeightList.push_back(mapHeight);
     this->SetColliderName(mapName);
-    this->SetColliderColliderBox(position.x, position.y, width, height);
+    this->SetColliderColliderBox(position.x,position.y, mapWidth, mapHeight);
     this->SetColliderTag(ColliderTag::ENVIRONMENT);
     colliders_.push_back(this->mapCollider);
     maplist.push_back(*this->mapCommonPtr);
@@ -459,9 +464,22 @@ std::string GameModel::GetMapName()
     return mapName;
 }
 
-/* std::vector<MapCommon> GameModel::getMaplist() const
+
+std::vector<MapCommon> GameModel::getMaplist() const
 {
     return maplist;
-} */
+}
+
+int GameModel::GetMapWidth(int index)
+{
+    return mapWidthList[index];
+}
+
+int GameModel::GetMapHeight(int index)
+{
+    return mapHeightList[index];
+}
+
+
 
 #pragma endregion

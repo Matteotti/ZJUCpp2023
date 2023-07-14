@@ -8,35 +8,7 @@
 
 GameView::GameView() {}
 
-void GameView::SetCommon(std::shared_ptr<GameCommon> gameCommon) {
-    this->gameCommonPtr = gameCommon;
-}
 
-void GameView::DrawExample(int score, bool gameOver)
-{
-    DrawText("MVVM test", 10, 10, 20, BLACK);
-    DrawText(("Game Score: " + std::to_string(score)).c_str(), 10, 40, 20, BLACK);
-    if (gameOver)
-    {
-        DrawText("Game Over", 10, 70, 20, RED);
-    }
-}
-
-void GameView::UpdateScore()
-{
-    if (IsKeyPressed(KEY_SPACE))
-    {
-        increaseScoreCommand();
-    }
-}
-
-void GameView::GameOver()
-{
-    if (IsKeyPressed(KEY_ENTER))
-    {
-        setGameOverCommand(true);
-    }
-}
 
 //executes every frame
 void GameView::UpdatePlayerMove()
@@ -89,14 +61,6 @@ void GameView::UpdatePlayerAttack(bool isFacingRight){
     }
 }
 
-void GameView::Draw(
-        raylib::TextureUnmanaged texture,
-        raylib::Vector2 position,
-        raylib::Rectangle src
-)
-{
-    texture.Draw(src, position, WHITE);
-}
 
 void GameView::SetIncreaseScoreCommand(std::function<void()> command)
 {
@@ -120,6 +84,18 @@ void GameView::SetPlayerJumpCommand(std::function<void(bool)> command)
 void GameView::SetPlayerAttackCommand(std::function<void(bool)> command)
 {
     playerAttackCommand = command;
+}
+
+
+void GameView::Draw(
+        std::string path,
+        raylib::Vector2 position,
+        raylib::Rectangle src
+)
+{
+    raylib::Texture2DUnmanaged temp = LoadTexture(path.c_str());
+    temp.Draw(src, position);
+    //temp.Unload();
 }
 
 

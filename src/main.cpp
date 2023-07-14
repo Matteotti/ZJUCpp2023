@@ -15,8 +15,8 @@
 
 int main()
 {
-    const int screenWidth = 800;
-    const int screenHeight = 450;
+    const int screenWidth = 1600;
+    const int screenHeight = 900;
 
     InitWindow(screenWidth, screenHeight, "MVVM Example");
 
@@ -25,9 +25,29 @@ int main()
     GameView view;
     GameViewModel viewModel;
 
+    //Init map
+
+    model.SetMapModel("ground_1", "../assets/sprites/Map/road3.png", 1, raylib::Vector2(0, 700));
+    model.SetMapModel("ground_2", "../assets/sprites/Map/road3.png", 1, raylib::Vector2(279, 700));
+    model.SetMapModel("ground_3", "../assets/sprites/Map/road3.png", 1, raylib::Vector2(279, 600));
+    model.SetMapModel("ground_4", "../assets/sprites/Map/road3.png", 1, raylib::Vector2(279*1, 700));
+    model.SetMapModel("ground_5", "../assets/sprites/Map/road3.png", 1, raylib::Vector2(279*2, 700));
+    model.SetMapModel("ground_6", "../assets/sprites/Map/road3.png", 1, raylib::Vector2(279*3, 700));
+    model.SetMapModel("ground_7", "../assets/sprites/Map/road3.png", 1, raylib::Vector2(279*4, 700));
+    model.SetMapModel("ground_8", "../assets/sprites/Map/road3.png", 1, raylib::Vector2(279*5, 700));
+    model.SetMapModel("ground_9", "../assets/sprites/Map/road3.png", 1, raylib::Vector2(279*6, 700));
+    model.SetMapModel("ground_10", "../assets/sprites/Map/road3.png", 1, raylib::Vector2(279*7, 700));
+    model.SetMapModel("ground_11", "../assets/sprites/Map/road3.png", 1, raylib::Vector2(279*8, 700));
+    model.SetMapModel("ground_12", "../assets/sprites/Map/road3.png", 1, raylib::Vector2(279, 300));
+
+    
+    
+
+
+
     model.ClearColliders();
 
-#pragma region InitPlayer
+/* #pragma region InitPlayer
     model.SetPlayerPosition(raylib::Vector2(0, 0));
     model.SetPlayerSpeed(raylib::Vector2(0, 0));
     model.SetPlayerAnimatorState(AnimatorState::IDLE);
@@ -101,11 +121,11 @@ int main()
     model.SetGroundCheck(playerBottomWallCheck);
     model.AddCollider(playerBottomWallCheck);
 #pragma endregion
-
+ */
     viewModel.setModel(&model);
-    view.SetCommon(model.GetGameCommonPtr());
+    //view.SetCommon(model.GetGameCommonPtr());
 
-    SetTargetFPS(60);
+    SetTargetFPS(30);
 
     while (!WindowShouldClose())
     {
@@ -113,7 +133,11 @@ int main()
         BeginDrawing();
 
         ClearBackground(RAYWHITE);
-
+        
+        for(int i = 0; i < model.getMaplist().size();i++)
+        {
+            view.Draw(model.getMaplist()[i].getPath(), model.getMaplist()[i].getPosition(), raylib::Rectangle(0.0f, 0.0f,model.GetMapWidth(i) , model.GetMapHeight(i)));
+        }
         // view.draw(view.getGameCommonPtr()->getScore(), view.getGameCommonPtr()->getGameOver());
 
         EndDrawing();

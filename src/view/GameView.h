@@ -234,16 +234,16 @@ private:
 
 public:
     GameView();
-    void SetCommon(std::shared_ptr<GameCommon> gameCommon);
-    void DrawExample(int score, bool gameOver);
-    void UpdateScore();
-    void GameOver();
+    void setCommon(std::shared_ptr<GameCommon> gameCommon);
+    //void drawExample(int score, bool gameOver);
+    //void UpdateScore();
+    //void GameOver();
     void UpdatePlayerMove();
     void UpdatePlayerJump();
     void UpdatePlayerAttack(bool isFacingRight);
 
     void Draw(
-            raylib::TextureUnmanaged texture,
+            std::string path,
             raylib::Vector2 position,
             raylib::Rectangle src
     );
