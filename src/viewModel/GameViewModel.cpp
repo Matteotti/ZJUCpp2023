@@ -16,6 +16,7 @@ void GameViewModel::setModel(GameModel *model)
     this->mapModel = mapModel;
 } */
 
+// TOOL METHOD: Check Collision using tag
 std::vector<CustomCollider *> GameViewModel::CheckCollisionWithAll(CustomCollider *target, ColliderTag targetTag)
 {
     std::vector<CustomCollider *> result = std::vector<CustomCollider *>();
@@ -32,6 +33,7 @@ std::vector<CustomCollider *> GameViewModel::CheckCollisionWithAll(CustomCollide
     return result;
 }
 
+// TOOL METHOD: Check Collision with all
 std::vector<CustomCollider *> GameViewModel::CheckCollisionWithAll(CustomCollider *target)
 {
     std::vector<CustomCollider *> result = std::vector<CustomCollider *>();
@@ -48,21 +50,24 @@ std::vector<CustomCollider *> GameViewModel::CheckCollisionWithAll(CustomCollide
     return result;
 }
 
+// TOOL METHOD: Update Animation With Path & FrameCount
 void GameViewModel::UpdateAnimationInfo(std::string path, int frameCount, float frameTime_ = ANIMATION_FRAME_TIME, bool stop_ = false)
 {
     if (path != model->GetPlayerAnimationPath())
     {
         model->SetPlayerAnimationPath(path);
-        model->SetPlayerTexture(LoadTexture(path.c_str()));
+        raylib::Texture2DUnmanaged texture = LoadTexture(path.c_str());
         model->SetPlayerAnimationCurrentFrame(0);
         model->SetPlayerAnimationFrameTimeCounter(0);
-        model->SetPlayerAnimationFrameWidth(model->GetPlayerTexture().width / frameCount);
-        model->SetPlayerAnimationFrameHeight(model->GetPlayerTexture().height);
+        model->SetPlayerAnimationFrameWidth(texture.width / frameCount);
+        model->SetPlayerAnimationFrameHeight(texture.height);
         model->SetPlayerAnimationFrameTime(frameTime_);
         model->SetPlayerAnimationIsStop(stop_);
+        UnloadTexture(texture);
     }
 }
 
+// STD::FUNCTIONS Execute when wasd is pressed, need a parameter of direction
 std::function<void(direction)> GameViewModel::getMovePlayerCommand()
 {
     return [this](direction command) -> void
@@ -91,6 +96,8 @@ std::function<void(direction)> GameViewModel::getMovePlayerCommand()
         }
     };
 }
+
+// STD::FUNCTIONS Execute when space is pressed
 std::function<void()> GameViewModel::getPlayerStartJump()
 {
     return [this]() -> void
@@ -109,6 +116,8 @@ std::function<void()> GameViewModel::getPlayerStartJump()
         }
     };
 }
+
+// STD::FUNCTIONS Execute when space is released
 std::function<void()> GameViewModel::getPlayerStopJump()
 {
     return [this]() -> void
@@ -117,6 +126,8 @@ std::function<void()> GameViewModel::getPlayerStopJump()
         model->SetPlayerJumpCounter(0);
     };
 }
+
+// STD::FUNCTIONS Execute every frame
 std::function<void()> GameViewModel::getPlayerUpdateJumpSpeed()
 {
     return [this]() -> void
@@ -132,6 +143,8 @@ std::function<void()> GameViewModel::getPlayerUpdateJumpSpeed()
         }
     };
 }
+
+// STD::FUNCTIONS Execute every frame
 std::function<void()> GameViewModel::getPlayerCheckWall()
 {
     return [this]() -> void
@@ -167,6 +180,8 @@ std::function<void()> GameViewModel::getPlayerCheckWall()
         }
     };
 }
+
+// STD::FUNCTIONS Execute every frame
 std::function<void()> GameViewModel::getPlayerAniamtorUpdate()
 {
     return [this]() -> void
@@ -205,30 +220,30 @@ std::function<void()> GameViewModel::getPlayerAniamtionUpdate()
         switch (model->GetPlayerAnimatorState())
         {
         case IDLE:
-            UpdateAnimationInfo("../assets/sprites/Knight/Idle.png", 9);
+            UpdateAnimationInfo("../../assets/sprites/Knight/Idle.png", 9);
             // std::cout << "IDLE" << std::endl;
             break;
         case WALKING:
-            UpdateAnimationInfo("../assets/sprites/Knight/Walk.png", 5);
+            UpdateAnimationInfo("../../assets/sprites/Knight/Walk.png", 5);
             // std::cout << "WALKING" << std::endl;
             break;
         case JUMPING:
-            UpdateAnimationInfo("../assets/sprites/Knight/Jump.png", 9, ANIMATION_FRAME_TIME, true);
+            UpdateAnimationInfo("../../assets/sprites/Knight/Jump.png", 9, ANIMATION_FRAME_TIME, true);
             // std::cout << "JUMPING" << std::endl;
             break;
         case DOUBLE_JUMPING:
-            UpdateAnimationInfo("../assets/sprites/Knight/KnightDoubleJump.png", 9);
+            UpdateAnimationInfo("../../assets/sprites/Knight/KnightDoubleJump.png", 9);
             // std::cout << "DOUBLE_JUMPING" << std::endl;
             break;
         case FALLING:
-            UpdateAnimationInfo("../assets/sprites/Knight/Fall.png", 3);
+            UpdateAnimationInfo("../../assets/sprites/Knight/Fall.png", 3);
             // std::cout << "FALLING" << std::endl;
             break;
         case ATTACKING_TOP:
-            UpdateAnimationInfo("../assets/sprites/Attack/attacktop.png", 5);
+            UpdateAnimationInfo("../../assets/sprites/Attack/attacktop.png", 5);
             break;
         case ATTACKING_BOTTOM:
-            UpdateAnimationInfo("../assets/sprites/Attack/attackdown.png", 5);
+            UpdateAnimationInfo("../../assets/sprites/Attack/attackdown.png", 5);
             break;
         case ATTACKING_LEFT:
             UpdateAnimationInfo("../assets/sprites/Attack/attackleft.png", 5);
@@ -239,6 +254,8 @@ std::function<void()> GameViewModel::getPlayerAniamtionUpdate()
         }
     };
 }
+
+// STD::FUNCTIONS Execute every frame
 std::function<void()> GameViewModel::getPlayerUpdatePosition()
 {
     return [this]() -> void
@@ -251,6 +268,8 @@ std::function<void()> GameViewModel::getPlayerUpdatePosition()
         model->SetGroundCheckPosition(model->GetPlayerSpeed());
     };
 }
+
+// STD::FUNCTIONS Execute every frame
 std::function<void()> GameViewModel::getUpdateAnimationFrame()
 {
     return [this]() -> void
@@ -270,6 +289,8 @@ std::function<void()> GameViewModel::getUpdateAnimationFrame()
         }
     };
 }
+
+// STD::FUNCTIONS Execute every frame
 std::function<void(raylib::Vector2)> GameViewModel::getUpdateAnimationRect()
 {
     return [this](raylib::Vector2 bias = raylib::Vector2(0, 0)) -> void

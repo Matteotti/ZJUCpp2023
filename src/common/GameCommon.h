@@ -15,7 +15,8 @@ class GameCommon
 private:
     raylib::Vector2 playerPosition = raylib::Vector2(0, 0);
     raylib::Rectangle playerSourceRect;
-    raylib::Texture2DUnmanaged playerTexture;
+    std::string playerAnimPath;
+    std::string mapAnimPath;
     bool isFacingRight = false;
     int HP = PLAYER_MAX_HP;
     int MP = PLAYER_MAX_MP;
@@ -26,18 +27,17 @@ public:
     void SetPlayerPosition(raylib::Vector2 position);
     raylib::Rectangle GetPlayerSourceRect();
     void SetPlayerSourceRect(raylib::Rectangle sourceRect);
-    raylib::Texture2DUnmanaged GetPlayerTexture();
-    void SetPlayerTexture(raylib::Texture2DUnmanaged texture);
+    std::string GetPlayerAnimPath();
+    void SetPlayerAnimPath(std::string path);
+    std::string GetMapAnimPath();
+    void SetMapAnimPath(std::string path);
     bool GetPlayerIsFacingRight();
     void SetPlayerIsFacingRight(bool isFacingRight);
     int GetPlayerHP();
     void SetPlayerHP(int hp);
     int GetPlayerMP();
     void SetPlayerMP(int mp);
-
-
 };
-
 
 class MapCommon
 {
@@ -45,9 +45,7 @@ private:
     raylib::Vector2 position;
     std::string path;
     int frameCount = 0;
-    //raylib::Texture2DUnmanaged mapTexture;
-    /* float width;
-    float height; */
+    raylib::Texture2DUnmanaged mapTexture;
 public:
     MapCommon(raylib::Vector2 position, std::string path, int frameCount);
     raylib::Vector2 getPosition() const;
@@ -58,8 +56,6 @@ public:
     void SetMapFrameCount(int frameCount);
 
 
-
 };
-
 
 #endif // CPPGAMEJAM_GAMECOMMON_H

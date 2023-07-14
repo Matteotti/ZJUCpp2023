@@ -16,22 +16,20 @@
 #include "../../includes/player.h"
 #include "../../includes/animation.h"
 
-
 class GameModel
 {
 
 private:
     std::shared_ptr<GameCommon> gameCommonPtr;
-    PlayerInModel *player;
-    CustomCollider *leftWallCheck_;
-    CustomCollider *rightWallCheck_;
-    CustomCollider *ceilingCheck_;
-    CustomCollider *groundCheck_;
+    PlayerInModel *player = static_cast<PlayerInModel *>(malloc(sizeof(PlayerInModel)));
+    CustomCollider *leftWallCheck_ = static_cast<CustomCollider *>(malloc(sizeof(CustomCollider)));
+    CustomCollider *rightWallCheck_ = static_cast<CustomCollider *>(malloc(sizeof(CustomCollider)));
+    CustomCollider *ceilingCheck_ = static_cast<CustomCollider *>(malloc(sizeof(CustomCollider)));
+    CustomCollider *groundCheck_ = static_cast<CustomCollider *>(malloc(sizeof(CustomCollider)));
     std::vector<CustomCollider *> colliders_;
     AnimationInfo *animationInfo;
 
-
-    //map
+    // map
     std::shared_ptr<MapCommon> mapCommonPtr;
     std::string mapName;
     std::string path;
@@ -44,7 +42,6 @@ private:
     std::vector<int> mapWidthList;
     std::vector<int> mapHeightList;
 
-
 public:
     GameModel();
     std::shared_ptr<GameCommon> GetGameCommonPtr();
@@ -53,11 +50,13 @@ public:
     void SetPlayerPosition(raylib::Vector2 position);
     raylib::Rectangle GetPlayerSourceRec();
     void SetPlayerSourceRec(raylib::Rectangle sourceRec);
-    raylib::Texture2DUnmanaged GetPlayerTexture();
-    void SetPlayerTexture(raylib::Texture2DUnmanaged texture);
     raylib::Vector2 GetPlayerSpeed();
     void SetPlayerSpeed(raylib::Vector2 speed);
     std::string GetPlayerColliderName();
+    AnimationInfo *GetPlayerAnimationInfo();
+    void SetPlayerAnimationInfo(AnimationInfo *animationInfo);
+    CustomCollider *GetPlayerCollider();
+    void SetPlayerCollider(CustomCollider *collider);
     void SetPlayerColliderName(std::string name);
     raylib::Rectangle GetPlayerColliderBox();
     void SetPlayerColliderBox(raylib::Rectangle colliderBox);
@@ -72,10 +71,10 @@ public:
     void SetPlayerColliderType(ColliderType type);
     AnimatorState GetPlayerAnimatorState();
     void SetPlayerAnimatorState(AnimatorState state);
-/*     int GetPlayerHP();
+    int GetPlayerHP();
     void SetPlayerHP(int hp);
     int GetPlayerMP();
-    void SetPlayerMP(int mp); */
+    void SetPlayerMP(int mp);
     int GetPlayerJumpCount();
     void SetPlayerJumpCount(int jumpCount);
     float GetPlayerJumpCounter();
@@ -90,8 +89,8 @@ public:
     void SetPlayerIsCeilinged(bool isCeilinged);
     bool GetPlayerIsJumping();
     void SetPlayerIsJumping(bool isJumping);
-/*     bool GetPlayerIsFacingRight();
-    void SetPlayerIsFacingRight(bool isFacingRight); */
+    bool GetPlayerIsFacingRight();
+    void SetPlayerIsFacingRight(bool isFacingRight);
     std::string GetPlayerAnimationPath();
     void SetPlayerAnimationPath(std::string path);
     bool GetPlayerAnimationIsStop();
@@ -127,10 +126,9 @@ public:
     void SetGroundCheck(CustomCollider *groundCheck);
     void SetGroundCheckPosition(raylib::Vector2 deltaPosition);
 
-
     void SetAnimationInfoPath(std::string path);
     void SetAnimationInfoFrameCount(int frameCount);
-    //friend class MapModel; 
+    // friend class MapModel;
 
     //map
     void SetMapModel(const std::string mapName, std::string path, int frameCount, raylib::Vector2 positionn);
@@ -147,7 +145,7 @@ public:
     void SetAnimationInfoFrameHeight(float frameHeight);
 
     void SetColliderName(std::string name);
-    void SetColliderColliderBox(float x,float y,float width,float height);
+    void SetColliderColliderBox(float x, float y, float width, float height);
     void SetColliderCenter(raylib::Vector2 center);
     void SetColliderRadius(float radius);
     void SetColliderTag(ColliderTag tag);
@@ -161,7 +159,5 @@ public:
 
     std::vector<MapCommon> getMaplist() const;
 };
-
-
 
 #endif // CPPGAMEJAM_GAMEMODEL_H
