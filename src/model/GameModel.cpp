@@ -359,7 +359,7 @@ void GameModel::SetGroundCheckPosition(raylib::Vector2 deltaPosition)
 
 
 
-void GameModel::SetAnimationInfoPath(std::string path)
+/* void GameModel::SetAnimationInfoPath(std::string path)
 {
     animationInfo->path = path;
 }
@@ -368,16 +368,16 @@ void GameModel::SetAnimationInfoFrameCount(int frameCount)
 {
     animationInfo->frameCount = frameCount;
 }
-
+ */
 
 void GameModel::SetMapAnimationInfoPath(std::string path)
 {
-    mapCommonPtr->SetMappath(path);
+    this->path = path;
 }
 
 void GameModel::SetMapAnimationInfoFrameCount(int frameCount)
 {
-    mapAnimationInfo->frameCount = frameCount;
+    this->frameCount = frameCount;
 }
 
 
@@ -448,7 +448,7 @@ void GameModel::SetMapModel(const std::string mapName, std::string path, int fra
     this->mapWidthList.push_back(mapWidth);
     this->mapHeightList.push_back(mapHeight);
     this->SetColliderName(mapName);
-    this->SetColliderColliderBox(position.x,position.y, width, height);
+    this->SetColliderColliderBox(position.x,position.y, mapWidth, mapHeight);
     this->SetColliderTag(ColliderTag::ENVIRONMENT);
     colliders_.push_back(this->mapCollider);
     maplist.push_back(*this->mapCommonPtr);

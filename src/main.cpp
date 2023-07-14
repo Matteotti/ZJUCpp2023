@@ -49,7 +49,7 @@ int main()
 
     model.ClearColliders();
 
-#pragma region InitPlayer
+/* #pragma region InitPlayer
     model.SetPlayerPosition(raylib::Vector2(0, 0));
     model.SetPlayerSpeed(raylib::Vector2(0, 0));
     model.SetPlayerAnimatorState(AnimatorState::IDLE);
@@ -117,11 +117,11 @@ int main()
     model.SetGroundCheck(playerBottomWallCheck);
     model.AddCollider(playerBottomWallCheck);
 #pragma endregion
-
+ */
     viewModel.setModel(&model);
-    view.SetCommon(model.GetGameCommonPtr());
+    //view.SetCommon(model.GetGameCommonPtr());
 
-    SetTargetFPS(5);
+    SetTargetFPS(30);
 
     while (!WindowShouldClose())
     {

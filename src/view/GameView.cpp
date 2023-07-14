@@ -8,35 +8,7 @@
 
 GameView::GameView() {}
 
-void GameView::SetCommon(std::shared_ptr<GameCommon> gameCommon) {
-    this->gameCommonPtr = gameCommon;
-}
 
-void GameView::DrawExample(int score, bool gameOver)
-{
-    DrawText("MVVM test", 10, 10, 20, BLACK);
-    DrawText(("Game Score: " + std::to_string(score)).c_str(), 10, 40, 20, BLACK);
-    if (gameOver)
-    {
-        DrawText("Game Over", 10, 70, 20, RED);
-    }
-}
-
-void GameView::UpdateScore()
-{
-    if (IsKeyPressed(KEY_SPACE))
-    {
-        increaseScoreCommand();
-    }
-}
-
-void GameView::GameOver()
-{
-    if (IsKeyPressed(KEY_ENTER))
-    {
-        setGameOverCommand(true);
-    }
-}
 
 //executes every frame
 void GameView::UpdatePlayerMove()
