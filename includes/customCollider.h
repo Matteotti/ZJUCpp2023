@@ -35,4 +35,5 @@ typedef struct customColliderStruct
     ColliderType colliderType = RECT;
 } CustomCollider;
 
+
 #endif // INCLUDES_COLLIDER_H

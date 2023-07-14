@@ -100,7 +100,7 @@ void GameModel::GameModel::SetPlayerAnimatorState(AnimatorState state)
 {
     player->currentState = state;
 }
-int GameModel::GetPlayerHP()
+/* int GameModel::GetPlayerHP()
 {
     return player->HP;
 }
@@ -115,7 +115,7 @@ int GameModel::GetPlayerMP()
 void GameModel::SetPlayerMP(int mp)
 {
     player->MP = mp;
-}
+} */
 int GameModel::GetPlayerJumpCount()
 {
     return player->jumpCount;
@@ -172,14 +172,7 @@ void GameModel::SetPlayerIsJumping(bool isJumping)
 {
     player->isJumping = isJumping;
 }
-bool GameModel::GetPlayerIsFacingRight()
-{
-    return player->isFacingRight;
-}
-void GameModel::SetPlayerIsFacingRight(bool isFacingRight)
-{
-    player->isFacingRight = isFacingRight;
-}
+
 std::string GameModel::GetPlayerAnimationPath()
 {
     return gameCommonPtr->GetPlayerAnimPath();
@@ -341,4 +334,129 @@ void GameModel::SetGroundCheckPosition(raylib::Vector2 deltaPosition)
     groundCheck_->colliderBox.x += deltaPosition.x;
     groundCheck_->colliderBox.y += deltaPosition.y;
 }
+
+
+
+
+
+
+void GameModel::SetAnimationInfoPath(std::string path)
+{
+    animationInfo->path = path;
+}
+
+void GameModel::SetAnimationInfoFrameCount(int frameCount)
+{
+    animationInfo->frameCount = frameCount;
+}
+
+
+void GameModel::SetMapAnimationInfoPath(std::string path)
+{
+    mapAnimationInfo->path = path;
+}
+
+void GameModel::SetMapAnimationInfoFrameCount(int frameCount)
+{
+    mapAnimationInfo->frameCount = frameCount;
+}
+
+void GameModel::SetAnimationInfoCurrentFrame(int currentFrame)
+{
+    mapAnimationInfo->currentFrame = currentFrame;
+}
+
+void GameModel::SetAnimationInfoFrameTime(float frameTime)
+{
+    mapAnimationInfo->frameTime = frameTime;
+}
+
+void GameModel::SetAnimationInfoFrameTimeCounter(float frameTimeCounter)
+{
+    mapAnimationInfo->frameTimeCounter = frameTimeCounter;
+}
+
+void GameModel::SetAnimationInfoStop(bool stop)
+{
+    mapAnimationInfo->stop = stop;
+}
+
+void GameModel::SetAnimationInfoFrameWidth(float frameWidth)
+{
+    mapAnimationInfo->frameWidth = frameWidth;
+}
+
+void GameModel::SetAnimationInfoFrameHeight(float frameHeight)
+{
+    mapAnimationInfo->frameHeight = frameHeight;
+}
+
+/* void GameModel::LoadTexture(std::string path)
+{
+    mapCommonPtr->SetPlayerTexture(raylib::Texture2DUnmanaged(path));
+} */
+
+void GameModel::SetColliderName(std::string name)
+{
+    mapCollider->colliderName=name;
+}
+
+void GameModel::SetColliderColliderBox(float x,float y,float width,float height)
+{
+    mapCollider->colliderBox = raylib::Rectangle(x, y, width, height);
+}
+
+void GameModel::SetColliderType(ColliderType type)
+{
+    mapCollider->colliderType = type;
+}
+
+void GameModel::SetColliderTag(ColliderTag tag)
+{
+    mapCollider->colliderTag = tag;
+}
+
+void GameModel::SetColliderCenter(raylib::Vector2 center)
+{
+    mapCollider->center = center;
+}
+
+void GameModel::SetColliderRadius(float radius)
+{
+    mapCollider->radius = radius;
+}
+
+void GameModel::SetMapModel(const std::string &mapName, std::string path, int frameCount, raylib::Vector2 position)
+{
+    this->mapName = mapName;
+    this->mapCommonPtr->SetMappath(path);
+    this->mapCommonPtr->SetMapPosition(position);
+    this->mapCommonPtr->SetMapFrameCount(frameCount);
+    //this->mapCommonPtr = std::make_shared<MapCommon>(position, path, frameCount);
+    this->SetAnimationInfoPath(path);
+    this->SetAnimationInfoFrameCount(frameCount);
+    this->mapCommonPtr->SetMapTexture(raylib::Texture2DUnmanaged(path));
+    this->width = mapCommonPtr->GetMapTexture().width / frameCount;
+    this->height = mapCommonPtr->GetMapTexture().height;
+    this->SetColliderName(mapName);
+    this->SetColliderColliderBox(position.x,position.y, width, height);
+    this->SetColliderTag(ColliderTag::ENVIRONMENT);
+    colliders_.push_back(this->mapCollider);
+    maplist.push_back(*this->mapCommonPtr);
+}
+
+std::shared_ptr<MapCommon> GameModel::GetMapCommonPtr() {
+    return mapCommonPtr;
+}
+
+std::string GameModel::GetMapName() {
+    return mapName;
+}
+
+
+/* std::vector<MapCommon> GameModel::getMaplist() const
+{
+    return maplist;
+} */
+
 #pragma endregion

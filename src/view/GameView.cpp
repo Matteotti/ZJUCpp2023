@@ -12,32 +12,7 @@ void GameView::setCommon(std::shared_ptr<GameCommon> gameCommon) {
     this->gameCommonPtr = gameCommon;
 }
 
-void GameView::drawExample(int score, bool gameOver)
-{
-    DrawText("MVVM test", 10, 10, 20, BLACK);
-    DrawText(("Game Score: " + std::to_string(score)).c_str(), 10, 40, 20, BLACK);
-    if (gameOver)
-    {
-        DrawText("Game Over", 10, 70, 20, RED);
-    }
-}
 
-void GameView::UpdateScore()
-{
-    if (IsKeyPressed(KEY_SPACE))
-    {
-        increaseScoreCommand();
-        playerJumpCommand();
-    }
-}
-
-void GameView::GameOver()
-{
-    if (IsKeyPressed(KEY_ENTER))
-    {
-        setGameOverCommand(true);
-    }
-}
 
 //executes every frame
 void GameView::UpdatePlayerMove()
@@ -102,7 +77,35 @@ void GameView::setPlayerJumpCommand(std::function<void()> command)
     playerJumpCommand = command;
 }
 
-void GameView::setPlayerAttackCommand(std::function<void(int)> command)
+/* void GameView::setPlayerAttackCommand(std::function<void(int)> command)
 {
     playerAttackCommand = command;
+} */
+
+
+
+
+
+void GameView::Attack()
+{
+    if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && IsKeyDown(KEY_W))
+    {
+        attackTopCommand();
+    }
+    else if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && IsKeyDown(KEY_S))
+    {
+        attackDownCommand();
+    }
 }
+
+void GameView::setAttackTopCommand(std::function<void()> command)
+{
+    attackTopCommand = command;
+}
+
+void GameView::setAttackDownCommand(std::function<void()> command)
+{
+    attackDownCommand = command;
+}
+
+

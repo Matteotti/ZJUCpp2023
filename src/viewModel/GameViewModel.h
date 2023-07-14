@@ -25,6 +25,7 @@ public:
     std::vector<CustomCollider *> CheckCollisionWithAll(CustomCollider *target);
     void UpdateAnimationInfo(std::string path, int frameCount, float frameTime_, bool stop_);
 
+    //void setMapModel(MapModel *mapModel);
     std::function<void(direction)> getMovePlayerCommand();
     std::function<void()> getPlayerStartJump();
     std::function<void()> getPlayerStopJump();
@@ -35,6 +36,12 @@ public:
     std::function<void()> getPlayerUpdatePosition();
     std::function<void()> getUpdateAnimationFrame();
     std::function<void(raylib::Vector2)> getUpdateAnimationRect();
+
+
+    std::function<void(AnimatorState)> getAttackTopCommand();
+    std::function<void(AnimatorState)> getAttackDownCommand();
+    //void DeleteMap();
+
 };
 
 #endif // CPPGAMEJAM_GAMEVIEWMODEL_H
