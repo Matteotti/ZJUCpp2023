@@ -39,6 +39,22 @@ void GameModel::SetPlayerSpeed(raylib::Vector2 speed)
 {
     player->currentSpeed = speed;
 }
+AnimationInfo *GameModel::GetPlayerAnimationInfo()
+{
+    return player->playerAnimationInfo;
+}
+void GameModel::SetPlayerAnimationInfo(AnimationInfo *animationInfo)
+{
+    player->playerAnimationInfo = animationInfo;
+}
+CustomCollider *GameModel::GetPlayerCollider()
+{
+    return player->playerCollider;
+}
+void GameModel::SetPlayerCollider(CustomCollider *collider)
+{
+    player->playerCollider = collider;
+}
 std::string GameModel::GetPlayerColliderName()
 {
     return player->playerCollider->colliderName;
@@ -100,22 +116,22 @@ void GameModel::GameModel::SetPlayerAnimatorState(AnimatorState state)
 {
     player->currentState = state;
 }
-/* int GameModel::GetPlayerHP()
+int GameModel::GetPlayerHP()
 {
-    return player->HP;
+    return gameCommonPtr->GetPlayerHP();
 }
 void GameModel::SetPlayerHP(int hp)
 {
-    player->HP = hp;
+    gameCommonPtr->SetPlayerHP(hp);
 }
 int GameModel::GetPlayerMP()
 {
-    return player->MP;
+    return gameCommonPtr->GetPlayerMP();
 }
 void GameModel::SetPlayerMP(int mp)
 {
-    player->MP = mp;
-} */
+    gameCommonPtr->SetPlayerMP(mp);
+}
 int GameModel::GetPlayerJumpCount()
 {
     return player->jumpCount;
@@ -172,7 +188,14 @@ void GameModel::SetPlayerIsJumping(bool isJumping)
 {
     player->isJumping = isJumping;
 }
-
+bool GameModel::GetPlayerIsFacingRight()
+{
+    return gameCommonPtr->GetPlayerIsFacingRight();
+}
+void GameModel::SetPlayerIsFacingRight(bool isFacingRight)
+{
+    gameCommonPtr->SetPlayerIsFacingRight(isFacingRight);
+}
 std::string GameModel::GetPlayerAnimationPath()
 {
     return gameCommonPtr->GetPlayerAnimPath();
@@ -274,14 +297,6 @@ void GameModel::UpdateColliderPosition(std::string name, raylib::Vector2 positio
         }
     }
 }
-CustomCollider *GameModel::GetPlayerCollider()
-{
-    return player->playerCollider;
-}
-void GameModel::SetPlayerCollider(CustomCollider *collider)
-{
-    player->playerCollider = collider;
-}
 CustomCollider *GameModel::GetLeftWallCheck()
 {
     return leftWallCheck_;
@@ -335,25 +350,14 @@ void GameModel::SetGroundCheckPosition(raylib::Vector2 deltaPosition)
     groundCheck_->colliderBox.y += deltaPosition.y;
 }
 
-
-
-
-
-
-void GameModel::SetAnimationInfoPath(std::string path)
-{
-    animationInfo->path = path;
-}
-
 void GameModel::SetAnimationInfoFrameCount(int frameCount)
 {
     animationInfo->frameCount = frameCount;
 }
 
-
 void GameModel::SetMapAnimationInfoPath(std::string path)
 {
-    mapAnimationInfo->path = path;
+    mapCommonPtr->SetMappath(path);
 }
 
 void GameModel::SetMapAnimationInfoFrameCount(int frameCount)
@@ -398,10 +402,10 @@ void GameModel::SetAnimationInfoFrameHeight(float frameHeight)
 
 void GameModel::SetColliderName(std::string name)
 {
-    mapCollider->colliderName=name;
+    mapCollider->colliderName = name;
 }
 
-void GameModel::SetColliderColliderBox(float x,float y,float width,float height)
+void GameModel::SetColliderColliderBox(float x, float y, float width, float height)
 {
     mapCollider->colliderBox = raylib::Rectangle(x, y, width, height);
 }
@@ -432,27 +436,28 @@ void GameModel::SetMapModel(const std::string &mapName, std::string path, int fr
     this->mapCommonPtr->SetMappath(path);
     this->mapCommonPtr->SetMapPosition(position);
     this->mapCommonPtr->SetMapFrameCount(frameCount);
-    //this->mapCommonPtr = std::make_shared<MapCommon>(position, path, frameCount);
-    this->SetAnimationInfoPath(path);
+    // this->mapCommonPtr = std::make_shared<MapCommon>(position, path, frameCount);
+    //    this->SetAnimationInfoPath(path);
     this->SetAnimationInfoFrameCount(frameCount);
     this->mapCommonPtr->SetMapTexture(raylib::Texture2DUnmanaged(path));
     this->width = mapCommonPtr->GetMapTexture().width / frameCount;
     this->height = mapCommonPtr->GetMapTexture().height;
     this->SetColliderName(mapName);
-    this->SetColliderColliderBox(position.x,position.y, width, height);
+    this->SetColliderColliderBox(position.x, position.y, width, height);
     this->SetColliderTag(ColliderTag::ENVIRONMENT);
     colliders_.push_back(this->mapCollider);
     maplist.push_back(*this->mapCommonPtr);
 }
 
-std::shared_ptr<MapCommon> GameModel::GetMapCommonPtr() {
+std::shared_ptr<MapCommon> GameModel::GetMapCommonPtr()
+{
     return mapCommonPtr;
 }
 
-std::string GameModel::GetMapName() {
+std::string GameModel::GetMapName()
+{
     return mapName;
 }
-
 
 /* std::vector<MapCommon> GameModel::getMaplist() const
 {

@@ -16,6 +16,7 @@ private:
     raylib::Vector2 playerPosition = raylib::Vector2(0, 0);
     raylib::Rectangle playerSourceRect;
     std::string playerAnimPath;
+    std::string mapAnimPath;
     bool isFacingRight = false;
     int HP = PLAYER_MAX_HP;
     int MP = PLAYER_MAX_MP;
@@ -28,6 +29,8 @@ public:
     void SetPlayerSourceRect(raylib::Rectangle sourceRect);
     std::string GetPlayerAnimPath();
     void SetPlayerAnimPath(std::string path);
+    std::string GetMapAnimPath();
+    void SetMapAnimPath(std::string path);
     bool GetPlayerIsFacingRight();
     void SetPlayerIsFacingRight(bool isFacingRight);
     int GetPlayerHP();

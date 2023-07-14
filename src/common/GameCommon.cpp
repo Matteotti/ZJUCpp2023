@@ -30,7 +30,14 @@ void GameCommon::SetPlayerAnimPath(std::string path)
 {
     playerAnimPath = path;
 }
-
+std::string GameCommon::GetMapAnimPath()
+{
+    return mapAnimPath;
+}
+void GameCommon::SetMapAnimPath(std::string path)
+{
+    mapAnimPath = path;
+}
 raylib::Vector2 MapCommon::getPosition() const
 {
     return position;
