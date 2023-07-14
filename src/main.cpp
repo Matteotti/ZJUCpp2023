@@ -5,15 +5,13 @@
 #include <iostream>
 #include <stdlib.h>
 #include <string>
+#include <cstring>
 #include <memory>
 
 #include "raylib.h"
 #include "model/GameModel.h"
 #include "view/GameView.h"
 #include "viewModel/GameViewModel.h"
-
-void InitPlayer();
-void InitPlayerWallCheck();
 
 int main()
 {
@@ -44,6 +42,7 @@ int main()
     model.SetPlayerIsJumping(false);
     model.SetPlayerIsFacingRight(false);
     AnimationInfo *playerAnimationInfo = reinterpret_cast<AnimationInfo *>(malloc(sizeof(AnimationInfo)));
+    memset(playerAnimationInfo, 0, sizeof(AnimationInfo));
     model.SetPlayerAnimationInfo(playerAnimationInfo);
     model.SetPlayerAnimationPath("../assets/sprites/Knight/Idle.png");
     model.SetPlayerAnimationFrameCount(9);
@@ -56,8 +55,9 @@ int main()
     model.SetPlayerAnimationFrameHeight(texture.height);
     texture.Unload();
     CustomCollider *playerCollider = reinterpret_cast<CustomCollider *>(malloc(sizeof(CustomCollider)));
+    memset(playerCollider, 0, sizeof(CustomCollider));
     model.SetPlayerCollider(playerCollider);
-    playerCollider->colliderName = std::string("player");
+    playerCollider->colliderName = "player";
     model.SetPlayerColliderBox(raylib::Rectangle(model.GetPlayerPosition().x, model.GetPlayerPosition().y, PLAYER_WALLCHECK_WIDTH, PLAYER_WALLCHECK_HEIGHT));
     model.SetPlayerColliderTag(ColliderTag::PLAYER);
     model.SetPlayerColliderType(ColliderType::RECT);
@@ -66,6 +66,7 @@ int main()
 
 #pragma region InitPlayerWallCheck
     CustomCollider *playerLeftWallCheck = reinterpret_cast<CustomCollider *>(malloc(sizeof(CustomCollider)));
+    memset(playerLeftWallCheck, 0, sizeof(CustomCollider));
     playerLeftWallCheck->colliderName = "playerLeftWallCheck";
     playerLeftWallCheck->colliderBox = raylib::Rectangle(model.GetPlayerPosition().x - PLAYER_WALLCHECK_BIAS_X, model.GetPlayerPosition().y, PLAYER_WALLCHECK_BIAS_X, PLAYER_WALLCHECK_HEIGHT);
     playerLeftWallCheck->colliderTag = ColliderTag::PLAYER_WALLCHECK;
@@ -74,6 +75,7 @@ int main()
     model.AddCollider(playerLeftWallCheck);
 
     CustomCollider *playerRightWallCheck = reinterpret_cast<CustomCollider *>(malloc(sizeof(CustomCollider)));
+    memset(playerRightWallCheck, 0, sizeof(CustomCollider));
     playerRightWallCheck->colliderName = "playerRightWallCheck";
     playerRightWallCheck->colliderBox = raylib::Rectangle(model.GetPlayerPosition().x + PLAYER_WALLCHECK_WIDTH, model.GetPlayerPosition().y, PLAYER_WALLCHECK_BIAS_X, PLAYER_WALLCHECK_HEIGHT);
     playerRightWallCheck->colliderTag = ColliderTag::PLAYER_WALLCHECK;
@@ -82,6 +84,7 @@ int main()
     model.AddCollider(playerRightWallCheck);
 
     CustomCollider *playerTopWallCheck = reinterpret_cast<CustomCollider *>(malloc(sizeof(CustomCollider)));
+    memset(playerTopWallCheck, 0, sizeof(CustomCollider));
     playerTopWallCheck->colliderName = "playerTopWallCheck";
     playerTopWallCheck->colliderBox = raylib::Rectangle(model.GetPlayerPosition().x, model.GetPlayerPosition().y - PLAYER_WALLCHECK_BIAS_Y, PLAYER_WALLCHECK_WIDTH, PLAYER_WALLCHECK_BIAS_Y);
     playerTopWallCheck->colliderTag = ColliderTag::PLAYER_WALLCHECK;
@@ -90,6 +93,7 @@ int main()
     model.AddCollider(playerTopWallCheck);
 
     CustomCollider *playerBottomWallCheck = reinterpret_cast<CustomCollider *>(malloc(sizeof(CustomCollider)));
+    memset(playerBottomWallCheck, 0, sizeof(CustomCollider));
     playerBottomWallCheck->colliderName = "playerBottomWallCheck";
     playerBottomWallCheck->colliderBox = raylib::Rectangle(model.GetPlayerPosition().x, model.GetPlayerPosition().y + PLAYER_WALLCHECK_HEIGHT, PLAYER_WALLCHECK_WIDTH, PLAYER_WALLCHECK_BIAS_Y);
     playerBottomWallCheck->colliderTag = ColliderTag::PLAYER_WALLCHECK;
