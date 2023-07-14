@@ -243,7 +243,7 @@ public:
     void UpdatePlayerAttack(bool isFacingRight);
 
     void Draw(
-            raylib::TextureUnmanaged texture,
+            std::string path,
             raylib::Vector2 position,
             raylib::Rectangle src
     );

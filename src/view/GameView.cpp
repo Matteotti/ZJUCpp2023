@@ -90,12 +90,14 @@ void GameView::UpdatePlayerAttack(bool isFacingRight){
 }
 
 void GameView::Draw(
-        raylib::TextureUnmanaged texture,
+        std::string path,
         raylib::Vector2 position,
         raylib::Rectangle src
 )
 {
-    texture.Draw(src, position, WHITE);
+    raylib::Texture temp = LoadTexture(path.c_str());
+    temp.Draw(src, position, WHITE);
+    temp.Unload();
 }
 
 void GameView::SetIncreaseScoreCommand(std::function<void()> command)
