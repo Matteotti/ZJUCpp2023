@@ -40,8 +40,7 @@ public:
     std::function<void()> getUpdatePlayerAnimationRect();
     std::function<void()> getDrawPlayerCommand();
 
-    std::function<void(AnimatorState)> getAttackTopCommand();
-    std::function<void(AnimatorState)> getAttackDownCommand();
+    std::function<void(direction)> getPlayerAttackCommand();
     // void DeleteMap();
 };
 

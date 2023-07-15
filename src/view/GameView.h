@@ -270,10 +270,7 @@ public:
         return gameCommonPtr;
     }
     
-
-    void Attack();
-    void setAttackTopCommand(std::function<void()> command);
-    void setAttackDownCommand(std::function<void()> command);
+    
 
 };
 

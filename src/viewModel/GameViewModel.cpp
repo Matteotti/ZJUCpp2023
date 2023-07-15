@@ -320,6 +320,13 @@ std::function<void()> GameViewModel::getUpdateAnimationFrame()
                     model->SetPlayerAnimationCurrentFrame(model->GetPlayerAnimationFrameCount() - 1);
             }
         }
+        if (model->GetPlayerAnimatorState() == ATTACKING_TOP || model->GetPlayerAnimatorState() == ATTACKING_BOTTOM || model->GetPlayerAnimatorState() == ATTACKING_LEFT || model->GetPlayerAnimatorState() == ATTACKING_RIGHT)
+        {
+            if (model->GetPlayerAnimationCurrentFrame() + 1 == 5)
+            {
+                model->SetPlayerAnimatorState(IDLE);
+            }
+        }
 
         // std::cout << "PLAYER POS 16" << model->GetPlayerPosition().x << " " << model->GetPlayerPosition().y << std::endl;
     };
@@ -365,7 +372,7 @@ std::function<void()> GameViewModel::getDrawPlayerCommand()
     };
 }
 
-std::function<void(AnimatorState)> GameViewModel::getAttackTopCommand()
+/* std::function<void(AnimatorState)> GameViewModel::getAttackTopCommand()
 {
     return [this](AnimatorState currentstate) -> void
     {
@@ -382,6 +389,45 @@ std::function<void(AnimatorState)> GameViewModel::getAttackDownCommand()
         if (currentstate != ATTACKING_BOTTOM)
         {
             model->SetPlayerAnimatorState(ATTACKING_BOTTOM);
+        }
+    };
+} */
+
+std::function<void(direction)> GameViewModel::getPlayerAttackCommand()
+{
+    return [this](direction direction_) -> void
+    {
+        if (direction_ == UP)
+        {
+            if (model->GetPlayerAnimatorState() != ATTACKING_TOP)
+            {
+                model->SetPlayerAnimatorState(ATTACKING_TOP);
+                getPlayerAnimationUpdate();
+            }
+        }
+        else if (direction_ == DOWN)
+        {
+            if (model->GetPlayerAnimatorState() != ATTACKING_BOTTOM)
+            {
+                model->SetPlayerAnimatorState(ATTACKING_BOTTOM);
+                getPlayerAnimationUpdate();
+            }
+        }
+        else if (direction_ == LEFT)
+        {
+            if (model->GetPlayerAnimatorState() != ATTACKING_LEFT)
+            {
+                model->SetPlayerAnimatorState(ATTACKING_LEFT);
+                getPlayerAnimationUpdate();
+            }
+        }
+        else if (direction_ == RIGHT)
+        {
+            if (model->GetPlayerAnimatorState() != ATTACKING_RIGHT)
+            {
+                model->SetPlayerAnimatorState(ATTACKING_RIGHT);
+                getPlayerAnimationUpdate();
+            }
         }
     };
 }

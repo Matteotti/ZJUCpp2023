@@ -157,7 +157,7 @@ void GameView::Draw(
     raylib::Vector2 position,
     raylib::Rectangle src)
 {
-    raylib::Texture2DUnmanaged temp = LoadTexture(path.c_str());
+    raylib::Texture2DUnmanaged temp = raylib::Texture2DUnmanaged(path);
     temp.Draw(src, position);
     // temp.Unload();
 }

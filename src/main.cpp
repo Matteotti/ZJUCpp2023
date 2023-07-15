@@ -128,7 +128,7 @@ int main()
     view->SetPlayerUpdatePositionCommand(viewModel->getPlayerUpdatePosition());
     view->SetPlayerUpdateAnimationFrameCommand(viewModel->getUpdateAnimationFrame());
     view->SetPlayerUpdateAnimationRectCommand(viewModel->getUpdatePlayerAnimationRect());
-    // view->SetPlayerAttackCommand(&viewModel->getPlayerAttackCommand());
+    view->SetPlayerAttackCommand(viewModel->getPlayerAttackCommand());
 
 #pragma endregion
  
@@ -154,7 +154,8 @@ int main()
         } */
 
         view->UpdatePlayerMove();
-        view->UpdatePlayerJump();
+        view->UpdatePlayerAttack(view->getGameCommonPtr()->GetPlayerIsFacingRight());
+        view->UpdatePlayerJump(); 
         view->Update();
         view->Draw(model->GetPlayerAnimationPath(), model->GetPlayerPosition(), model->GetPlayerSourceRec());
 
