@@ -11,10 +11,13 @@ void GameViewModel::setModel(GameModel *model)
 {
     this->model = model;
 }
-/* void GameViewModel::setMapModel(MapModel *mapModel)
+std::shared_ptr<MapCommon> GameViewModel::GetMapCommonPtr()
 {
-    this->mapModel = mapModel;
-} */
+    return model->GetMapCommonPtr();
+}
+
+
+
 
 // TOOL METHOD: Check Collision using tag
 std::vector<CustomCollider *> GameViewModel::CheckCollisionWithAll(CustomCollider *target, ColliderTag targetTag)

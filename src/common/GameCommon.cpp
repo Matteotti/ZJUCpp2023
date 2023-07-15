@@ -94,10 +94,29 @@ void MapCommon::SetMapFrameCount(int frameCount)
     this->frameCount = frameCount;
 }
 
-MapCommon::MapCommon(raylib::Vector2 position, std::string path, int frameCount) {
+MapCommon::MapCommon(raylib::Vector2 position, std::string path, int frameCount, int mapWidth, int mapHeight) {
     this->position = position;
     this->path = path;
     this->frameCount = frameCount;
+    this->mapWidth = mapWidth;
+    this->mapHeight = mapHeight;
+}
+
+int MapCommon::GetMapWidth() {
+    return mapWidth;
+}
+
+int MapCommon::GetMapHeight() {
+    return mapHeight;
+}
+
+std::vector<MapCommon> GameCommon::GetMapList()
+{
+    return maplist;
+}
+void GameCommon::MapPushBack(MapCommon mapCommon)
+{
+    maplist.push_back(mapCommon);
 }
 
 

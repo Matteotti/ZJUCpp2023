@@ -8,7 +8,7 @@ GameModel::GameModel()
 {
     this->gameCommonPtr = std::make_shared<GameCommon>();
     this->animationInfo = new AnimationInfo();
-    this->mapCollider = new CustomCollider();
+    //this->mapCollider = new CustomCollider();
     this->mapAnimationInfo = new AnimationInfo();
 
 }
@@ -423,35 +423,20 @@ void GameModel::SetMapName(std::string mapname)
     this->mapName = mapname;
 }
 
-void GameModel::SetMapWidth(float width)
-{
-    this->mapWidth = width;
-}
-
-void GameModel::SetMapHeight(float height)
-{
-    this->mapHeight = height;
-}
 
 void GameModel::SetMapModel(const std::string mapName, std::string path, int frameCount, raylib::Vector2 position)
 {
-    
+    this->mapCollider = new CustomCollider();
     this->mapName = mapName;
-    this->mapCommonPtr = std::make_shared<MapCommon>(position, path, frameCount);
-    //this->mapCommonPtr = std::make_shared<MapCommon>(position, path, frameCount);
     this->SetMapAnimationInfoPath(path);
     this->SetMapAnimationInfoFrameCount(frameCount);
     raylib::Texture2DUnmanaged texture = raylib::Texture2DUnmanaged(path);
-    //this->mapCommonPtr->SetMapTexture(raylib::Texture2DUnmanaged(path));
-    this->mapWidth=texture.width / frameCount;
-    this->mapHeight=texture.height;
-    this->mapWidthList.push_back(mapWidth);
-    this->mapHeightList.push_back(mapHeight);
+    this->mapCommonPtr = std::make_shared<MapCommon>(position, path, frameCount,texture.width / frameCount,texture.height);
     this->SetColliderName(mapName);
-    this->SetColliderColliderBox(position.x,position.y, mapWidth, mapHeight);
+    this->SetColliderColliderBox(position.x,position.y, mapCommonPtr->GetMapWidth(), mapCommonPtr->GetMapHeight());
     this->SetColliderTag(ColliderTag::ENVIRONMENT);
     colliders_.push_back(this->mapCollider);
-    maplist.push_back(*this->mapCommonPtr);
+    this->gameCommonPtr->MapPushBack(*mapCommonPtr);
 }
 
 std::shared_ptr<MapCommon> GameModel::GetMapCommonPtr()
@@ -465,20 +450,7 @@ std::string GameModel::GetMapName()
 }
 
 
-std::vector<MapCommon> GameModel::getMaplist() const
-{
-    return maplist;
-}
 
-int GameModel::GetMapWidth(int index)
-{
-    return mapWidthList[index];
-}
-
-int GameModel::GetMapHeight(int index)
-{
-    return mapHeightList[index];
-}
 
 
 

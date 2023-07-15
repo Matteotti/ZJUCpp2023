@@ -119,6 +119,7 @@ int main()
 #pragma endregion
  */
     viewModel.setModel(&model);
+    view.setCommon(model.GetGameCommonPtr());
     //view.SetCommon(model.GetGameCommonPtr());
 
     SetTargetFPS(30);
@@ -130,9 +131,9 @@ int main()
 
         ClearBackground(RAYWHITE);
         
-        for(int i = 0; i < model.getMaplist().size();i++)
+        for(int i = 0; i < view.getGameCommonPtr()->GetMapList().size();i++)
         {
-            view.Draw(model.getMaplist()[i].getPath(), model.getMaplist()[i].getPosition(), raylib::Rectangle(0.0f, 0.0f,model.GetMapWidth(i) , model.GetMapHeight(i)));
+            view.Draw(view.getGameCommonPtr()->GetMapList()[i].getPath(), view.getGameCommonPtr()->GetMapList()[i].getPosition(), raylib::Rectangle(0.0f, 0.0f,view.getGameCommonPtr()->GetMapList()[i].GetMapWidth() , view.getGameCommonPtr()->GetMapList()[i].GetMapHeight()));
         }
         // view.draw(view.getGameCommonPtr()->getScore(), view.getGameCommonPtr()->getGameOver());
 

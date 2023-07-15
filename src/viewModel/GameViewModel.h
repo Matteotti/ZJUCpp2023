@@ -21,6 +21,9 @@ public:
     explicit GameViewModel();
     void setModel(GameModel *model);
 
+    std::shared_ptr<MapCommon> GetMapCommonPtr();
+    std::vector<MapCommon> GetMapList();
+
     std::vector<CustomCollider *> CheckCollisionWithAll(CustomCollider *target, ColliderTag targetTag);
     std::vector<CustomCollider *> CheckCollisionWithAll(CustomCollider *target);
     void UpdateAnimationInfo(std::string path, int frameCount, float frameTime_, bool stop_);

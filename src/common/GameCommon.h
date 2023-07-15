@@ -10,6 +10,31 @@
 #include "raylib.h"
 #define PLAYER_MAX_HP 8
 #define PLAYER_MAX_MP 200
+
+
+class MapCommon
+{
+private:
+    raylib::Vector2 position;
+    std::string path;
+    int frameCount = 0;
+    raylib::Texture2DUnmanaged mapTexture;
+    int mapWidth;
+    int mapHeight;
+public:
+    MapCommon(raylib::Vector2 position, std::string path, int frameCount ,int mapWidth, int mapHeight);
+    raylib::Vector2 getPosition() const;
+    std::string getPath() const;
+    int getFrameCount() const;
+    void SetMapPosition(raylib::Vector2 position);
+    void SetMappath(std::string path);
+    void SetMapFrameCount(int frameCount);
+    int GetMapWidth();
+    int GetMapHeight();
+
+
+};
+
 class GameCommon
 {
 private:
@@ -20,6 +45,7 @@ private:
     bool isFacingRight = false;
     int HP = PLAYER_MAX_HP;
     int MP = PLAYER_MAX_MP;
+    std::vector<MapCommon> maplist;
 
 public:
     GameCommon();
@@ -37,25 +63,10 @@ public:
     void SetPlayerHP(int hp);
     int GetPlayerMP();
     void SetPlayerMP(int mp);
+    std::vector<MapCommon> GetMapList();
+    void MapPushBack(MapCommon mapCommon);
 };
 
-class MapCommon
-{
-private:
-    raylib::Vector2 position;
-    std::string path;
-    int frameCount = 0;
-    raylib::Texture2DUnmanaged mapTexture;
-public:
-    MapCommon(raylib::Vector2 position, std::string path, int frameCount);
-    raylib::Vector2 getPosition() const;
-    std::string getPath() const;
-    int getFrameCount() const;
-    void SetMapPosition(raylib::Vector2 position);
-    void SetMappath(std::string path);
-    void SetMapFrameCount(int frameCount);
 
-
-};
 
 #endif // CPPGAMEJAM_GAMECOMMON_H
