@@ -27,8 +27,14 @@ int main()
     GameView *view = new GameView();
     GameViewModel *viewModel = new GameViewModel();
 
+#pragma region InitUI
+    view->ui.SetHpBarUnitPath("../assets/ui/HP_bar_unit.png");
+    view->ui.SetHpBarUnitEmptyPath("../assets/ui/HP_bar_unit_empty.png");
+    view->ui.SetMpBarPath("../assets/ui/MP_bar.png");
+    view->ui.SetBackgroundPath("../assets/ui/Background.png");
+#pragma endregion
     // Init map
-
+#pragma region InitMap
     model->SetMapModel("ground_1", "../assets/sprites/Map/road3.png", 1, raylib::Vector2(0, 700));
     model->SetMapModel("ground_2", "../assets/sprites/Map/road3.png", 1, raylib::Vector2(279, 700));
     model->SetMapModel("ground_3", "../assets/sprites/Map/road3.png", 1, raylib::Vector2(279, 600));
@@ -41,7 +47,7 @@ int main()
     model->SetMapModel("ground_10", "../assets/sprites/Map/road3.png", 1, raylib::Vector2(279 * 7, 700));
     model->SetMapModel("ground_11", "../assets/sprites/Map/road3.png", 1, raylib::Vector2(279 * 8, 700));
     model->SetMapModel("ground_12", "../assets/sprites/Map/road3.png", 1, raylib::Vector2(279, 300));
-
+#pragma endregion
 #pragma region InitPlayer
     model->SetPlayerPosition(raylib::Vector2(400, 0));
     model->SetPlayerSpeed(raylib::Vector2(0, 0));
@@ -136,22 +142,25 @@ int main()
     view->SetCommon(model->GetGameCommonPtr());
     // view.SetCommon(model.GetGameCommonPtr());
 
-    SetTargetFPS(144);
+    SetTargetFPS(60);
 
     while (!WindowShouldClose())
     {
 
         BeginDrawing();
 
-        ClearBackground(RAYWHITE);
+        ClearBackground(BLACK);
+
         for (int i = 0; i < view->getGameCommonPtr()->GetMapList().size(); i++)
         {
-            view->Draw(view->getGameCommonPtr()->GetMapList()[i].getPath(), view->getGameCommonPtr()->GetMapList()[i].getPosition(), raylib::Rectangle(0.0f, 0.0f, view->getGameCommonPtr()->GetMapList()[i].GetMapWidth(), view->getGameCommonPtr()->GetMapList()[i].GetMapHeight()));
+           view->Draw(view->getGameCommonPtr()->GetMapList()[i].getPath(), view->getGameCommonPtr()->GetMapList()[i].getPosition(), raylib::Rectangle(0.0f, 0.0f, view->getGameCommonPtr()->GetMapList()[i].GetMapWidth(), view->getGameCommonPtr()->GetMapList()[i].GetMapHeight()));
         }
 
         view->UpdatePlayerMove();
         view->UpdatePlayerJump();
         view->Update();
+
+        view->ui.Draw();
 
         EndDrawing();
     }

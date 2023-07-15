@@ -9,8 +9,7 @@
 GameView::GameView()
 {
     // initialize ui
-    ui = UI();
-    // initialize buttons
+    ui = UI("../assets/ui/HP_bar_unit.png", "../assets/ui/HP_bar_unit_empty.png", "../assets/ui/MP_bar.png", "../assets/ui/Background.png");
 }
 
 // executes every frame
@@ -158,9 +157,8 @@ void GameView::Draw(
     raylib::Vector2 position,
     raylib::Rectangle src)
 {
-    raylib::Texture2DUnmanaged temp = LoadTexture(path.c_str());
+    temp = LoadTexture(path.c_str());
     temp.Draw(src, position);
-    // temp.Unload();
 }
 
 void GameView::SetCommon(std::shared_ptr<GameCommon> gameCommon)

@@ -20,6 +20,8 @@ class Button
 private:
     raylib::Image image;
     raylib::Rectangle src;
+    std::string text;
+    std::string texturePath;
     bool isHovered;
     // FIXME: Possibly be unable to work as expected via passing and using a std::function
     std::function<void()> command;
@@ -102,148 +104,99 @@ public:
 class UI
 {
 private:
-    raylib::Image HP_bar_unit;
-    raylib::Image HP_bar_unit_empty;
-    raylib::Image MP_bar;
-    raylib::Image Background;
+    std::string hpBarUnitPath;
+    std::string hpBarUnitEmptyPath;
+    std::string mpBarPath;
+    std::string backgroundPath;
 
-    raylib::Vector2 HP_bar_position;
-    raylib::Vector2 MP_bar_position;
-    raylib::Vector2 Background_position;
+    raylib::TextureUnmanaged temp;
 
-    float HP_bar_unit_scale;
-    float MP_bar_scale;
-    float Background_scale;
+    raylib::Vector2 hpBarUnitPosition;
+    raylib::Vector2 mpBarPosition;
+    raylib::Vector2 backgroundPosition;
 
-    //@TODO: add animation
-    AnimationInfo MP_bar_animation;
+    float hpBarUnitScale;
+    float mpBarScale;
+    float backgroundScale;
 
-    int HP_count;
-    int MP_count;
+    int HP_count = 3;
+    int MP_count = 100;
 
 public:
-    UI()
+    UI(){}
+    UI(std::string hpBarUnitPath,
+       std::string hpBarUnitEmptyPath,
+       std::string mpBarPath,
+       std::string backgroundPath)
     {
-        HP_bar_unit_scale = 1.0f;
-        MP_bar_scale = 1.0f;
-        Background_scale = 1.0f;
-        HP_count = PLAYER_MAX_HP;
-        MP_count = PLAYER_MAX_MP;
+        this->hpBarUnitPath = std::move(hpBarUnitPath);
+        this->hpBarUnitEmptyPath = std::move(hpBarUnitEmptyPath);
+        this->mpBarPath = std::move(mpBarPath);
+        this->backgroundPath = std::move(backgroundPath);
+
+        hpBarUnitPosition = raylib::Vector2(120, 0);
+        mpBarPosition = raylib::Vector2(0, 10);
+        backgroundPosition = raylib::Vector2(5, 0);
+
+        hpBarUnitScale = 1.0f;
+        mpBarScale = 1.0f;
+        backgroundScale = 1.0f;
     }
 
-    UI(const std::string &HP_bar_unit_path, const std::string &MP_bar_path, const std::string &Background_path)
-    {
-        HP_bar_unit.Load(HP_bar_unit_path);
-        MP_bar.Load(MP_bar_path);
-        Background.Load(Background_path);
-        HP_count = PLAYER_MAX_HP;
-        MP_count = PLAYER_MAX_MP;
-    }
-
-    void DrawUI()
-    {
-        raylib::Texture tBackground;
-        tBackground.Load(Background);
-        tBackground.Draw(Background_position.x, Background_position.y);
-        tBackground.Unload();
-        for (int i = 0; i < PLAYER_MAX_HP; ++i)
-        {
-            raylib::Texture tHP_bar_unit;
-            tHP_bar_unit.Load(HP_bar_unit);
-            raylib::Texture tHP_bar_unit_empty;
-            tHP_bar_unit_empty.Load(HP_bar_unit_empty);
-            if (i < HP_count)
-            {
-                tHP_bar_unit.Draw(raylib::Vector2(HP_bar_position.x + i * HP_bar_unit.GetWidth(),
-                                                  HP_bar_position.y),
-                                  0,
-                                  HP_bar_unit_scale,
-                                  WHITE);
-            }
-            else
-            {
-                tHP_bar_unit_empty.Draw(raylib::Vector2(HP_bar_position.x + i * HP_bar_unit.GetWidth(),
-                                                        HP_bar_position.y),
-                                        0,
-                                        HP_bar_unit_scale,
-                                        WHITE);
-            }
-            tHP_bar_unit.Unload();
-            tHP_bar_unit_empty.Unload();
+    void Draw(){
+        //draw full hp units
+        temp.Load(hpBarUnitPath);
+        for(int i = 0; i < HP_count; i++){
+            temp.Draw(raylib::Vector2(hpBarUnitPosition.x + i * temp.GetWidth() * hpBarUnitScale, hpBarUnitPosition.y),
+                      0,
+                      hpBarUnitScale,
+                      WHITE);
         }
-        raylib::Texture tMP_bar;
-        tMP_bar.Load(MP_bar);
-        tMP_bar.Draw(raylib::Rectangle(0,
-                                       MP_bar.GetHeight() * (PLAYER_MAX_MP - MP_count) / PLAYER_MAX_MP,
-                                       MP_bar.GetWidth(),
-                                       MP_bar.GetHeight() * MP_count / PLAYER_MAX_MP),
-                     MP_bar_position,
-                     MP_count < 33 ? WHITE : GRAY);
-        tMP_bar.Unload();
+        //draw empty hp units
+        temp.Load(hpBarUnitEmptyPath);
+        for(int i = HP_count; i < PLAYER_MAX_HP; i++){
+            temp.Draw(raylib::Vector2(hpBarUnitPosition.x + i * temp.GetWidth() * hpBarUnitScale, hpBarUnitPosition.y),
+                      0,
+                      hpBarUnitScale,
+                      WHITE);
+        }
+        //draw background
+        temp.Load(backgroundPath);
+        temp.Draw(backgroundPosition, 0, backgroundScale, WHITE);
+        //draw mp bar
+        temp.Load(mpBarPath);
+        temp.Draw(raylib::Rectangle(0,
+                                    temp.GetHeight()*(PLAYER_MAX_MP- MP_count)/PLAYER_MAX_MP,
+                                    temp.GetWidth(),
+                                    temp.GetHeight()*MP_count/PLAYER_MAX_MP),
+                    mpBarPosition+raylib::Vector2(10, temp.GetHeight()*(PLAYER_MAX_MP- MP_count)/PLAYER_MAX_MP),
+                    MP_count < 33 ? GRAY : WHITE
+                );
     }
 
-    void UpdateUI(const int HP, const int MP)
+
+
+    void SetHpBarUnitPath(std::string path)
     {
-        HP_count = HP;
-        MP_count = MP;
+        this->hpBarUnitPath = std::move(path);
     }
 
-    void SetHP_bar_unit(const std::string &path)
+    void SetHpBarUnitEmptyPath(std::string path)
     {
-        HP_bar_unit.Load(path);
+        this->hpBarUnitEmptyPath = std::move(path);
     }
 
-    void SetHP_bar_unit_empty(const std::string &path)
+    void SetMpBarPath(std::string path)
     {
-        HP_bar_unit_empty.Load(path);
+        this->mpBarPath = std::move(path);
     }
 
-    void SetMP_bar(const std::string &path)
+    void SetBackgroundPath(std::string path)
     {
-        MP_bar.Load(path);
+        this->backgroundPath = std::move(path);
     }
 
-    void SetBackground(const std::string &path)
-    {
-        Background.Load(path);
-    }
-
-    void SetHP_bar_unit_position(const raylib::Vector2 &HP_bar_unit_position)
-    {
-        HP_bar_position = HP_bar_unit_position;
-    }
-
-    void SetMP_bar_position(const raylib::Vector2 &position)
-    {
-        this->MP_bar_position = position;
-    }
-
-    void SetBackground_position(const raylib::Vector2 &position)
-    {
-        this->Background_position = position;
-    }
-
-    void SetHP_bar_unit_scale(float scale)
-    {
-        this->HP_bar_unit_scale = scale;
-    }
-
-    void SetMP_bar_scale(float scale)
-    {
-        this->MP_bar_scale = scale;
-    }
-
-    void SetBackground_scale(float scale)
-    {
-        this->Background_scale = scale;
-    }
-
-    ~UI()
-    {
-        HP_bar_unit.Unload();
-        MP_bar.Unload();
-        Background.Unload();
-    }
+    ~UI() = default;
 };
 
 class GameView
@@ -272,6 +225,8 @@ private:
 
     std::function<void()> attackTopCommand;
     std::function<void()> attackDownCommand;
+
+    raylib::TextureUnmanaged temp;
 
 public:
     GameView();
@@ -310,6 +265,8 @@ public:
     void Attack();
     void setAttackTopCommand(std::function<void()> command);
     void setAttackDownCommand(std::function<void()> command);
+
+    ~GameView() = default;
 };
 
 #endif // CPPGAMEJAM_GAMEVIEW_H
