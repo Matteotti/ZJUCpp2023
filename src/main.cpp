@@ -132,8 +132,8 @@ int main()
 
 #pragma endregion
  
-    viewModel.setModel(&model);
-    view.setCommon(model.GetGameCommonPtr());
+    viewModel->setModel(model);
+    view->SetCommon(model->GetGameCommonPtr());
     //view.SetCommon(model.GetGameCommonPtr());
 
     SetTargetFPS(60);
@@ -144,14 +144,14 @@ int main()
         BeginDrawing();
 
         ClearBackground(RAYWHITE);
-        for(int i = 0; i < view.getGameCommonPtr()->GetMapList().size();i++)
+        for(int i = 0; i < view->getGameCommonPtr()->GetMapList().size();i++)
         {
-            view.Draw(view.getGameCommonPtr()->GetMapList()[i].getPath(), view.getGameCommonPtr()->GetMapList()[i].getPosition(), raylib::Rectangle(0.0f, 0.0f,view.getGameCommonPtr()->GetMapList()[i].GetMapWidth() , view.getGameCommonPtr()->GetMapList()[i].GetMapHeight()));
+            view->Draw(view->getGameCommonPtr()->GetMapList()[i].getPath(), view->getGameCommonPtr()->GetMapList()[i].getPosition(), raylib::Rectangle(0.0f, 0.0f,view->getGameCommonPtr()->GetMapList()[i].GetMapWidth() , view->getGameCommonPtr()->GetMapList()[i].GetMapHeight()));
         }
-        for (int i = 0; i < model->GetColliders().size(); i++)
+/*         for (int i = 0; i < model->GetColliders().size(); i++)
         {
-            view.Draw(model.getMaplist()[i].getPath(), model.getMaplist()[i].getPosition(), raylib::Rectangle(0.0f, 0.0f,model.GetMapWidth(i) , model.GetMapHeight(i)));
-        }
+            view->Draw(view->getGameCommonPtr()->GetMapList()[i].getPath(), view->getGameCommonPtr()->GetMapList()[i].getPosition(), raylib::Rectangle(0.0f, 0.0f,view->getGameCommonPtr()->GetMapList()[i].GetMapWidth() , view->getGameCommonPtr()->GetMapList()[i].GetMapHeight()));
+        } */
 
         view->UpdatePlayerMove();
         view->UpdatePlayerJump();

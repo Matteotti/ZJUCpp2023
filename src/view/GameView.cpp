@@ -163,7 +163,7 @@ void GameView::Draw(
 }
 
 
-void GameView::setCommon(std::shared_ptr<GameCommon> gameCommon)
+void GameView::SetCommon(std::shared_ptr<GameCommon> gameCommon)
 {
     gameCommonPtr = gameCommon;
 }
