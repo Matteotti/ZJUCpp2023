@@ -21,6 +21,7 @@ private:
     raylib::Image image;
     raylib::Rectangle src;
     bool isHovered;
+    //FIXME: Possibly be unable to work as expected via passing and using a std::function
     std::function<void()> command;
 public:
     Button(std::string path, raylib::Rectangle src, std::function<void()> command){
@@ -49,13 +50,7 @@ public:
     }
 
     //overload = operator
-    Button& operator=(const Button& button){
-        this->image = button.image;
-        this->src = button.src;
-        this->isHovered = button.isHovered;
-        this->command = button.command;
-        return *this;
-    }
+    Button& operator=(const Button& other)= default;
 
     ~Button(){
         image.Unload();
@@ -65,15 +60,12 @@ public:
 class Menu{
 private:
     std::vector<Button> buttons;
-    raylib::Texture background;
 public:
-    Menu(){}
-    Menu(std::vector<Button> buttons, std::string background_path){
+    Menu() = default;
+    Menu(std::vector<Button> buttons){
         this->buttons = std::move(buttons);
-        background.Load(background_path);
     }
     void DrawMenu(){
-        background.Draw(0, 0);
         for (auto &button : buttons) {
             button.DrawButton();
         }
@@ -86,9 +78,7 @@ public:
     void SetButtons(std::vector<Button> buttonsList){
         this->buttons = std::move(buttonsList);
     }
-    ~Menu(){
-        background.Unload();
-    }
+    ~Menu() = default;
 };
 
 class UI{
@@ -109,18 +99,24 @@ private:
     //@TODO: add animation
     AnimationInfo MP_bar_animation;
 
-    int HP_count{};
-    int MP_count{};
+    int HP_count;
+    int MP_count;
 
 public:
-    UI(){}
+    UI(){
+        HP_bar_unit_scale = 1.0f;
+        MP_bar_scale = 1.0f;
+        Background_scale = 1.0f;
+        HP_count = PLAYER_MAX_HP;
+        MP_count = PLAYER_MAX_MP;
+    }
 
     UI(const std::string& HP_bar_unit_path, const std::string& MP_bar_path, const std::string& Background_path){
         HP_bar_unit.Load(HP_bar_unit_path);
         MP_bar.Load(MP_bar_path);
         Background.Load(Background_path);
-        HP_count = 0;
-        MP_count = 0;
+        HP_count = PLAYER_MAX_HP;
+        MP_count = PLAYER_MAX_MP;
     }
 
     void DrawUI(){
@@ -241,6 +237,9 @@ public:
     void UpdatePlayerMove();
     void UpdatePlayerJump();
     void UpdatePlayerAttack(bool isFacingRight);
+
+    UI ui;
+    Menu menu;
 
     void Draw(
             std::string path,

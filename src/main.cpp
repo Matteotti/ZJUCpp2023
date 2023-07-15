@@ -25,6 +25,7 @@ int main()
     GameModel model;
 
     GameView view;
+    view.SetCommon(model.GetGameCommonPtr());
     GameViewModel viewModel;
 
     model.ClearColliders();
@@ -97,6 +98,13 @@ int main()
     model.SetGroundCheck(playerBottomWallCheck);
     model.AddCollider(playerBottomWallCheck);
 #pragma endregion
+
+#pragma region InitUI
+    view.ui.SetHP_bar_unit("../assets/ui/HP_bar_unit.png");
+    view.ui.SetHP_bar_unit_empty("../assets/ui/HP_bar.png");
+    view.ui.SetMP_bar("../assets/ui/MP_bar.png");
+#pragma endregion
+
 
     viewModel.setModel(&model);
     view.SetCommon(model.GetGameCommonPtr());

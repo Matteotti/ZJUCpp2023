@@ -6,7 +6,11 @@
 #include "GameView.h"
 #include <string>
 
-GameView::GameView() {}
+GameView::GameView() {
+    //initialize ui
+    ui = UI();
+    //initialize buttons
+}
 
 void GameView::SetCommon(std::shared_ptr<GameCommon> gameCommon) {
     this->gameCommonPtr = gameCommon;
