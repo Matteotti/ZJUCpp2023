@@ -46,17 +46,16 @@ private:
     std::string path;
     int frameCount = 0;
     raylib::Texture2DUnmanaged mapTexture;
-
 public:
-    MapCommon();
+    MapCommon(raylib::Vector2 position, std::string path, int frameCount);
     raylib::Vector2 getPosition() const;
     std::string getPath() const;
     int getFrameCount() const;
-    raylib::Texture2DUnmanaged GetMapTexture();
-    void SetMapTexture(raylib::Texture2DUnmanaged texture);
     void SetMapPosition(raylib::Vector2 position);
     void SetMappath(std::string path);
     void SetMapFrameCount(int frameCount);
+
+
 };
 
 #endif // CPPGAMEJAM_GAMECOMMON_H

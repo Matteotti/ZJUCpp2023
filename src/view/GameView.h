@@ -220,7 +220,15 @@ private:
 
     std::function<void(direction)> playerMoveCommand;
     std::function<void(bool)> playerJumpCommand;
+    std::function<void()> playerUpdateJumpSpeedCommand;
+    std::function<void()> playerCheckWallCommand;
+    std::function<void()> playerAniamtorUpdateCommand;
+    std::function<void()> playerAniamtionUpdateCommand;
+    std::function<void()> playerUpdatePositionCommand;
+    std::function<void()> playerUpdateAnimationFrameCommand;
+    std::function<void(raylib::Vector2)> playerUpdateAnimationRectCommand;
     std::function<void(direction)> playerAttackCommand;
+    std::function<void()> drawPlayerCommand;
 
     std::shared_ptr<GameCommon> gameCommonPtr;
     
@@ -237,23 +245,28 @@ public:
     void UpdatePlayerMove();
     void UpdatePlayerJump();
     void UpdatePlayerAttack(bool isFacingRight);
+    void Update();
 
     UI ui;
     Menu menu;
 
     void Draw(
-            std::string path,
-            raylib::Vector2 position,
-            raylib::Rectangle src
-    );
-
-    void SetIncreaseScoreCommand(std::function<void()> command);
-    void setSetGameOverCommand(std::function<void(bool)> command);
+        std::string path,
+        raylib::Vector2 position,
+        raylib::Rectangle src);
     void SetPlayerMoveCommand(std::function<void(direction)> command);
     void SetPlayerJumpCommand(std::function<void(bool)> command);
-    void SetPlayerAttackCommand(std::function<void(bool)> command);
-
-    std::shared_ptr<GameCommon> getGameCommonPtr() {
+    void SetPlayerUpdateJumpSpeedCommand(std::function<void()> command);
+    void SetPlayerCheckWallCommand(std::function<void()> command);
+    void SetPlayerAnimatorUpdateCommand(std::function<void()> command);
+    void SetPlayerAnimationUpdateCommand(std::function<void()> command);
+    void SetPlayerUpdatePositionCommand(std::function<void()> command);
+    void SetPlayerUpdateAnimationFrameCommand(std::function<void()> command);
+    void SetPlayerUpdateAnimationRectCommand(std::function<void(raylib::Vector2)> command);
+    void SetPlayerAttackCommand(std::function<void(direction)> command);
+    void SetDrawPlayerCommand(std::function<void()> command);
+    std::shared_ptr<GameCommon> getGameCommonPtr()
+    {
         return gameCommonPtr;
     }
     

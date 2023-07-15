@@ -98,32 +98,30 @@ std::function<void(direction)> GameViewModel::getMovePlayerCommand()
 }
 
 // STD::FUNCTIONS Execute when space is pressed
-std::function<void()> GameViewModel::getPlayerStartJump()
+std::function<void(bool)> GameViewModel::getPlayerJumpCommand()
 {
-    return [this]() -> void
+    return [this](bool isPressed) -> void
     {
-        if (model->GetPlayerIsGrounded())
+        if (isPressed)
         {
-            model->SetPlayerIsGrounded(false);
-            model->SetPlayerIsJumping(true);
-            model->SetPlayerJumpCounter(PLAYER_JUMP_TIME);
+            if (model->GetPlayerIsGrounded())
+            {
+                model->SetPlayerIsGrounded(false);
+                model->SetPlayerIsJumping(true);
+                model->SetPlayerJumpCounter(PLAYER_JUMP_TIME);
+            }
+            else if (model->GetPlayerJumpCount() == 0)
+            {
+                model->SetPlayerJumpCount(model->GetPlayerJumpCount() + 1);
+                model->SetPlayerIsJumping(true);
+                model->SetPlayerJumpCounter(PLAYER_DOUBLE_JUMP_TIME);
+            }
         }
-        else if (model->GetPlayerJumpCount() == 0)
+        else
         {
-            model->SetPlayerJumpCount(model->GetPlayerJumpCount() + 1);
-            model->SetPlayerIsJumping(true);
-            model->SetPlayerJumpCounter(PLAYER_DOUBLE_JUMP_TIME);
+            model->SetPlayerIsJumping(false);
+            model->SetPlayerJumpCounter(0);
         }
-    };
-}
-
-// STD::FUNCTIONS Execute when space is released
-std::function<void()> GameViewModel::getPlayerStopJump()
-{
-    return [this]() -> void
-    {
-        model->SetPlayerIsJumping(false);
-        model->SetPlayerJumpCounter(0);
     };
 }
 
@@ -139,7 +137,8 @@ std::function<void()> GameViewModel::getPlayerUpdateJumpSpeed()
         }
         else if (model->GetPlayerJumpCounter() <= 0.0f)
         {
-            getPlayerStopJump();
+            model->SetPlayerIsJumping(false);
+            model->SetPlayerJumpCounter(0);
         }
     };
 }
@@ -162,6 +161,10 @@ std::function<void()> GameViewModel::getPlayerCheckWall()
         {
             model->SetPlayerJumpCount(0);
         }
+        else if (!model->GetPlayerIsGrounded())
+        {
+            model->SetPlayerSpeed(raylib::Vector2(model->GetPlayerSpeed().x, model->GetPlayerSpeed().y + PLAYER_GRAVITY * GetFrameTime()));
+        }
         if (model->GetPlayerIsGrounded() && model->GetPlayerSpeed().y > 0)
         {
             model->SetPlayerSpeed(raylib::Vector2(model->GetPlayerSpeed().x, 0));
@@ -182,7 +185,7 @@ std::function<void()> GameViewModel::getPlayerCheckWall()
 }
 
 // STD::FUNCTIONS Execute every frame
-std::function<void()> GameViewModel::getPlayerAniamtorUpdate()
+std::function<void()> GameViewModel::getPlayerAnimatorUpdate()
 {
     return [this]() -> void
     {
@@ -213,37 +216,37 @@ std::function<void()> GameViewModel::getPlayerAniamtorUpdate()
         }
     };
 }
-std::function<void()> GameViewModel::getPlayerAniamtionUpdate()
+std::function<void()> GameViewModel::getPlayerAnimationUpdate()
 {
     return [this]() -> void
     {
         switch (model->GetPlayerAnimatorState())
         {
         case IDLE:
-            UpdateAnimationInfo("../../assets/sprites/Knight/Idle.png", 9);
+            UpdateAnimationInfo("../assets/sprites/Knight/Idle.png", 9);
             // std::cout << "IDLE" << std::endl;
             break;
         case WALKING:
-            UpdateAnimationInfo("../../assets/sprites/Knight/Walk.png", 5);
+            UpdateAnimationInfo("../assets/sprites/Knight/Walk.png", 5);
             // std::cout << "WALKING" << std::endl;
             break;
         case JUMPING:
-            UpdateAnimationInfo("../../assets/sprites/Knight/Jump.png", 9, ANIMATION_FRAME_TIME, true);
+            UpdateAnimationInfo("../assets/sprites/Knight/Jump.png", 9, ANIMATION_FRAME_TIME, true);
             // std::cout << "JUMPING" << std::endl;
             break;
         case DOUBLE_JUMPING:
-            UpdateAnimationInfo("../../assets/sprites/Knight/KnightDoubleJump.png", 9);
+            UpdateAnimationInfo("../assets/sprites/Knight/KnightDoubleJump.png", 9);
             // std::cout << "DOUBLE_JUMPING" << std::endl;
             break;
         case FALLING:
-            UpdateAnimationInfo("../../assets/sprites/Knight/Fall.png", 3);
+            UpdateAnimationInfo("../assets/sprites/Knight/Fall.png", 3);
             // std::cout << "FALLING" << std::endl;
             break;
         case ATTACKING_TOP:
-            UpdateAnimationInfo("../../assets/sprites/Attack/attacktop.png", 5);
+            UpdateAnimationInfo("../assets/sprites/Attack/attacktop.png", 5);
             break;
         case ATTACKING_BOTTOM:
-            UpdateAnimationInfo("../../assets/sprites/Attack/attackdown.png", 5);
+            UpdateAnimationInfo("../assets/sprites/Attack/attackdown.png", 5);
             break;
         case ATTACKING_LEFT:
             UpdateAnimationInfo("../assets/sprites/Attack/attackleft.png", 5);
@@ -291,7 +294,7 @@ std::function<void()> GameViewModel::getUpdateAnimationFrame()
 }
 
 // STD::FUNCTIONS Execute every frame
-std::function<void(raylib::Vector2)> GameViewModel::getUpdateAnimationRect()
+std::function<void(raylib::Vector2)> GameViewModel::getUpdatePlayerAnimationRect()
 {
     return [this](raylib::Vector2 bias = raylib::Vector2(0, 0)) -> void
     {
@@ -315,8 +318,16 @@ std::function<void(raylib::Vector2)> GameViewModel::getUpdateAnimationRect()
     };
 }
 
-
-
+// STD::FUNCTIONS Execute every frame
+std::function<void()> GameViewModel::getDrawPlayerCommand()
+{
+    return [this]() -> void
+    {
+        raylib::Texture2DUnmanaged texture = LoadTexture(model->GetPlayerAnimationPath().c_str());
+        texture.Draw(model->GetPlayerSourceRec(), model->GetPlayerPosition(), WHITE);
+        texture.Unload();
+    };
+}
 
 std::function<void(AnimatorState)> GameViewModel::getAttackTopCommand()
 {
@@ -338,15 +349,3 @@ std::function<void(AnimatorState)> GameViewModel::getAttackDownCommand()
         }
     };
 }
-
-
-/* void GameViewModel::DeleteMap()
-{
-    for (int i = 0; i < model->getMaplist().size(); i++)
-    {
-        if (maplist[i].GetMapName() == model->GetMapName())
-        {
-            maplist.erase(maplist.begin() + i);
-        }
-    }
-} */
