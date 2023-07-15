@@ -6,10 +6,11 @@
 #include "GameView.h"
 #include <string>
 
-GameView::GameView() {
-    //initialize ui
+GameView::GameView()
+{
+    // initialize ui
     ui = UI();
-    //initialize buttons
+    // initialize buttons
 }
 
 // executes every frame
@@ -94,7 +95,7 @@ void GameView::Update()
     playerAniamtionUpdateCommand();
     playerUpdatePositionCommand();
     playerUpdateAnimationFrameCommand();
-    playerUpdateAnimationRectCommand();
+    playerUpdateAnimationRectCommand(raylib::Vector2(PLAYER_ANIMATION_BIAS_X, 0));
     // drawPlayerCommand();
 }
 
@@ -138,7 +139,7 @@ void GameView::SetPlayerUpdateAnimationFrameCommand(std::function<void()> comman
     playerUpdateAnimationFrameCommand = command;
 }
 
-void GameView::SetPlayerUpdateAnimationRectCommand(std::function<void()> command)
+void GameView::SetPlayerUpdateAnimationRectCommand(std::function<void(raylib::Vector2)> command)
 {
     playerUpdateAnimationRectCommand = command;
 }
@@ -162,9 +163,7 @@ void GameView::Draw(
     // temp.Unload();
 }
 
-
 void GameView::SetCommon(std::shared_ptr<GameCommon> gameCommon)
 {
     gameCommonPtr = gameCommon;
 }
-

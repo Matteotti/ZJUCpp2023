@@ -131,12 +131,12 @@ int main()
     view->SetPlayerAttackCommand(viewModel->getPlayerAttackCommand());
 
 #pragma endregion
- 
+
     viewModel->setModel(model);
     view->SetCommon(model->GetGameCommonPtr());
-    //view.SetCommon(model.GetGameCommonPtr());
+    // view.SetCommon(model.GetGameCommonPtr());
 
-    SetTargetFPS(60);
+    SetTargetFPS(144);
 
     while (!WindowShouldClose())
     {
@@ -144,24 +144,15 @@ int main()
         BeginDrawing();
 
         ClearBackground(RAYWHITE);
-        for(int i = 0; i < view->getGameCommonPtr()->GetMapList().size();i++)
+        for (int i = 0; i < view->getGameCommonPtr()->GetMapList().size(); i++)
         {
-            view->Draw(view->getGameCommonPtr()->GetMapList()[i].getPath(), view->getGameCommonPtr()->GetMapList()[i].getPosition(), raylib::Rectangle(0.0f, 0.0f,view->getGameCommonPtr()->GetMapList()[i].GetMapWidth() , view->getGameCommonPtr()->GetMapList()[i].GetMapHeight()));
+            view->Draw(view->getGameCommonPtr()->GetMapList()[i].getPath(), view->getGameCommonPtr()->GetMapList()[i].getPosition(), raylib::Rectangle(0.0f, 0.0f, view->getGameCommonPtr()->GetMapList()[i].GetMapWidth(), view->getGameCommonPtr()->GetMapList()[i].GetMapHeight()));
         }
-/*         for (int i = 0; i < model->GetColliders().size(); i++)
-        {
-            view->Draw(view->getGameCommonPtr()->GetMapList()[i].getPath(), view->getGameCommonPtr()->GetMapList()[i].getPosition(), raylib::Rectangle(0.0f, 0.0f,view->getGameCommonPtr()->GetMapList()[i].GetMapWidth() , view->getGameCommonPtr()->GetMapList()[i].GetMapHeight()));
-        } */
 
         view->UpdatePlayerMove();
         view->UpdatePlayerAttack(view->getGameCommonPtr()->GetPlayerIsFacingRight());
         view->UpdatePlayerJump(); 
         view->Update();
-        view->Draw(model->GetPlayerAnimationPath(), model->GetPlayerPosition(), model->GetPlayerSourceRec());
-
-        
-
-        DrawRectangle(model->GetGroundCheck()->colliderBox.x, model->GetGroundCheck()->colliderBox.y, model->GetGroundCheck()->colliderBox.width, model->GetGroundCheck()->colliderBox.height, BLUE);
 
         EndDrawing();
     }

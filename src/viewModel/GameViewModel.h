@@ -37,10 +37,11 @@ public:
     std::function<void()> getPlayerAnimationUpdate();
     std::function<void()> getPlayerUpdatePosition();
     std::function<void()> getUpdateAnimationFrame();
-    std::function<void()> getUpdatePlayerAnimationRect();
+    std::function<void(raylib::Vector2)> getUpdatePlayerAnimationRect();
     std::function<void()> getDrawPlayerCommand();
 
     std::function<void(direction)> getPlayerAttackCommand();
+    std::function<void(raylib::Vector2)> getDrawPlayerWithBias();
     // void DeleteMap();
 };
 
