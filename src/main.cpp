@@ -15,6 +15,8 @@
 
 int main()
 {
+    SetTraceLogLevel(LOG_NONE);
+
     const int screenWidth = 1600;
     const int screenHeight = 900;
 
@@ -41,7 +43,7 @@ int main()
     model->SetMapModel("ground_12", "../assets/sprites/Map/road3.png", 1, raylib::Vector2(279, 300));
 
 #pragma region InitPlayer
-    model->SetPlayerPosition(raylib::Vector2(0, 0));
+    model->SetPlayerPosition(raylib::Vector2(400, 0));
     model->SetPlayerSpeed(raylib::Vector2(0, 0));
     model->SetPlayerAnimatorState(AnimatorState::IDLE);
     model->SetPlayerHP(PLAYER_MAX_HP);
@@ -150,6 +152,13 @@ int main()
         view->UpdatePlayerJump();
         view->Update();
         view->Draw(model->GetPlayerAnimationPath(), model->GetPlayerPosition(), model->GetPlayerSourceRec());
+
+        for (int i = 0; i < model->GetColliders().size(); i++)
+        {
+            DrawRectangleLines(model->GetColliders()[i]->colliderBox.x, model->GetColliders()[i]->colliderBox.y, model->GetColliders()[i]->colliderBox.width, model->GetColliders()[i]->colliderBox.height, RED);
+        }
+
+        DrawRectangle(model->GetGroundCheck()->colliderBox.x, model->GetGroundCheck()->colliderBox.y, model->GetGroundCheck()->colliderBox.width, model->GetGroundCheck()->colliderBox.height, BLUE);
 
         EndDrawing();
     }

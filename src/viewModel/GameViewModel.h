@@ -34,7 +34,7 @@ public:
     std::function<void()> getPlayerAnimationUpdate();
     std::function<void()> getPlayerUpdatePosition();
     std::function<void()> getUpdateAnimationFrame();
-    std::function<void(raylib::Vector2)> getUpdatePlayerAnimationRect();
+    std::function<void()> getUpdatePlayerAnimationRect();
     std::function<void()> getDrawPlayerCommand();
 
     std::function<void(AnimatorState)> getAttackTopCommand();

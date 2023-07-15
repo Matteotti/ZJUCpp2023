@@ -265,7 +265,7 @@ private:
     std::function<void()> playerAniamtionUpdateCommand;
     std::function<void()> playerUpdatePositionCommand;
     std::function<void()> playerUpdateAnimationFrameCommand;
-    std::function<void(raylib::Vector2)> playerUpdateAnimationRectCommand;
+    std::function<void()> playerUpdateAnimationRectCommand;
     std::function<void(direction)> playerAttackCommand;
     std::function<void()> drawPlayerCommand;
 
@@ -290,7 +290,7 @@ public:
     void SetPlayerAnimationUpdateCommand(std::function<void()> command);
     void SetPlayerUpdatePositionCommand(std::function<void()> command);
     void SetPlayerUpdateAnimationFrameCommand(std::function<void()> command);
-    void SetPlayerUpdateAnimationRectCommand(std::function<void(raylib::Vector2)> command);
+    void SetPlayerUpdateAnimationRectCommand(std::function<void()> command);
     void SetPlayerAttackCommand(std::function<void(direction)> command);
     void SetDrawPlayerCommand(std::function<void()> command);
     std::shared_ptr<GameCommon> getGameCommonPtr()

@@ -8,9 +8,7 @@ GameModel::GameModel()
 {
     this->gameCommonPtr = std::make_shared<GameCommon>();
     this->animationInfo = new AnimationInfo();
-    this->mapCollider = new CustomCollider();
     this->mapAnimationInfo = new AnimationInfo();
-
 }
 
 std::shared_ptr<GameCommon> GameModel::GetGameCommonPtr()
@@ -311,8 +309,8 @@ void GameModel::SetLeftWallCheck(CustomCollider *leftWallCheck)
 }
 void GameModel::SetLeftWallCheckPosition(raylib::Vector2 deltaPosition)
 {
-    rightWallCheck_->colliderBox.x += deltaPosition.x;
-    rightWallCheck_->colliderBox.y += deltaPosition.y;
+    leftWallCheck_->colliderBox.x += deltaPosition.x;
+    leftWallCheck_->colliderBox.y += deltaPosition.y;
 }
 CustomCollider *GameModel::GetRightWallCheck()
 {
@@ -354,11 +352,6 @@ void GameModel::SetGroundCheckPosition(raylib::Vector2 deltaPosition)
     groundCheck_->colliderBox.y += deltaPosition.y;
 }
 
-
-
-
-
-
 /* void GameModel::SetAnimationInfoPath(std::string path)
 {
     animationInfo->path = path;
@@ -379,9 +372,6 @@ void GameModel::SetMapAnimationInfoFrameCount(int frameCount)
 {
     this->frameCount = frameCount;
 }
-
-
-
 
 /* void GameModel::LoadTexture(std::string path)
 {
@@ -435,20 +425,20 @@ void GameModel::SetMapHeight(float height)
 
 void GameModel::SetMapModel(const std::string mapName, std::string path, int frameCount, raylib::Vector2 position)
 {
-    
+    this->mapCollider = new CustomCollider();
     this->mapName = mapName;
     this->mapCommonPtr = std::make_shared<MapCommon>(position, path, frameCount);
-    //this->mapCommonPtr = std::make_shared<MapCommon>(position, path, frameCount);
+    // this->mapCommonPtr = std::make_shared<MapCommon>(position, path, frameCount);
     this->SetMapAnimationInfoPath(path);
     this->SetMapAnimationInfoFrameCount(frameCount);
     raylib::Texture2DUnmanaged texture = raylib::Texture2DUnmanaged(path);
-    //this->mapCommonPtr->SetMapTexture(raylib::Texture2DUnmanaged(path));
-    this->mapWidth=texture.width / frameCount;
-    this->mapHeight=texture.height;
+    // this->mapCommonPtr->SetMapTexture(raylib::Texture2DUnmanaged(path));
+    this->mapWidth = texture.width / frameCount;
+    this->mapHeight = texture.height;
     this->mapWidthList.push_back(mapWidth);
     this->mapHeightList.push_back(mapHeight);
     this->SetColliderName(mapName);
-    this->SetColliderColliderBox(position.x,position.y, mapWidth, mapHeight);
+    this->SetColliderColliderBox(position.x, position.y, mapWidth, mapHeight);
     this->SetColliderTag(ColliderTag::ENVIRONMENT);
     colliders_.push_back(this->mapCollider);
     maplist.push_back(*this->mapCommonPtr);
@@ -464,7 +454,6 @@ std::string GameModel::GetMapName()
     return mapName;
 }
 
-
 std::vector<MapCommon> GameModel::getMaplist() const
 {
     return maplist;
@@ -479,7 +468,5 @@ int GameModel::GetMapHeight(int index)
 {
     return mapHeightList[index];
 }
-
-
 
 #pragma endregion

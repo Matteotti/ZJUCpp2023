@@ -90,7 +90,7 @@ void GameView::Update()
     playerAniamtionUpdateCommand();
     playerUpdatePositionCommand();
     playerUpdateAnimationFrameCommand();
-    playerUpdateAnimationRectCommand(raylib::Vector2(-PLAYER_ANIMATION_BIAS_X, 0));
+    playerUpdateAnimationRectCommand();
     // drawPlayerCommand();
 }
 
@@ -134,7 +134,7 @@ void GameView::SetPlayerUpdateAnimationFrameCommand(std::function<void()> comman
     playerUpdateAnimationFrameCommand = command;
 }
 
-void GameView::SetPlayerUpdateAnimationRectCommand(std::function<void(raylib::Vector2)> command)
+void GameView::SetPlayerUpdateAnimationRectCommand(std::function<void()> command)
 {
     playerUpdateAnimationRectCommand = command;
 }

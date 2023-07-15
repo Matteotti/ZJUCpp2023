@@ -3,6 +3,7 @@
 //
 
 #include "GameViewModel.h"
+#include <iostream>
 #include <functional>
 
 GameViewModel::GameViewModel() {}
@@ -72,6 +73,7 @@ std::function<void(direction)> GameViewModel::getMovePlayerCommand()
 {
     return [this](direction command) -> void
     {
+        // std::cout << "PLAYER POS 1" << model->GetPlayerPosition().x << " " << model->GetPlayerPosition().y << std::endl;
         if (model->GetGameCommonPtr()->GetPlayerIsFacingRight() && command == direction::LEFT)
         {
             model->GetGameCommonPtr()->SetPlayerIsFacingRight(false);
@@ -84,16 +86,20 @@ std::function<void(direction)> GameViewModel::getMovePlayerCommand()
         {
         case LEFT:
             model->SetPlayerSpeed(raylib::Vector2(-PLAYER_SPEED, model->GetPlayerSpeed().y));
+            // std::cout << "LEFT, SPEED = " << model->GetPlayerSpeed().x << " " << model->GetPlayerSpeed().y << std::endl;
             break;
         case RIGHT:
             model->SetPlayerSpeed(raylib::Vector2(PLAYER_SPEED, model->GetPlayerSpeed().y));
+            // std::cout << "RIGHT, SPEED = " << model->GetPlayerSpeed().x << " " << model->GetPlayerSpeed().y << std::endl;
             break;
         case STILL:
             model->SetPlayerSpeed(raylib::Vector2(0, model->GetPlayerSpeed().y));
+            // std::cout << "STILL, SPEED = " << model->GetPlayerSpeed().x << " " << model->GetPlayerSpeed().y << std::endl;
             break;
         default:
             break;
         }
+        // std::cout << "PLAYER POS 2" << model->GetPlayerPosition().x << " " << model->GetPlayerPosition().y << std::endl;
     };
 }
 
@@ -102,8 +108,10 @@ std::function<void(bool)> GameViewModel::getPlayerJumpCommand()
 {
     return [this](bool isPressed) -> void
     {
+        // std::cout << "PLAYER POS 3" << model->GetPlayerPosition().x << " " << model->GetPlayerPosition().y << std::endl;
         if (isPressed)
         {
+            // std::cout << "JUMP" << std::endl;
             if (model->GetPlayerIsGrounded())
             {
                 model->SetPlayerIsGrounded(false);
@@ -119,9 +127,11 @@ std::function<void(bool)> GameViewModel::getPlayerJumpCommand()
         }
         else
         {
+            // std::cout << "STOP JUMP" << std::endl;
             model->SetPlayerIsJumping(false);
             model->SetPlayerJumpCounter(0);
         }
+        // std::cout << "PLAYER POS 4" << model->GetPlayerPosition().x << " " << model->GetPlayerPosition().y << std::endl;
     };
 }
 
@@ -130,6 +140,7 @@ std::function<void()> GameViewModel::getPlayerUpdateJumpSpeed()
 {
     return [this]() -> void
     {
+        // std::cout << "PLAYER POS 5" << model->GetPlayerPosition().x << " " << model->GetPlayerPosition().y << std::endl;
         if (model->GetPlayerIsJumping() && model->GetPlayerJumpCounter() > 0.0f)
         {
             model->SetPlayerSpeed(raylib::Vector2(model->GetPlayerSpeed().x, PLAYER_JUMP_SPEED));
@@ -140,6 +151,7 @@ std::function<void()> GameViewModel::getPlayerUpdateJumpSpeed()
             model->SetPlayerIsJumping(false);
             model->SetPlayerJumpCounter(0);
         }
+        // std::cout << "PLAYER POS 6" << model->GetPlayerPosition().x << " " << model->GetPlayerPosition().y << std::endl;
     };
 }
 
@@ -148,6 +160,7 @@ std::function<void()> GameViewModel::getPlayerCheckWall()
 {
     return [this]() -> void
     {
+        // std::cout << "PLAYER POS 7" << model->GetPlayerPosition().x << " " << model->GetPlayerPosition().y << std::endl;
         std::vector<CustomCollider *> left = CheckCollisionWithAll(model->GetLeftWallCheck(), ColliderTag::ENVIRONMENT);
         std::vector<CustomCollider *> right = CheckCollisionWithAll(model->GetRightWallCheck(), ColliderTag::ENVIRONMENT);
         std::vector<CustomCollider *> ceiling = CheckCollisionWithAll(model->GetCeilingCheck(), ColliderTag::ENVIRONMENT);
@@ -181,6 +194,8 @@ std::function<void()> GameViewModel::getPlayerCheckWall()
         {
             model->SetPlayerSpeed(raylib::Vector2(model->GetPlayerSpeed().x, 0));
         }
+
+        // std::cout << "PLAYER POS 8" << model->GetPlayerPosition().x << " " << model->GetPlayerPosition().y << std::endl;
     };
 }
 
@@ -189,6 +204,7 @@ std::function<void()> GameViewModel::getPlayerAnimatorUpdate()
 {
     return [this]() -> void
     {
+        // std::cout << "PLAYER POS 9" << model->GetPlayerPosition().x << " " << model->GetPlayerPosition().y << std::endl;
         if (model->GetPlayerAnimatorState() == IDLE || model->GetPlayerAnimatorState() == WALKING || model->GetPlayerAnimatorState() == JUMPING || model->GetPlayerAnimatorState() == FALLING)
         {
             if (model->GetPlayerIsGrounded())
@@ -214,12 +230,15 @@ std::function<void()> GameViewModel::getPlayerAnimatorUpdate()
                 }
             }
         }
+
+        // std::cout << "PLAYER POS 10" << model->GetPlayerPosition().x << " " << model->GetPlayerPosition().y << std::endl;
     };
 }
 std::function<void()> GameViewModel::getPlayerAnimationUpdate()
 {
     return [this]() -> void
     {
+        // std::cout << "PLAYER POS 11" << model->GetPlayerPosition().x << " " << model->GetPlayerPosition().y << std::endl;
         switch (model->GetPlayerAnimatorState())
         {
         case IDLE:
@@ -255,6 +274,8 @@ std::function<void()> GameViewModel::getPlayerAnimationUpdate()
             UpdateAnimationInfo("../assets/sprites/Attack/attackright.png", 5);
             break;
         }
+
+        // std::cout << "PLAYER POS 12" << model->GetPlayerPosition().x << " " << model->GetPlayerPosition().y << std::endl;
     };
 }
 
@@ -263,12 +284,17 @@ std::function<void()> GameViewModel::getPlayerUpdatePosition()
 {
     return [this]() -> void
     {
+        // std::cout << "PLAYER POS 13" << model->GetPlayerPosition().x << " " << model->GetPlayerPosition().y << std::endl;
+        //  std::cout << "PLAYER SPEED " << model->GetPlayerSpeed().x << " " << model->GetPlayerSpeed().y << std::endl;
+        //  std::cout << "PLAYER POSITION1 " << model->GetPlayerPosition().x << " " << model->GetPlayerPosition().y << std::endl;
         model->SetPlayerPosition(raylib::Vector2(model->GetPlayerPosition().x + model->GetPlayerSpeed().x, model->GetPlayerPosition().y + model->GetPlayerSpeed().y));
+        // std::cout << "PLAYER POSITION2 " << model->GetPlayerPosition().x << " " << model->GetPlayerPosition().y << std::endl;
         model->SetPlayerColliderBoxPosition(model->GetPlayerSpeed());
         model->SetLeftWallCheckPosition(model->GetPlayerSpeed());
         model->SetRightWallCheckPosition(model->GetPlayerSpeed());
         model->SetCeilingCheckPosition(model->GetPlayerSpeed());
         model->SetGroundCheckPosition(model->GetPlayerSpeed());
+        // std::cout << "PLAYER POS 14" << model->GetPlayerPosition().x << " " << model->GetPlayerPosition().y << std::endl;
     };
 }
 
@@ -277,6 +303,7 @@ std::function<void()> GameViewModel::getUpdateAnimationFrame()
 {
     return [this]() -> void
     {
+        // std::cout << "PLAYER POS 15" << model->GetPlayerPosition().x << " " << model->GetPlayerPosition().y << std::endl;
         model->SetPlayerAnimationFrameTimeCounter(model->GetPlayerAnimationFrameTimeCounter() + GetFrameTime());
         if (model->GetPlayerAnimationFrameTimeCounter() >= model->GetPlayerAnimationFrameTime())
         {
@@ -290,18 +317,20 @@ std::function<void()> GameViewModel::getUpdateAnimationFrame()
                     model->SetPlayerAnimationCurrentFrame(model->GetPlayerAnimationFrameCount() - 1);
             }
         }
+
+        // std::cout << "PLAYER POS 16" << model->GetPlayerPosition().x << " " << model->GetPlayerPosition().y << std::endl;
     };
 }
 
 // STD::FUNCTIONS Execute every frame
-std::function<void(raylib::Vector2)> GameViewModel::getUpdatePlayerAnimationRect()
+std::function<void()> GameViewModel::getUpdatePlayerAnimationRect()
 {
-    return [this](raylib::Vector2 bias = raylib::Vector2(0, 0)) -> void
+    return [this]() -> void
     {
+        // std::cout << "PLAYER POS 17" << model->GetPlayerPosition().x << " " << model->GetPlayerPosition().y << std::endl;
         if (model->GetGameCommonPtr()->GetPlayerIsFacingRight())
         {
             model->SetPlayerAnimationFrameWidth(-1 * model->GetPlayerAnimationFrameWidth());
-            model->SetPlayerPosition(raylib::Vector2(model->GetPlayerPosition().x + bias.x, model->GetPlayerPosition().y + bias.y));
             model->SetPlayerAnimationCurrentFrame(model->GetPlayerAnimationFrameCount() - model->GetPlayerAnimationCurrentFrame() - 1);
         }
         if (model->GetGameCommonPtr()->GetPlayerIsFacingRight() && model->GetPlayerAnimationCurrentFrame() == 0 && model->GetPlayerAnimationIsStop())
@@ -315,8 +344,12 @@ std::function<void(raylib::Vector2)> GameViewModel::getUpdatePlayerAnimationRect
             model->SetPlayerAnimationFrameWidth(-1 * model->GetPlayerAnimationFrameWidth());
             model->SetPlayerAnimationCurrentFrame(model->GetPlayerAnimationFrameCount() - model->GetPlayerAnimationCurrentFrame() - 1);
         }
+
+        // std::cout << "PLAYER POS 18" << model->GetPlayerPosition().x << " " << model->GetPlayerPosition().y << std::endl;
     };
 }
+
+// std::function<void(raylib::Vector2)> GameViewModel::getUpdatePlayerPositionBeforeDraw()
 
 // STD::FUNCTIONS Execute every frame
 std::function<void()> GameViewModel::getDrawPlayerCommand()
