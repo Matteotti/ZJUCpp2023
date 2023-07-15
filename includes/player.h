@@ -9,7 +9,7 @@
 
 /* #define PLAYER_MAX_HP 8
 #define PLAYER_MAX_MP 200 */
-#define PLAYER_SPEED 5.0f
+#define PLAYER_SPEED 10.0f
 #define PLAYER_JUMP_SPEED -5.0f
 #define PLAYER_JUMP_TIME 1.5f
 #define PLAYER_DOUBLE_JUMP_SPEED 5.0f
@@ -33,7 +33,7 @@
 #define PLAYER_WALLCHECK_WIDTH 60.0f
 #define PLAYER_WALLCHECK_HEIGHT 120.0f
 
-#define PLAYER_ANIMATION_BIAS_X -60.0f
+#define PLAYER_ANIMATION_BIAS_X -100.0f
 
 enum AnimatorState
 {

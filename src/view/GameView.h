@@ -21,6 +21,7 @@ private:
     raylib::Image image;
     raylib::Rectangle src;
     bool isHovered;
+    //FIXME: Possibly be unable to work as expected via passing and using a std::function
     std::function<void()> command;
 public:
     Button(std::string path, raylib::Rectangle src, std::function<void()> command){
@@ -49,13 +50,7 @@ public:
     }
 
     //overload = operator
-    Button& operator=(const Button& button){
-        this->image = button.image;
-        this->src = button.src;
-        this->isHovered = button.isHovered;
-        this->command = button.command;
-        return *this;
-    }
+    Button& operator=(const Button& other)= default;
 
     ~Button(){
         image.Unload();
@@ -65,15 +60,12 @@ public:
 class Menu{
 private:
     std::vector<Button> buttons;
-    raylib::Texture background;
 public:
-    Menu(){}
-    Menu(std::vector<Button> buttons, std::string background_path){
+    Menu() = default;
+    Menu(std::vector<Button> buttons){
         this->buttons = std::move(buttons);
-        background.Load(background_path);
     }
     void DrawMenu(){
-        background.Draw(0, 0);
         for (auto &button : buttons) {
             button.DrawButton();
         }
@@ -86,9 +78,7 @@ public:
     void SetButtons(std::vector<Button> buttonsList){
         this->buttons = std::move(buttonsList);
     }
-    ~Menu(){
-        background.Unload();
-    }
+    ~Menu() = default;
 };
 
 class UI{
@@ -109,18 +99,24 @@ private:
     //@TODO: add animation
     AnimationInfo MP_bar_animation;
 
-    int HP_count{};
-    int MP_count{};
+    int HP_count;
+    int MP_count;
 
 public:
-    UI(){}
+    UI(){
+        HP_bar_unit_scale = 1.0f;
+        MP_bar_scale = 1.0f;
+        Background_scale = 1.0f;
+        HP_count = PLAYER_MAX_HP;
+        MP_count = PLAYER_MAX_MP;
+    }
 
     UI(const std::string& HP_bar_unit_path, const std::string& MP_bar_path, const std::string& Background_path){
         HP_bar_unit.Load(HP_bar_unit_path);
         MP_bar.Load(MP_bar_path);
         Background.Load(Background_path);
-        HP_count = 0;
-        MP_count = 0;
+        HP_count = PLAYER_MAX_HP;
+        MP_count = PLAYER_MAX_MP;
     }
 
     void DrawUI(){
@@ -224,7 +220,15 @@ private:
 
     std::function<void(direction)> playerMoveCommand;
     std::function<void(bool)> playerJumpCommand;
+    std::function<void()> playerUpdateJumpSpeedCommand;
+    std::function<void()> playerCheckWallCommand;
+    std::function<void()> playerAniamtorUpdateCommand;
+    std::function<void()> playerAniamtionUpdateCommand;
+    std::function<void()> playerUpdatePositionCommand;
+    std::function<void()> playerUpdateAnimationFrameCommand;
+    std::function<void()> playerUpdateAnimationRectCommand;
     std::function<void(direction)> playerAttackCommand;
+    std::function<void()> drawPlayerCommand;
 
     std::shared_ptr<GameCommon> gameCommonPtr;
     
@@ -234,27 +238,35 @@ private:
 
 public:
     GameView();
-    void setCommon(std::shared_ptr<GameCommon> gameCommon);
-    //void drawExample(int score, bool gameOver);
-    //void UpdateScore();
-    //void GameOver();
+    void SetCommon(std::shared_ptr<GameCommon> gameCommon);
+    void DrawExample(int score, bool gameOver);
+    void UpdateScore();
+    void GameOver();
     void UpdatePlayerMove();
     void UpdatePlayerJump();
     void UpdatePlayerAttack(bool isFacingRight);
+    void Update();
+
+    UI ui;
+    Menu menu;
 
     void Draw(
-            std::string path,
-            raylib::Vector2 position,
-            raylib::Rectangle src
-    );
-
-    void SetIncreaseScoreCommand(std::function<void()> command);
-    void setSetGameOverCommand(std::function<void(bool)> command);
+        std::string path,
+        raylib::Vector2 position,
+        raylib::Rectangle src);
     void SetPlayerMoveCommand(std::function<void(direction)> command);
     void SetPlayerJumpCommand(std::function<void(bool)> command);
-    void SetPlayerAttackCommand(std::function<void(bool)> command);
-
-    std::shared_ptr<GameCommon> getGameCommonPtr() {
+    void SetPlayerUpdateJumpSpeedCommand(std::function<void()> command);
+    void SetPlayerCheckWallCommand(std::function<void()> command);
+    void SetPlayerAnimatorUpdateCommand(std::function<void()> command);
+    void SetPlayerAnimationUpdateCommand(std::function<void()> command);
+    void SetPlayerUpdatePositionCommand(std::function<void()> command);
+    void SetPlayerUpdateAnimationFrameCommand(std::function<void()> command);
+    void SetPlayerUpdateAnimationRectCommand(std::function<void()> command);
+    void SetPlayerAttackCommand(std::function<void(direction)> command);
+    void SetDrawPlayerCommand(std::function<void()> command);
+    std::shared_ptr<GameCommon> getGameCommonPtr()
+    {
         return gameCommonPtr;
     }
     
