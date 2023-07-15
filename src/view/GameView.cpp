@@ -6,7 +6,11 @@
 #include "GameView.h"
 #include <string>
 
-GameView::GameView() {}
+GameView::GameView() {
+    //initialize ui
+    ui = UI();
+    //initialize buttons
+}
 
 // executes every frame
 void GameView::UpdatePlayerMove()
