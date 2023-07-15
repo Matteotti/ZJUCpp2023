@@ -12,13 +12,10 @@ void GameViewModel::setModel(GameModel *model)
 {
     this->model = model;
 }
-std::shared_ptr<MapCommon> GameViewModel::GetMapCommonPtr()
+/* void GameViewModel::setMapModel(MapModel *mapModel)
 {
-    return model->GetMapCommonPtr();
-}
-
-
-
+    this->mapModel = mapModel;
+} */
 
 // TOOL METHOD: Check Collision using tag
 std::vector<CustomCollider *> GameViewModel::CheckCollisionWithAll(CustomCollider *target, ColliderTag targetTag)
@@ -326,25 +323,29 @@ std::function<void()> GameViewModel::getUpdateAnimationFrame()
 }
 
 // STD::FUNCTIONS Execute every frame
-std::function<void()> GameViewModel::getUpdatePlayerAnimationRect()
+std::function<void(raylib::Vector2)> GameViewModel::getUpdatePlayerAnimationRect()
 {
-    return [this]() -> void
+    return [this](raylib::Vector2 bias) -> void
     {
         // std::cout << "PLAYER POS 17" << model->GetPlayerPosition().x << " " << model->GetPlayerPosition().y << std::endl;
         if (model->GetGameCommonPtr()->GetPlayerIsFacingRight())
         {
             model->SetPlayerAnimationFrameWidth(-1 * model->GetPlayerAnimationFrameWidth());
+            model->SetPlayerPosition(raylib::Vector2(model->GetPlayerPosition().x + bias.x, model->GetPlayerPosition().y + bias.y));
             model->SetPlayerAnimationCurrentFrame(model->GetPlayerAnimationFrameCount() - model->GetPlayerAnimationCurrentFrame() - 1);
         }
         if (model->GetGameCommonPtr()->GetPlayerIsFacingRight() && model->GetPlayerAnimationCurrentFrame() == 0 && model->GetPlayerAnimationIsStop())
             model->SetPlayerAnimationCurrentFrame(1);
         raylib::Rectangle sourceRec = raylib::Rectangle(model->GetPlayerAnimationCurrentFrame() * model->GetPlayerAnimationFrameWidth(), 0.0f, model->GetPlayerAnimationFrameWidth(), model->GetPlayerAnimationFrameHeight());
         model->SetPlayerSourceRec(sourceRec);
+        raylib::Texture2DUnmanaged texture = LoadTexture(model->GetPlayerAnimationPath().c_str());
+        texture.Draw(model->GetPlayerSourceRec(), model->GetPlayerPosition());
         if (model->GetGameCommonPtr()->GetPlayerIsFacingRight() && model->GetPlayerAnimationCurrentFrame() == 1 && model->GetPlayerAnimationIsStop())
             model->SetPlayerAnimationCurrentFrame(0);
         if (model->GetGameCommonPtr()->GetPlayerIsFacingRight())
         {
             model->SetPlayerAnimationFrameWidth(-1 * model->GetPlayerAnimationFrameWidth());
+            model->SetPlayerPosition(raylib::Vector2(model->GetPlayerPosition().x - bias.x, model->GetPlayerPosition().y - bias.y));
             model->SetPlayerAnimationCurrentFrame(model->GetPlayerAnimationFrameCount() - model->GetPlayerAnimationCurrentFrame() - 1);
         }
 
@@ -352,7 +353,18 @@ std::function<void()> GameViewModel::getUpdatePlayerAnimationRect()
     };
 }
 
-// std::function<void(raylib::Vector2)> GameViewModel::getUpdatePlayerPositionBeforeDraw()
+std::function<void(raylib::Vector2)> GameViewModel::getDrawPlayerWithBias()
+{
+    return [this](raylib::Vector2 bias) -> void
+    {
+        raylib::Texture2DUnmanaged texture = LoadTexture(model->GetPlayerAnimationPath().c_str());
+        if (model->GetGameCommonPtr()->GetPlayerIsFacingRight())
+            texture.Draw(model->GetPlayerSourceRec(), model->GetPlayerPosition() + bias, WHITE);
+        else
+            texture.Draw(model->GetPlayerSourceRec(), model->GetPlayerPosition(), WHITE);
+        texture.Unload();
+    };
+}
 
 // STD::FUNCTIONS Execute every frame
 std::function<void()> GameViewModel::getDrawPlayerCommand()
