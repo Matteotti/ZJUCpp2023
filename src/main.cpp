@@ -31,7 +31,7 @@ int main()
 #pragma region map init
     model->SetMapModel("ground_1", "../assets/sprites/Map/road3.png", 1, raylib::Vector2(0, 700));
     model->SetMapModel("ground_2", "../assets/sprites/Map/road3.png", 1, raylib::Vector2(279, 700));
-    //model->SetMapModel("ground_3", "../assets/sprites/Map/road3.png", 1, raylib::Vector2(279, 600));
+    // model->SetMapModel("ground_3", "../assets/sprites/Map/road3.png", 1, raylib::Vector2(279, 600));
     model->SetMapModel("ground_4", "../assets/sprites/Map/road3.png", 1, raylib::Vector2(279 * 1, 700));
     model->SetMapModel("ground_5", "../assets/sprites/Map/road3.png", 1, raylib::Vector2(279 * 2, 700));
     model->SetMapModel("ground_6", "../assets/sprites/Map/road3.png", 1, raylib::Vector2(279 * 3, 700));
@@ -46,13 +46,11 @@ int main()
     model->SetMapModel("ground_15", "../assets/sprites/Map/road3.png", 1, raylib::Vector2(279 * 12, 300));
     model->SetMapModel("ground_16", "../assets/sprites/Map/road3.png", 1, raylib::Vector2(279 * 13, 700));
     model->SetMapModel("ground_17", "../assets/sprites/Map/road3.png", 1, raylib::Vector2(279, 300));
-    //model->SetMapModel("ground_3", "../assets/sprites/Map/road3.png", 1, raylib::Vector2(279, 600));
+    // model->SetMapModel("ground_3", "../assets/sprites/Map/road3.png", 1, raylib::Vector2(279, 600));
     model->SetMapModel("ground_6", "../assets/sprites/Map/road7-.png", 1, raylib::Vector2(279 * 3, 100));
     model->SetMapModel("ground_7", "../assets/sprites/Map/road7-.png", 1, raylib::Vector2(279 * 4, 100));
     model->SetMapModel("ground_8", "../assets/sprites/Map/road7-.png", 1, raylib::Vector2(279 * 5, 100));
     model->SetMapModel("ground_9", "../assets/sprites/Map/road7-.png", 1, raylib::Vector2(279 * 6, 100));
-
-
 
 #pragma endregion
 
@@ -235,10 +233,10 @@ int main()
     view->SetCommon(model->GetGameCommonPtr());
     // view.SetCommon(model.GetGameCommonPtr());
 
-    SetTargetFPS(60);
+    SetTargetFPS(90);
 
     view->camera.target = view->getGameCommonPtr()->GetPlayerPosition();
-    view->camera.offset = (Vector2){ screenWidth/2.0f, screenHeight/2.0f };
+    view->camera.offset = (Vector2){screenWidth / 2.0f, screenHeight / 2.0f};
     view->camera.rotation = 0.0f;
     view->camera.zoom = 1.0f;
     while (!WindowShouldClose())

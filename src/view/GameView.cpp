@@ -179,7 +179,7 @@ void GameView::SetDrawPlayerCommand(std::function<void()> command)
 
 void GameView::SetUpdateEnemyAnimState(std::function<void()> command)
 {
-    updateEnemyAnimationCommand = command;
+    updateEnemyAnimStateCommand = command;
 }
 
 void GameView::SetUpdateEnemySpeed(std::function<void()> command)
