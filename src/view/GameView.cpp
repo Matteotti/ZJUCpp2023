@@ -57,15 +57,7 @@ void GameView::UpdatePlayerAttack(bool isFacingRight)
 {
     if (IsKeyPressed(KEY_Z))
     {
-        if (IsKeyDown(KEY_RIGHT))
-        {
-            playerAttackCommand(RIGHT);
-        }
-        else if (IsKeyDown(KEY_LEFT))
-        {
-            playerAttackCommand(LEFT);
-        }
-        else if (IsKeyDown(KEY_UP))
+        if (IsKeyDown(KEY_UP))
         {
             playerAttackCommand(UP);
         }
@@ -87,13 +79,11 @@ void GameView::UpdatePlayerAttack(bool isFacingRight)
     }
 }
 
-void GameView::UpdateCamera(Camera2D *camera, raylib::Vector2 position,int width, int height)
+void GameView::UpdateCamera(Camera2D *camera, raylib::Vector2 position, int width, int height)
 {
-    camera->offset = (Vector2){ width/2.0f, height/2.0f };
+    camera->offset = (Vector2){width / 2.0f, height / 2.0f};
     camera->target = position;
 }
-
-
 
 void GameView::UpdatePlayer()
 {
@@ -104,7 +94,7 @@ void GameView::UpdatePlayer()
     playerUpdatePositionCommand();
     playerUpdateAnimationFrameCommand();
     UpdatePlayerAttack(gameCommonPtr->GetPlayerIsFacingRight());
-    UpdateCamera(&camera, raylib::Vector2(gameCommonPtr->GetPlayerPosition().x,gameCommonPtr->GetPlayerPosition().y-100), 1600, 900);
+    UpdateCamera(&camera, raylib::Vector2(gameCommonPtr->GetPlayerPosition().x, gameCommonPtr->GetPlayerPosition().y - 100), 1600, 900);
     playerUpdateAnimationRectCommand(raylib::Vector2(PLAYER_ANIMATION_BIAS_X, 0));
     // drawPlayerCommand();
 }
@@ -241,4 +231,3 @@ void GameView::SetCommon(std::shared_ptr<GameCommon> gameCommon)
 {
     gameCommonPtr = gameCommon;
 }
-
