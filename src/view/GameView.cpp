@@ -80,7 +80,7 @@ void GameView::UpdatePlayerAttack(bool isFacingRight)
 
 void GameView::UpdateCamera(Camera2D *camera, raylib::Vector2 position, int width, int height)
 {
-    camera->offset = (Vector2){width / 2.0f, height / 2.0f};
+    camera->offset = raylib::Vector2(width / 2.0f, height / 2.0f);
     camera->target = position;
 }
 

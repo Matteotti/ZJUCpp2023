@@ -12,8 +12,16 @@
 #include "model/GameModel.h"
 #include "view/GameView.h"
 #include "viewModel/GameViewModel.h"
-int main()
-{
+
+enum gameState {
+    START,
+    RUNNING,
+    PAUSE,
+    GAME_OVER,
+    WIN
+};
+
+int main() {
     SetTraceLogLevel(LOG_NONE);
 
     const int screenWidth = 1600;
@@ -60,6 +68,8 @@ int main()
 
 #pragma endregion
 
+    //Init Buttons
+
 #pragma region InitPlayer
     model->SetPlayerPosition(raylib::Vector2(400, 0));
     model->SetPlayerSpeed(raylib::Vector2(0, 0));
@@ -86,23 +96,33 @@ int main()
     raylib::Texture2DUnmanaged texture = LoadTexture(model->GetPlayerAnimationPath().c_str());
     model->SetPlayerAnimationFrameWidth(texture.width / model->GetPlayerAnimationFrameCount());
     model->SetPlayerAnimationFrameHeight(texture.height);
-    model->SetPlayerSourceRec(raylib::Rectangle(0.0f, 0.0f, model->GetPlayerAnimationFrameWidth(), model->GetPlayerAnimationFrameHeight()));
+    model->SetPlayerSourceRec(raylib::Rectangle(0.0f, 0.0f, model->GetPlayerAnimationFrameWidth(),
+                                                model->GetPlayerAnimationFrameHeight()));
     texture.Unload();
     CustomCollider *playerCollider = reinterpret_cast<CustomCollider *>(malloc(sizeof(CustomCollider)));
     memset(playerCollider, 0, sizeof(CustomCollider));
     model->SetPlayerCollider(playerCollider);
     playerCollider->colliderName = "player";
-    model->SetPlayerColliderBox(raylib::Rectangle(model->GetPlayerPosition().x, model->GetPlayerPosition().y, PLAYER_WALLCHECK_WIDTH, PLAYER_WALLCHECK_HEIGHT));
+    model->SetPlayerColliderBox(
+            raylib::Rectangle(model->GetPlayerPosition().x, model->GetPlayerPosition().y, PLAYER_WALLCHECK_WIDTH,
+                              PLAYER_WALLCHECK_HEIGHT));
     model->SetPlayerColliderTag(ColliderTag::PLAYER);
     model->SetPlayerColliderType(ColliderType::RECT);
     model->AddCollider(model->GetPlayerCollider());
+#pragma endregion
+
+#pragma region InitButtons
+    view->resumeButton.SetPosition(600.0f,400.0f);
+    view->exitButton.SetPosition(600.0f,600.0f);
 #pragma endregion
 
 #pragma region InitPlayerWallCheck
     CustomCollider *playerLeftWallCheck = reinterpret_cast<CustomCollider *>(malloc(sizeof(CustomCollider)));
     memset(playerLeftWallCheck, 0, sizeof(CustomCollider));
     playerLeftWallCheck->colliderName = "playerLeftWallCheck";
-    playerLeftWallCheck->colliderBox = raylib::Rectangle(model->GetPlayerPosition().x - PLAYER_WALLCHECK_BIAS_X, model->GetPlayerPosition().y, PLAYER_WALLCHECK_BIAS_X, PLAYER_WALLCHECK_HEIGHT);
+    playerLeftWallCheck->colliderBox = raylib::Rectangle(model->GetPlayerPosition().x - PLAYER_WALLCHECK_BIAS_X,
+                                                         model->GetPlayerPosition().y, PLAYER_WALLCHECK_BIAS_X,
+                                                         PLAYER_WALLCHECK_HEIGHT);
     playerLeftWallCheck->colliderTag = ColliderTag::PLAYER_WALLCHECK;
     playerLeftWallCheck->colliderType = ColliderType::RECT;
     model->SetLeftWallCheck(playerLeftWallCheck);
@@ -111,7 +131,9 @@ int main()
     CustomCollider *playerRightWallCheck = reinterpret_cast<CustomCollider *>(malloc(sizeof(CustomCollider)));
     memset(playerRightWallCheck, 0, sizeof(CustomCollider));
     playerRightWallCheck->colliderName = "playerRightWallCheck";
-    playerRightWallCheck->colliderBox = raylib::Rectangle(model->GetPlayerPosition().x + PLAYER_WALLCHECK_WIDTH, model->GetPlayerPosition().y, PLAYER_WALLCHECK_BIAS_X, PLAYER_WALLCHECK_HEIGHT);
+    playerRightWallCheck->colliderBox = raylib::Rectangle(model->GetPlayerPosition().x + PLAYER_WALLCHECK_WIDTH,
+                                                          model->GetPlayerPosition().y, PLAYER_WALLCHECK_BIAS_X,
+                                                          PLAYER_WALLCHECK_HEIGHT);
     playerRightWallCheck->colliderTag = ColliderTag::PLAYER_WALLCHECK;
     playerRightWallCheck->colliderType = ColliderType::RECT;
     model->SetRightWallCheck(playerRightWallCheck);
@@ -120,7 +142,9 @@ int main()
     CustomCollider *playerTopWallCheck = reinterpret_cast<CustomCollider *>(malloc(sizeof(CustomCollider)));
     memset(playerTopWallCheck, 0, sizeof(CustomCollider));
     playerTopWallCheck->colliderName = "playerTopWallCheck";
-    playerTopWallCheck->colliderBox = raylib::Rectangle(model->GetPlayerPosition().x, model->GetPlayerPosition().y - PLAYER_WALLCHECK_BIAS_Y, PLAYER_WALLCHECK_WIDTH, PLAYER_WALLCHECK_BIAS_Y);
+    playerTopWallCheck->colliderBox = raylib::Rectangle(model->GetPlayerPosition().x,
+                                                        model->GetPlayerPosition().y - PLAYER_WALLCHECK_BIAS_Y,
+                                                        PLAYER_WALLCHECK_WIDTH, PLAYER_WALLCHECK_BIAS_Y);
     playerTopWallCheck->colliderTag = ColliderTag::PLAYER_WALLCHECK;
     playerTopWallCheck->colliderType = ColliderType::RECT;
     model->SetCeilingCheck(playerTopWallCheck);
@@ -129,7 +153,9 @@ int main()
     CustomCollider *playerBottomWallCheck = reinterpret_cast<CustomCollider *>(malloc(sizeof(CustomCollider)));
     memset(playerBottomWallCheck, 0, sizeof(CustomCollider));
     playerBottomWallCheck->colliderName = "playerBottomWallCheck";
-    playerBottomWallCheck->colliderBox = raylib::Rectangle(model->GetPlayerPosition().x, model->GetPlayerPosition().y + PLAYER_WALLCHECK_HEIGHT, PLAYER_WALLCHECK_WIDTH, PLAYER_WALLCHECK_BIAS_Y);
+    playerBottomWallCheck->colliderBox = raylib::Rectangle(model->GetPlayerPosition().x,
+                                                           model->GetPlayerPosition().y + PLAYER_WALLCHECK_HEIGHT,
+                                                           PLAYER_WALLCHECK_WIDTH, PLAYER_WALLCHECK_BIAS_Y);
     playerBottomWallCheck->colliderTag = ColliderTag::PLAYER_WALLCHECK;
     playerBottomWallCheck->colliderType = ColliderType::RECT;
     model->SetGroundCheck(playerBottomWallCheck);
@@ -186,7 +212,9 @@ int main()
     memset(enemyCollider, 0, sizeof(CustomCollider));
     model->SetEnemyCollider(enemyCollider);
     model->SetEnemyColliderName("enemy");
-    model->SetEnemyColliderBox(raylib::Rectangle(model->GetEnemyPosition().x, model->GetEnemyPosition().y, ENEMY_COLLIDER_SIZE_X, ENEMY_COLLIDER_SIZE_Y));
+    model->SetEnemyColliderBox(
+            raylib::Rectangle(model->GetEnemyPosition().x, model->GetEnemyPosition().y, ENEMY_COLLIDER_SIZE_X,
+                              ENEMY_COLLIDER_SIZE_Y));
     model->SetEnemyColliderTag(ColliderTag::ENEMY);
     model->AddCollider(model->GetEnemyCollider());
     model->SetEnemyIsFacingRight(true);
@@ -202,7 +230,9 @@ int main()
     CustomCollider *enemyLeftCheck = reinterpret_cast<CustomCollider *>(malloc(sizeof(CustomCollider)));
     memset(enemyLeftCheck, 0, sizeof(CustomCollider));
     enemyLeftCheck->colliderName = "enemyLeftCheck";
-    enemyLeftCheck->colliderBox = raylib::Rectangle(model->GetEnemyPosition().x - ENEMY_COLLIDER_BIAS_X, model->GetEnemyPosition().y, ENEMY_COLLIDER_BIAS_X, ENEMY_COLLIDER_SIZE_Y);
+    enemyLeftCheck->colliderBox = raylib::Rectangle(model->GetEnemyPosition().x - ENEMY_COLLIDER_BIAS_X,
+                                                    model->GetEnemyPosition().y, ENEMY_COLLIDER_BIAS_X,
+                                                    ENEMY_COLLIDER_SIZE_Y);
     enemyLeftCheck->colliderTag = ColliderTag::NONE;
     enemyLeftCheck->colliderType = ColliderType::RECT;
     model->SetEnemyLeftWallCheck(enemyLeftCheck);
@@ -211,7 +241,9 @@ int main()
     CustomCollider *enemyRightCheck = reinterpret_cast<CustomCollider *>(malloc(sizeof(CustomCollider)));
     memset(enemyRightCheck, 0, sizeof(CustomCollider));
     enemyRightCheck->colliderName = "enemyRightCheck";
-    enemyRightCheck->colliderBox = raylib::Rectangle(model->GetEnemyPosition().x + ENEMY_COLLIDER_SIZE_X, model->GetEnemyPosition().y, ENEMY_COLLIDER_BIAS_X, ENEMY_COLLIDER_SIZE_Y);
+    enemyRightCheck->colliderBox = raylib::Rectangle(model->GetEnemyPosition().x + ENEMY_COLLIDER_SIZE_X,
+                                                     model->GetEnemyPosition().y, ENEMY_COLLIDER_BIAS_X,
+                                                     ENEMY_COLLIDER_SIZE_Y);
     enemyRightCheck->colliderTag = ColliderTag::NONE;
     enemyRightCheck->colliderType = ColliderType::RECT;
     model->SetEnemyRightWallCheck(enemyRightCheck);
@@ -220,7 +252,9 @@ int main()
     CustomCollider *enemyTopCheck = reinterpret_cast<CustomCollider *>(malloc(sizeof(CustomCollider)));
     memset(enemyTopCheck, 0, sizeof(CustomCollider));
     enemyTopCheck->colliderName = "enemyTopCheck";
-    enemyTopCheck->colliderBox = raylib::Rectangle(model->GetEnemyPosition().x, model->GetEnemyPosition().y - ENEMY_COLLIDER_BIAS_Y, ENEMY_COLLIDER_SIZE_X, ENEMY_COLLIDER_BIAS_Y);
+    enemyTopCheck->colliderBox = raylib::Rectangle(model->GetEnemyPosition().x,
+                                                   model->GetEnemyPosition().y - ENEMY_COLLIDER_BIAS_Y,
+                                                   ENEMY_COLLIDER_SIZE_X, ENEMY_COLLIDER_BIAS_Y);
     enemyTopCheck->colliderTag = ColliderTag::NONE;
     enemyTopCheck->colliderType = ColliderType::RECT;
     model->SetEnemyCeilingCheck(enemyTopCheck);
@@ -229,41 +263,113 @@ int main()
     CustomCollider *enemyBottomCheck = reinterpret_cast<CustomCollider *>(malloc(sizeof(CustomCollider)));
     memset(enemyBottomCheck, 0, sizeof(CustomCollider));
     enemyBottomCheck->colliderName = "enemyBottomCheck";
-    enemyBottomCheck->colliderBox = raylib::Rectangle(model->GetEnemyPosition().x, model->GetEnemyPosition().y + ENEMY_COLLIDER_SIZE_Y, ENEMY_COLLIDER_SIZE_X, ENEMY_COLLIDER_BIAS_Y);
+    enemyBottomCheck->colliderBox = raylib::Rectangle(model->GetEnemyPosition().x,
+                                                      model->GetEnemyPosition().y + ENEMY_COLLIDER_SIZE_Y,
+                                                      ENEMY_COLLIDER_SIZE_X, ENEMY_COLLIDER_BIAS_Y);
     enemyBottomCheck->colliderTag = ColliderTag::NONE;
     enemyBottomCheck->colliderType = ColliderType::RECT;
     model->SetEnemyGroundCheck(enemyBottomCheck);
     model->AddCollider(enemyBottomCheck);
 #pragma endregion
 
+    gameState currentGameState = gameState::START;
+
     viewModel->setModel(model);
     view->SetCommon(model->GetGameCommonPtr());
     // view.SetCommon(model.GetGameCommonPtr());
 
-    SetTargetFPS(144);
+    SetTargetFPS(30);
 
     view->camera.target = view->getGameCommonPtr()->GetPlayerPosition();
-    view->camera.offset = (Vector2){screenWidth / 2.0f, screenHeight / 2.0f};
+    view->camera.offset = raylib::Vector2(screenWidth / 2.0f, screenHeight / 2.0f);
     view->camera.rotation = 0.0f;
     view->camera.zoom = 1.0f;
-    while (!WindowShouldClose())
-    {
+    while (!WindowShouldClose()) {
 
         BeginDrawing();
-        BeginMode2D(view->camera);
+        if (currentGameState == gameState::START) {
+            view->Draw("../assets/start_menu.png", raylib::Vector2(0.0f, 0.0f),
+                       raylib::Rectangle(0.0f, 0.0f, screenWidth, screenHeight));
+            view->Draw("../assets/title.png", raylib::Vector2(535.0f, 200.0f),
+                       raylib::Rectangle(535.0f, 310.0f, 530.0f, 280.0f));
+            view->startButton.SetPosition(600, 500);
+            view->startButton.Update();
+            view->startButton.Draw();
+            if (view->startButton.IsPressed()) {
+                currentGameState = gameState::RUNNING;
+            }
+        } else if (currentGameState == gameState::RUNNING) {
+            BeginMode2D(view->camera);
 
-        ClearBackground(GRAY);
-        for (int i = 0; i < view->getGameCommonPtr()->GetMapList().size(); i++)
-        {
-            view->Draw(view->getGameCommonPtr()->GetMapList()[i].getPath(), view->getGameCommonPtr()->GetMapList()[i].getPosition(), raylib::Rectangle(0.0f, 0.0f, view->getGameCommonPtr()->GetMapList()[i].GetMapWidth(), view->getGameCommonPtr()->GetMapList()[i].GetMapHeight()));
+            ClearBackground(BLACK);
+
+
+            for (int i = 0; i < view->getGameCommonPtr()->GetMapList().size(); i++) {
+                view->Draw(view->getGameCommonPtr()->GetMapList()[i].getPath(),
+                           view->getGameCommonPtr()->GetMapList()[i].getPosition(),
+                           raylib::Rectangle(0.0f, 0.0f, view->getGameCommonPtr()->GetMapList()[i].GetMapWidth(),
+                                             view->getGameCommonPtr()->GetMapList()[i].GetMapHeight()));
+            }
+
+            view->UpdatePlayerMove();
+            view->UpdatePlayerJump();
+            view->UpdatePlayer();
+            view->UpdateEnemy();
+
+            if(view->getGameCommonPtr()->GetPlayerHP() <= 0){
+                currentGameState = gameState::GAME_OVER;
+            }
+
+            EndMode2D();
+
+            view->pauseButton.SetPosition(696, 0);
+            view->pauseButton.Update();
+            view->pauseButton.Draw();
+            if(view->pauseButton.IsPressed()){
+                currentGameState = gameState::PAUSE;
+            }
+#pragma region
+            if(model->GetEnemyHP()<=0){
+                currentGameState = WIN;
+            }
+#pragma endregion
+            view->ui.Update(view->getGameCommonPtr()->GetPlayerHP(), view->getGameCommonPtr()->GetPlayerMP());
+            view->ui.Draw();
+
+        } else if(currentGameState == PAUSE){
+            view->Draw("../assets/start_menu.png", raylib::Vector2(0.0f, 0.0f),
+                       raylib::Rectangle(0.0f, 0.0f, screenWidth, screenHeight));
+            view->Draw("../assets/game_paused.png",raylib::Vector2(700.0f,30.0f),
+                       raylib::Rectangle(0.0f,0.0f,208.0f,72.0f));
+            view->resumeButton.Update();
+            view->resumeButton.Draw();
+            if(view->resumeButton.IsPressed()){
+                currentGameState = gameState::RUNNING;
+            }
+        }else if(currentGameState == GAME_OVER){
+            view->Draw("../assets/start_menu.png", raylib::Vector2(0.0f, 0.0f),
+                       raylib::Rectangle(0.0f, 0.0f, screenWidth, screenHeight));
+            view->Draw("../assets/game_over.png",raylib::Vector2(500.0f,30.0f),
+                       raylib::Rectangle(0.0f,0.0f,500.0f,500.0f));
+
+            view->exitButton.Update();
+            view->exitButton.Draw();
+            if(view->exitButton.IsPressed()){
+                CloseWindow();
+            }
+        }else if(currentGameState == WIN){
+            view->Draw("../assets/start_menu.png", raylib::Vector2(0.0f, 0.0f),
+                       raylib::Rectangle(0.0f, 0.0f, screenWidth, screenHeight));
+            view->Draw("../assets/game_win.png",raylib::Vector2(500.0f,30.0f),
+                       raylib::Rectangle(0.0f,0.0f,500.0f,500.0f));
+
+            view->exitButton.Update();
+            view->exitButton.Draw();
+            if(view->exitButton.IsPressed()){
+                CloseWindow();
+            }
         }
 
-        view->UpdatePlayerMove();
-        view->UpdatePlayerJump();
-        view->UpdatePlayer();
-        view->UpdateEnemy();
-
-        EndMode2D();
         EndDrawing();
     }
 

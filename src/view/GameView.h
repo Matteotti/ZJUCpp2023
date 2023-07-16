@@ -19,87 +19,93 @@
 class Button
 {
 private:
-    raylib::Image image;
-    raylib::Rectangle src;
-    std::string text;
-    std::string texturePath;
-    bool isHovered;
-    // FIXME: Possibly be unable to work as expected via passing and using a std::function
-    std::function<void()> command;
+    std::string hoveredPath;
+    std::string unHoveredPath;
+    std::string pressedPath;
+
+    raylib::TextureUnmanaged temp;
+    raylib::Vector2 position;
+    raylib::Vector2 size = raylib::Vector2(400, 71);
+
+    float scale = 1.0f;
+
+    bool isHovered = false;
 
 public:
-    Button(std::string path, raylib::Rectangle src, std::function<void()> command)
-    {
-        image.Load(path);
-        this->src = src;
-        this->isHovered = false;
-        this->command = command;
+    Button(){
     }
-    void UpdateButton()
-    {
-        if (CheckCollisionPointRec(GetMousePosition(), src))
-        {
+
+    Button(std::string hoveredPath_, std::string unHoveredPath_, std::string pressedPath_, float width, float height){
+        this->hoveredPath = hoveredPath_;
+        this->unHoveredPath = unHoveredPath_;
+        this->pressedPath = pressedPath_;
+        this->size = raylib::Vector2(width, height);
+    }
+
+    void Update(){
+        if(CheckCollisionPointRec(GetMousePosition(), raylib::Rectangle(position.x, position.y, size.x, size.y))){
             isHovered = true;
-            if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
-            {
-                command();
-            }
         }
-        else
-        {
+        else{
             isHovered = false;
         }
     }
-    void DrawButton()
-    {
-        if (isHovered)
-        {
-            raylib::Texture texture;
-            texture.Load(image);
-            texture.Draw(src, src.GetPosition(), WHITE);
-            texture.Unload();
+
+    bool IsPressed(){
+        if(isHovered && IsMouseButtonReleased(MOUSE_LEFT_BUTTON)){
+            return true;
+        }
+        else{
+            return false;
         }
     }
 
-    // overload = operator
-    Button &operator=(const Button &other) = default;
-
-    ~Button()
-    {
-        image.Unload();
-    }
-};
-
-class Menu
-{
-private:
-    std::vector<Button> buttons;
-
-public:
-    Menu() = default;
-    Menu(std::vector<Button> buttons)
-    {
-        this->buttons = std::move(buttons);
-    }
-    void DrawMenu()
-    {
-        for (auto &button : buttons)
-        {
-            button.DrawButton();
+    void Draw(){
+        if(isHovered){
+            if(IsMouseButtonDown(MOUSE_LEFT_BUTTON)){
+                temp.Load(pressedPath);
+            }
+            else{
+                temp.Load(hoveredPath);
+            }
+        } else{
+            temp.Load(unHoveredPath);
         }
+        temp.Draw(position, 0, 1.0f, WHITE);
     }
-    void UpdateMenu()
-    {
-        for (auto &button : buttons)
-        {
-            button.UpdateButton();
-        }
+
+    void SetPosition(float x_, float y_){
+        position.x = x_;
+        position.y = y_;
     }
-    void SetButtons(std::vector<Button> buttonsList)
-    {
-        this->buttons = std::move(buttonsList);
+
+    void SetSize(float x_, float y_){
+        size.x = x_;
+        size.y = y_;
     }
-    ~Menu() = default;
+
+    void SetScale(float scale_){
+        this->scale = scale_;
+    }
+
+    void SetHoveredPath(std::string hoveredPath_){
+        this->hoveredPath = hoveredPath_;
+        this->temp.Load(hoveredPath_);
+    }
+
+    void SetUnHoveredPath(std::string unHoveredPath_){
+        this->unHoveredPath = unHoveredPath_;
+        this->temp.Load(unHoveredPath_);
+    }
+
+    void SetPressedPath(std::string pressedPath_){
+        this->pressedPath = pressedPath_;
+        this->temp.Load(pressedPath_);
+    }
+
+    ~Button(){
+        temp.Unload();
+    }
 };
 
 class UI
@@ -120,8 +126,8 @@ private:
     float mpBarScale;
     float backgroundScale;
 
-    int HP_count = 3;
-    int MP_count = 100;
+    int HP_count = PLAYER_MAX_HP;
+    int MP_count = PLAYER_MAX_MP;
 
 public:
     UI(){}
@@ -156,6 +162,9 @@ public:
         //draw empty hp units
         temp.Load(hpBarUnitEmptyPath);
         for(int i = HP_count; i < PLAYER_MAX_HP; i++){
+            if(i < 0){
+                i = 0;
+            }
             temp.Draw(raylib::Vector2(hpBarUnitPosition.x + i * temp.GetWidth() * hpBarUnitScale, hpBarUnitPosition.y),
                       0,
                       hpBarUnitScale,
@@ -166,6 +175,9 @@ public:
         temp.Draw(backgroundPosition, 0, backgroundScale, WHITE);
         //draw mp bar
         temp.Load(mpBarPath);
+        if(MP_count<0){
+            MP_count = 0;
+        }
         temp.Draw(raylib::Rectangle(0,
                                     temp.GetHeight()*(PLAYER_MAX_MP- MP_count)/PLAYER_MAX_MP,
                                     temp.GetWidth(),
@@ -175,7 +187,10 @@ public:
                 );
     }
 
-
+    void Update(int Hp, int Mp){
+        HP_count = Hp;
+        MP_count = Mp;
+    }
 
     void SetHpBarUnitPath(std::string path)
     {
@@ -254,7 +269,29 @@ public:
     void UpdateEnemy();
 
     UI ui;
-    Menu menu;
+
+    //initialize buttons with path parameters
+    Button resumeButton = Button("../assets/button/resume_button_hovered.png",
+                                 "../assets/button/resume_button_unhovered.png",
+                                 "../assets/button/resume_button_pressed.png",
+                                 400.0f, 72.0f);
+
+    Button startButton = Button("../assets/button/start_button_hovered.png",
+                                "../assets/button/start_button_unhovered.png",
+                                "../assets/button/start_button_pressed.png",
+                                400.0f, 72.0f);
+
+    Button exitButton = Button("../assets/button/exit_button_hovered.png",
+                                 "../assets/button/exit_button_unhovered.png",
+                                 "../assets/button/exit_button_pressed.png",
+                                 400.0f, 72.0f);
+
+    Button pauseButton = Button("../assets/button/pause_button_hovered.png",
+                                "../assets/button/pause_button_unhovered.png",
+                                "../assets/button/pause_button_pressed.png",
+                                400.0f, 72.0f);
+
+
 
     void Draw(
         std::string path,
