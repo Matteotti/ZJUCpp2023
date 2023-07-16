@@ -230,6 +230,14 @@ void GameModel::SetPlayerAnimationCurrentFrame(int currentFrame)
 {
     player->playerAnimationInfo->currentFrame = currentFrame;
 }
+float GameModel::GetPlayerInvincibleCounter()
+{
+    return player->invincibleCounter;
+}
+void GameModel::SetPlayerInvincibleCounter(float invincibleCounter)
+{
+    player->invincibleCounter = invincibleCounter;
+}
 float GameModel::GetPlayerAnimationFrameWidth()
 {
     return player->playerAnimationInfo->frameWidth;

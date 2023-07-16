@@ -109,6 +109,8 @@ public:
     void SetPlayerAnimationFrameWidth(float frameWidth);
     float GetPlayerAnimationFrameHeight();
     void SetPlayerAnimationFrameHeight(float frameHeight);
+    float GetPlayerInvincibleCounter();
+    void SetPlayerInvincibleCounter(float invincibleCounter);
     float GetPlayerAnimationFrameTime();
     void SetPlayerAnimationFrameTime(float frameTime);
     float GetPlayerAnimationFrameTimeCounter();

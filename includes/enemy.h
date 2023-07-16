@@ -10,13 +10,13 @@
 #define ENEMY_COLLIDER_SIZE_X 106.0f
 #define ENEMY_COLLIDER_SIZE_Y 125.0f
 #define ENEMY_COLLIDER_BIAS_X 5.0f
-#define ENEMY_COLLIDER_BIAS_Y 5.0f
+#define ENEMY_COLLIDER_BIAS_Y 20.0f
 #define ENEMY_MIN_JUMP_GAP 5.0f
 #define ENEMY_MIN_IDLE_GAP 1.5f
 #define ENEMY_JUMP_SPEED -25.0f
-#define ENEMY_SPEED 5.0f
+#define ENEMY_SPEED 2.5f
 #define IDLE_TIME 1.0f
-#define ENEMY_GRAVITY 30.0f
+#define ENEMY_GRAVITY 15.0f
 #define ENEMY_BIAS 0.0f
 
 enum EnemyAnimState

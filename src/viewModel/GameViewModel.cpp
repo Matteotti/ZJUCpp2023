@@ -656,10 +656,11 @@ std::function<void()> GameViewModel::getCheckCollisionWithPlayer()
 {
     return [this]() -> void
     {
+        model->SetPlayerInvincibleCounter(model->GetPlayerInvincibleCounter() - GetFrameTime());
         std::vector<CustomCollider *> player = CheckCollisionWithAll(model->GetEnemyCollider(), ColliderTag::PLAYER);
-        if (player.size() > 0)
+        if (player.size() > 0 && model->GetPlayerInvincibleCounter() <= 0.0f)
         {
-            std::cout << "HIT!" << std::endl;
+            model->SetPlayerInvincibleCounter(PLAYER_INVINCIBLE_TIME);
             model->SetPlayerHP(model->GetPlayerHP() - 1);
         }
     };
