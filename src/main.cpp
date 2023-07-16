@@ -130,7 +130,7 @@ int main()
     view->SetPlayerUpdatePositionCommand(viewModel->getPlayerUpdatePosition());
     view->SetPlayerUpdateAnimationFrameCommand(viewModel->getUpdateAnimationFrame());
     view->SetPlayerUpdateAnimationRectCommand(viewModel->getUpdatePlayerAnimationRect());
-    view->SetPlayerAttackCommand(viewModel->getPlayerAttackCommand());
+    // view->SetPlayerAttackCommand(viewModel->getPlayerAttackCommand());
 
     view->SetUpdateEnemyAnimState(viewModel->getUpdateEnemyAnimState());
     view->SetUpdateEnemySpeed(viewModel->getUpdateEnemySpeed());
