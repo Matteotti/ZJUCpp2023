@@ -103,6 +103,7 @@ void GameView::UpdatePlayer()
     playerAniamtionUpdateCommand();
     playerUpdatePositionCommand();
     playerUpdateAnimationFrameCommand();
+    UpdatePlayerAttack(gameCommonPtr->GetPlayerIsFacingRight());
     UpdateCamera(&camera, raylib::Vector2(gameCommonPtr->GetPlayerPosition().x,gameCommonPtr->GetPlayerPosition().y-100), 1600, 900);
     playerUpdateAnimationRectCommand(raylib::Vector2(PLAYER_ANIMATION_BIAS_X, 0));
     // drawPlayerCommand();
