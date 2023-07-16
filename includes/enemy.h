@@ -27,6 +27,7 @@ enum EnemyAnimState
 
 typedef struct EnemyStructInModel
 {
+    int hp = ENEMY_MAX_HP;
     raylib::Vector2 position = raylib::Vector2(0, 0);
     raylib::Vector2 currentSpeed = raylib::Vector2(0, 0);
     EnemyAnimState animState = ENEMY_WALK;
@@ -34,6 +35,7 @@ typedef struct EnemyStructInModel
     AnimationInfo *enemyAnimationInfo = static_cast<AnimationInfo *>(malloc(sizeof(AnimationInfo)));
     CustomCollider *enemyCollider = static_cast<CustomCollider *>(malloc(sizeof(CustomCollider)));
     std::string path;
+    bool isDead = false;
     bool isFacingRight = true;
     bool isGrounded = false;
     bool isLeftWalled = false;

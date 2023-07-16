@@ -719,4 +719,20 @@ void GameModel::SetEnemy(EnemyInModel *enemy_)
 {
     this->enemy = enemy_;
 }
+int GameModel::GetEnemyHP()
+{
+    return enemy->hp;
+}
+void GameModel::SetEnemyHP(int hp_)
+{
+    enemy->hp = hp_;
+}
+void GameModel::SetEnemyIsDead(bool isDead_)
+{
+    enemy->isDead = isDead_;
+}
+bool GameModel::GetEnemyIsDead()
+{
+    return enemy->isDead;
+}
 #pragma endregion

@@ -369,10 +369,19 @@ std::function<void(raylib::Vector2)> GameViewModel::getUpdatePlayerAnimationRect
             if (model->GetGameCommonPtr()->GetPlayerIsFacingRight())
             {
                 texture_up.Draw(raylib::Rectangle(0, 0, texture_up.width,texture_up.height),raylib::Vector2(model->GetPlayerPosition().x-30,model->GetPlayerPosition().y-100));
+                if (CheckCollisionRecs(model->GetEnemyColliderBox(), raylib::Rectangle(model->GetPlayerPosition().x-30,model->GetPlayerPosition().y-100,texture_up.width,texture_up.height)) && model->GetEnemyIsDead()== false)
+                {
+                    model->SetEnemyHP(model->GetEnemyHP()-0.25*ENEMY_MAX_HP);
+                }
+
             }
             else
             {
                 texture_up.Draw(raylib::Rectangle(0, 0, texture_up.width,texture_up.height),raylib::Vector2(model->GetPlayerPosition().x-50,model->GetPlayerPosition().y-100));
+                if (CheckCollisionRecs(model->GetEnemyColliderBox(), raylib::Rectangle(model->GetPlayerPosition().x-50,model->GetPlayerPosition().y-100,texture_up.width,texture_up.height)) && model->GetEnemyIsDead()== false)
+                {
+                    model->SetEnemyHP(model->GetEnemyHP()-0.25*ENEMY_MAX_HP);
+                }
             }
             
         }
@@ -382,22 +391,42 @@ std::function<void(raylib::Vector2)> GameViewModel::getUpdatePlayerAnimationRect
             {
                 raylib::Texture2DUnmanaged texture_up = raylib::Texture2DUnmanaged("../assets/sprites/Attack/down_right.png");
                 texture_up.Draw(raylib::Rectangle(0, 0, texture_up.width,texture_up.height),raylib::Vector2(model->GetPlayerPosition().x-10,model->GetPlayerPosition().y+50));
+                if (CheckCollisionRecs(model->GetEnemyColliderBox(), raylib::Rectangle(model->GetPlayerPosition().x-10,model->GetPlayerPosition().y+50,texture_up.width,texture_up.height)) && model->GetEnemyIsDead()== false)
+                {
+                    model->SetEnemyHP(model->GetEnemyHP()-0.25*ENEMY_MAX_HP);
+                }
             }
             else
             {
                 raylib::Texture2DUnmanaged texture_up = raylib::Texture2DUnmanaged("../assets/sprites/Attack/down_left.png");
                 texture_up.Draw(raylib::Rectangle(0, 0, texture_up.width,texture_up.height),raylib::Vector2(model->GetPlayerPosition().x-40,model->GetPlayerPosition().y+50));
+                if (CheckCollisionRecs(model->GetEnemyColliderBox(), raylib::Rectangle(model->GetPlayerPosition().x-40,model->GetPlayerPosition().y+50,texture_up.width,texture_up.height)) && model->GetEnemyIsDead()== false)
+                {
+                    model->SetEnemyHP(model->GetEnemyHP()-0.25*ENEMY_MAX_HP);
+                }
             }
         }
         else if(model->GetPlayerAnimatorState() == ATTACKING_LEFT)
         {
             raylib::Texture2DUnmanaged texture_up = raylib::Texture2DUnmanaged("../assets/sprites/Attack/left.png");
-            texture_up.Draw(raylib::Rectangle(0, 0, texture_up.width,texture_up.height),raylib::Vector2(model->GetPlayerPosition().x-150,model->GetPlayerPosition().y)); 
+            texture_up.Draw(raylib::Rectangle(0, 0, texture_up.width,texture_up.height),raylib::Vector2(model->GetPlayerPosition().x-150,model->GetPlayerPosition().y));
+            if (CheckCollisionRecs(model->GetEnemyColliderBox(), raylib::Rectangle(model->GetPlayerPosition().x-150,model->GetPlayerPosition().y,texture_up.width,texture_up.height)) && model->GetEnemyIsDead()== false)
+            {
+                model->SetEnemyHP(model->GetEnemyHP()-0.25*ENEMY_MAX_HP);
+            }
         }
         else if(model->GetPlayerAnimatorState() == ATTACKING_RIGHT)
         {
             raylib::Texture2DUnmanaged texture_up = raylib::Texture2DUnmanaged("../assets/sprites/Attack/right.png");
             texture_up.Draw(raylib::Rectangle(0, 0, texture_up.width,texture_up.height),raylib::Vector2(model->GetPlayerPosition().x+130,model->GetPlayerPosition().y)); 
+            if (CheckCollisionRecs(model->GetEnemyColliderBox(), raylib::Rectangle(model->GetPlayerPosition().x+130,model->GetPlayerPosition().y,texture_up.width,texture_up.height)) && model->GetEnemyIsDead()== false)
+            {
+                model->SetEnemyHP(model->GetEnemyHP()-0.25*ENEMY_MAX_HP);
+            }
+        }
+        if (model->GetEnemyHP()==0)
+        {
+            model->SetEnemyIsDead(false);
         }
         if (model->GetGameCommonPtr()->GetPlayerIsFacingRight() && model->GetPlayerAnimationCurrentFrame() == 1 && model->GetPlayerAnimationIsStop())
             model->SetPlayerAnimationCurrentFrame(0);

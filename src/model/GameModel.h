@@ -219,6 +219,10 @@ public:
     void SetEnemyIsRightWalled(bool isRightWalled);
     bool GetEnemyIsCeilinged();
     void SetEnemyIsCeilinged(bool isCeilinged);
+    int GetEnemyHP();
+    void SetEnemyHP(int hp_);
+    void SetEnemyIsDead(bool isDead_);
+    bool GetEnemyIsDead();
 };
 
 #endif // CPPGAMEJAM_GAMEMODEL_H
