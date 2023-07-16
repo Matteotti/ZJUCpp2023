@@ -43,8 +43,7 @@ public:
     std::function<void(raylib::Vector2)> getUpdatePlayerAnimationRect();
     std::function<void()> getDrawPlayerCommand();
 
-    std::function<void(AnimatorState)> getAttackTopCommand();
-    std::function<void(AnimatorState)> getAttackDownCommand();
+    std::function<void(direction)> getPlayerAttackCommand();
     std::function<void(raylib::Vector2)> getDrawPlayerWithBias();
 
     std::function<void()> getUpdateEnemyAnimState();

@@ -333,6 +333,13 @@ std::function<void()> GameViewModel::getUpdateAnimationFrame()
                     model->SetPlayerAnimationCurrentFrame(model->GetPlayerAnimationFrameCount() - 1);
             }
         }
+        if (model->GetPlayerAnimatorState() == ATTACKING_TOP || model->GetPlayerAnimatorState() == ATTACKING_BOTTOM || model->GetPlayerAnimatorState() == ATTACKING_LEFT || model->GetPlayerAnimatorState() == ATTACKING_RIGHT)
+        {
+            if (model->GetPlayerAnimationCurrentFrame() + 1 == 5)
+            {
+                model->SetPlayerAnimatorState(IDLE);
+            }
+        }
 
         // std::cout << "PLAYER POS 16" << model->GetPlayerPosition().x << " " << model->GetPlayerPosition().y << std::endl;
     };
@@ -393,7 +400,7 @@ std::function<void()> GameViewModel::getDrawPlayerCommand()
     };
 }
 
-std::function<void(AnimatorState)> GameViewModel::getAttackTopCommand()
+/* std::function<void(AnimatorState)> GameViewModel::getAttackTopCommand()
 {
     return [this](AnimatorState currentstate) -> void
     {
@@ -412,7 +419,7 @@ std::function<void(AnimatorState)> GameViewModel::getAttackDownCommand()
             model->SetPlayerAnimatorState(ATTACKING_BOTTOM);
         }
     };
-}
+}*/
 
 std::function<void()> GameViewModel::getUpdateEnemyAnimState()
 {
