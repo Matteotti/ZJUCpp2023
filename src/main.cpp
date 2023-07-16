@@ -130,8 +130,6 @@ int main()
     view->SetPlayerUpdatePositionCommand(viewModel->getPlayerUpdatePosition());
     view->SetPlayerUpdateAnimationFrameCommand(viewModel->getUpdateAnimationFrame());
     view->SetPlayerUpdateAnimationRectCommand(viewModel->getUpdatePlayerAnimationRect());
-    // view->SetPlayerAttackCommand(viewModel->getPlayerAttackCommand());
-
     view->SetUpdateEnemyAnimState(viewModel->getUpdateEnemyAnimState());
     view->SetUpdateEnemySpeed(viewModel->getUpdateEnemySpeed());
     view->SetUpdateEnemySpeedPhysically(viewModel->getUpdateEnemySpeedPhysically());
@@ -223,7 +221,7 @@ int main()
     view->SetCommon(model->GetGameCommonPtr());
     // view.SetCommon(model.GetGameCommonPtr());
 
-    SetTargetFPS(60);
+    SetTargetFPS(90);
 
     while (!WindowShouldClose())
     {

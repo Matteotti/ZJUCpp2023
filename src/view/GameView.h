@@ -253,37 +253,37 @@ private:
     int HorizontalInput = 0;
     int VerticalInput = 0;
 
-    std::function<void()> updateViewCommand;
-    std::function<void()> increaseScoreCommand;
-    std::function<void(bool)> setGameOverCommand;
+    std::function<void()> updateViewCommand = nullptr;
+    std::function<void()> increaseScoreCommand = nullptr;
+    std::function<void(bool)> setGameOverCommand = nullptr;
 
-    std::function<void(direction)> playerMoveCommand;
-    std::function<void(bool)> playerJumpCommand;
-    std::function<void()> playerUpdateJumpSpeedCommand;
-    std::function<void()> playerCheckWallCommand;
-    std::function<void()> playerAniamtorUpdateCommand;
-    std::function<void()> playerAniamtionUpdateCommand;
-    std::function<void()> playerUpdatePositionCommand;
-    std::function<void()> playerUpdateAnimationFrameCommand;
-    std::function<void(raylib::Vector2)> playerUpdateAnimationRectCommand;
-    std::function<void(direction)> playerAttackCommand;
-    std::function<void()> drawPlayerCommand;
+    std::function<void(direction)> playerMoveCommand = nullptr;
+    std::function<void(bool)> playerJumpCommand = nullptr;
+    std::function<void()> playerUpdateJumpSpeedCommand = nullptr;
+    std::function<void()> playerCheckWallCommand = nullptr;
+    std::function<void()> playerAniamtorUpdateCommand = nullptr;
+    std::function<void()> playerAniamtionUpdateCommand = nullptr;
+    std::function<void()> playerUpdatePositionCommand = nullptr;
+    std::function<void()> playerUpdateAnimationFrameCommand = nullptr;
+    std::function<void(raylib::Vector2)> playerUpdateAnimationRectCommand = nullptr;
+    std::function<void(direction)> playerAttackCommand = nullptr;
+    std::function<void()> drawPlayerCommand = nullptr;
 
     std::shared_ptr<GameCommon> gameCommonPtr;
 
-    std::function<void()> attackTopCommand;
-    std::function<void()> attackDownCommand;
+    std::function<void()> attackTopCommand = nullptr;
+    std::function<void()> attackDownCommand = nullptr;
 
-    std::function<void()> updateEnemyAnimStateCommand;
-    std::function<void()> updateEnemySpeedCommand;
-    std::function<void()> updateEnemySpeedPhysicallyCommand;
-    std::function<void()> updateEnemyAnimationCommand;
-    std::function<void()> updateEnemyPositionCommand;
-    std::function<void()> updateEnemyColliderPositionCommand;
-    std::function<void()> updateEnemyAnimationFrameCommand;
-    std::function<void()> updateEnemyAnimationRectCommand;
-    std::function<void()> checkCollisionWithPlayerCommand;
-    std::function<void()> updateEnemyWallCheckCommand;
+    std::function<void()> updateEnemyAnimStateCommand = nullptr;
+    std::function<void()> updateEnemySpeedCommand = nullptr;
+    std::function<void()> updateEnemySpeedPhysicallyCommand = nullptr;
+    std::function<void()> updateEnemyAnimationCommand = nullptr;
+    std::function<void()> updateEnemyPositionCommand = nullptr;
+    std::function<void()> updateEnemyColliderPositionCommand = nullptr;
+    std::function<void()> updateEnemyAnimationFrameCommand = nullptr;
+    std::function<void()> updateEnemyAnimationRectCommand = nullptr;
+    std::function<void()> checkCollisionWithPlayerCommand = nullptr;
+    std::function<void()> updateEnemyWallCheckCommand = nullptr;
 
 public:
     GameView();
@@ -329,9 +329,6 @@ public:
     {
         return gameCommonPtr;
     }
-    
-    
-
 };
 
 #endif // CPPGAMEJAM_GAMEVIEW_H
