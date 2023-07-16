@@ -12,7 +12,6 @@
 #include "model/GameModel.h"
 #include "view/GameView.h"
 #include "viewModel/GameViewModel.h"
-
 int main()
 {
     SetTraceLogLevel(LOG_NONE);
@@ -32,7 +31,7 @@ int main()
 #pragma region map init
     model->SetMapModel("ground_1", "../assets/sprites/Map/road3.png", 1, raylib::Vector2(0, 700));
     model->SetMapModel("ground_2", "../assets/sprites/Map/road3.png", 1, raylib::Vector2(279, 700));
-    model->SetMapModel("ground_3", "../assets/sprites/Map/road3.png", 1, raylib::Vector2(279, 600));
+    // model->SetMapModel("ground_3", "../assets/sprites/Map/road3.png", 1, raylib::Vector2(279, 600));
     model->SetMapModel("ground_4", "../assets/sprites/Map/road3.png", 1, raylib::Vector2(279 * 1, 700));
     model->SetMapModel("ground_5", "../assets/sprites/Map/road3.png", 1, raylib::Vector2(279 * 2, 700));
     model->SetMapModel("ground_6", "../assets/sprites/Map/road3.png", 1, raylib::Vector2(279 * 3, 700));
@@ -40,8 +39,19 @@ int main()
     model->SetMapModel("ground_8", "../assets/sprites/Map/road3.png", 1, raylib::Vector2(279 * 5, 700));
     model->SetMapModel("ground_9", "../assets/sprites/Map/road3.png", 1, raylib::Vector2(279 * 6, 700));
     model->SetMapModel("ground_10", "../assets/sprites/Map/road3.png", 1, raylib::Vector2(279 * 7, 700));
-    model->SetMapModel("ground_11", "../assets/sprites/Map/road3.png", 1, raylib::Vector2(279 * 8, 700));
-    model->SetMapModel("ground_12", "../assets/sprites/Map/road3.png", 1, raylib::Vector2(279, 300));
+    model->SetMapModel("ground_11", "../assets/sprites/Map/road3.png", 1, raylib::Vector2(279 * 8, 500));
+    model->SetMapModel("ground_12", "../assets/sprites/Map/road3.png", 1, raylib::Vector2(279 * 9, 700));
+    model->SetMapModel("ground_13", "../assets/sprites/Map/road3.png", 1, raylib::Vector2(279 * 10, 700));
+    model->SetMapModel("ground_14", "../assets/sprites/Map/road3.png", 1, raylib::Vector2(279 * 11, 700));
+    model->SetMapModel("ground_15", "../assets/sprites/Map/road3.png", 1, raylib::Vector2(279 * 12, 300));
+    model->SetMapModel("ground_16", "../assets/sprites/Map/road3.png", 1, raylib::Vector2(279 * 13, 700));
+    model->SetMapModel("ground_17", "../assets/sprites/Map/road3.png", 1, raylib::Vector2(279, 300));
+    // model->SetMapModel("ground_3", "../assets/sprites/Map/road3.png", 1, raylib::Vector2(279, 600));
+    model->SetMapModel("ground_6", "../assets/sprites/Map/road7-.png", 1, raylib::Vector2(279 * 3, 100));
+    model->SetMapModel("ground_7", "../assets/sprites/Map/road7-.png", 1, raylib::Vector2(279 * 4, 100));
+    model->SetMapModel("ground_8", "../assets/sprites/Map/road7-.png", 1, raylib::Vector2(279 * 5, 100));
+    model->SetMapModel("ground_9", "../assets/sprites/Map/road7-.png", 1, raylib::Vector2(279 * 6, 100));
+
 #pragma endregion
 
 #pragma region InitPlayer
@@ -130,6 +140,8 @@ int main()
     view->SetPlayerUpdatePositionCommand(viewModel->getPlayerUpdatePosition());
     view->SetPlayerUpdateAnimationFrameCommand(viewModel->getUpdateAnimationFrame());
     view->SetPlayerUpdateAnimationRectCommand(viewModel->getUpdatePlayerAnimationRect());
+    view->SetPlayerAttackCommand(viewModel->getPlayerAttackCommand());
+
     view->SetUpdateEnemyAnimState(viewModel->getUpdateEnemyAnimState());
     view->SetUpdateEnemySpeed(viewModel->getUpdateEnemySpeed());
     view->SetUpdateEnemySpeedPhysically(viewModel->getUpdateEnemySpeedPhysically());
@@ -223,12 +235,17 @@ int main()
 
     SetTargetFPS(90);
 
+    view->camera.target = view->getGameCommonPtr()->GetPlayerPosition();
+    view->camera.offset = (Vector2){screenWidth / 2.0f, screenHeight / 2.0f};
+    view->camera.rotation = 0.0f;
+    view->camera.zoom = 1.0f;
     while (!WindowShouldClose())
     {
 
         BeginDrawing();
+        BeginMode2D(view->camera);
 
-        ClearBackground(RAYWHITE);
+        ClearBackground(GRAY);
         for (int i = 0; i < view->getGameCommonPtr()->GetMapList().size(); i++)
         {
             view->Draw(view->getGameCommonPtr()->GetMapList()[i].getPath(), view->getGameCommonPtr()->GetMapList()[i].getPosition(), raylib::Rectangle(0.0f, 0.0f, view->getGameCommonPtr()->GetMapList()[i].GetMapWidth(), view->getGameCommonPtr()->GetMapList()[i].GetMapHeight()));
@@ -237,8 +254,9 @@ int main()
         view->UpdatePlayerMove();
         view->UpdatePlayerJump();
         view->UpdatePlayer();
-        view->UpdateEnemy();
+        // view->UpdateEnemy();
 
+        EndMode2D();
         EndDrawing();
     }
 

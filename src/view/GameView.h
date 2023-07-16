@@ -286,6 +286,7 @@ private:
     std::function<void()> updateEnemyWallCheckCommand = nullptr;
 
 public:
+    Camera2D camera = {0};
     GameView();
     void SetCommon(std::shared_ptr<GameCommon> gameCommon);
     void DrawExample(int score, bool gameOver);
@@ -329,6 +330,7 @@ public:
     {
         return gameCommonPtr;
     }
+    void UpdateCamera(Camera2D *camera, raylib::Vector2 position, int width, int height);
 };
 
 #endif // CPPGAMEJAM_GAMEVIEW_H

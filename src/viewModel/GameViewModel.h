@@ -56,6 +56,7 @@ public:
     std::function<void()> getUpdateEnemyAnimationRect();
     std::function<void()> getCheckCollisionWithPlayer();
     std::function<void()> getUpdateEnemyWallCheck();
+    
     // void DeleteMap();
 };
 
