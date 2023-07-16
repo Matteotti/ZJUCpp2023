@@ -167,7 +167,7 @@ int main()
     memset(enemyAnimationInfo, 0, sizeof(AnimationInfo));
     model->SetEnemyAnimationInfo(enemyAnimationInfo);
     model->SetEnemyAnimationIsStop(false);
-    model->SetEnemyAnimationFrameCount(4);
+    model->SetEnemyAnimationFrameCount(3);
     model->SetEnemyAnimationCurrentFrame(0);
     model->SetEnemyAnimationPath("../assets/sprites/Enemy/ZombieRunnerWalk.png");
     model->SetEnemyAnimationFrameTimeCounter(0.0f);
@@ -233,7 +233,7 @@ int main()
     view->SetCommon(model->GetGameCommonPtr());
     // view.SetCommon(model.GetGameCommonPtr());
 
-    SetTargetFPS(90);
+    SetTargetFPS(144);
 
     view->camera.target = view->getGameCommonPtr()->GetPlayerPosition();
     view->camera.offset = (Vector2){screenWidth / 2.0f, screenHeight / 2.0f};

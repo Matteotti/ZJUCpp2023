@@ -368,36 +368,35 @@ std::function<void(raylib::Vector2)> GameViewModel::getUpdatePlayerAnimationRect
             raylib::Texture2DUnmanaged texture_up = raylib::Texture2DUnmanaged("../assets/sprites/Attack/up.png");
             if (model->GetGameCommonPtr()->GetPlayerIsFacingRight())
             {
-                texture_up.Draw(raylib::Rectangle(0, 0, texture_up.width,texture_up.height),raylib::Vector2(model->GetPlayerPosition().x-30,model->GetPlayerPosition().y-100));
+                texture_up.Draw(raylib::Rectangle(0, 0, texture_up.width, texture_up.height), raylib::Vector2(model->GetPlayerPosition().x - 30, model->GetPlayerPosition().y - 100));
             }
             else
             {
-                texture_up.Draw(raylib::Rectangle(0, 0, texture_up.width,texture_up.height),raylib::Vector2(model->GetPlayerPosition().x-50,model->GetPlayerPosition().y-100));
+                texture_up.Draw(raylib::Rectangle(0, 0, texture_up.width, texture_up.height), raylib::Vector2(model->GetPlayerPosition().x - 50, model->GetPlayerPosition().y - 100));
             }
-            
         }
-        else if(model->GetPlayerAnimatorState() == ATTACKING_BOTTOM)
+        else if (model->GetPlayerAnimatorState() == ATTACKING_BOTTOM)
         {
             if (model->GetGameCommonPtr()->GetPlayerIsFacingRight())
             {
                 raylib::Texture2DUnmanaged texture_up = raylib::Texture2DUnmanaged("../assets/sprites/Attack/down_right.png");
-                texture_up.Draw(raylib::Rectangle(0, 0, texture_up.width,texture_up.height),raylib::Vector2(model->GetPlayerPosition().x-10,model->GetPlayerPosition().y+50));
+                texture_up.Draw(raylib::Rectangle(0, 0, texture_up.width, texture_up.height), raylib::Vector2(model->GetPlayerPosition().x - 10, model->GetPlayerPosition().y + 50));
             }
             else
             {
                 raylib::Texture2DUnmanaged texture_up = raylib::Texture2DUnmanaged("../assets/sprites/Attack/down_left.png");
-                texture_up.Draw(raylib::Rectangle(0, 0, texture_up.width,texture_up.height),raylib::Vector2(model->GetPlayerPosition().x-40,model->GetPlayerPosition().y+50));
+                texture_up.Draw(raylib::Rectangle(0, 0, texture_up.width, texture_up.height), raylib::Vector2(model->GetPlayerPosition().x - 40, model->GetPlayerPosition().y + 50));
             }
         }
-        else if(model->GetPlayerAnimatorState() == ATTACKING_LEFT)
+        else if (model->GetPlayerAnimatorState() == ATTACKING_LEFT)
         {
             raylib::Texture2DUnmanaged texture_up = raylib::Texture2DUnmanaged("../assets/sprites/Attack/left.png");
-            texture_up.Draw(raylib::Rectangle(0, 0, texture_up.width,texture_up.height),raylib::Vector2(model->GetPlayerPosition().x-150,model->GetPlayerPosition().y)); 
+            texture_up.Draw(raylib::Rectangle(0, 0, texture_up.width, texture_up.height), raylib::Vector2(model->GetPlayerPosition().x - 150, model->GetPlayerPosition().y));
         }
-        else if(model->GetPlayerAnimatorState() == ATTACKING_RIGHT)
+        else if (model->GetPlayerAnimatorState() == ATTACKING_RIGHT)
         {
             raylib::Texture2DUnmanaged texture_up = raylib::Texture2DUnmanaged("../assets/sprites/Attack/right.png");
-            texture_up.Draw(raylib::Rectangle(0, 0, texture_up.width,texture_up.height),raylib::Vector2(model->GetPlayerPosition().x+130,model->GetPlayerPosition().y)); 
+            texture_up.Draw(raylib::Rectangle(0, 0, texture_up.width, texture_up.height), raylib::Vector2(model->GetPlayerPosition().x + 130, model->GetPlayerPosition().y));
         }
         if (model->GetGameCommonPtr()->GetPlayerIsFacingRight() && model->GetPlayerAnimationCurrentFrame() == 1 && model->GetPlayerAnimationIsStop())
             model->SetPlayerAnimationCurrentFrame(0);
@@ -524,6 +523,7 @@ std::function<void()> GameViewModel::getUpdateEnemySpeed()
         {
             model->SetEnemyCurrentSpeed(raylib::Vector2(-ENEMY_SPEED, model->GetEnemyCurrentSpeed().y));
         }
+        model->SetEnemyIsFacingRight(!isPlayerRight);
     };
 }
 
@@ -576,7 +576,7 @@ std::function<void()> GameViewModel::getUpdateEnemyAnimation()
         switch (model->GetEnemyAnimState())
         {
         case ENEMY_WALK:
-            UpdateEnemyAnimationInfo("../assets/sprites/Enemy/ZombieRunnerIdle.png", 4);
+            UpdateEnemyAnimationInfo("../assets/sprites/Enemy/ZombieRunnerWalk.png", 3);
             break;
         case ENEMY_DEAD:
             UpdateEnemyAnimationInfo("../assets/sprites/Enemy/ZombieRunnerDead.png", 9, ANIMATION_FRAME_TIME, true);
