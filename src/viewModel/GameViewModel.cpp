@@ -371,7 +371,7 @@ std::function<void(raylib::Vector2)> GameViewModel::getUpdatePlayerAnimationRect
                 texture_up.Draw(raylib::Rectangle(0, 0, texture_up.width, texture_up.height), raylib::Vector2(model->GetPlayerPosition().x - 30, model->GetPlayerPosition().y - 100));
                 if (CheckCollisionRecs(model->GetEnemyColliderBox(), raylib::Rectangle(model->GetPlayerPosition().x - 30, model->GetPlayerPosition().y - 100, texture_up.width, texture_up.height)) && model->GetEnemyIsDead() == false)
                 {
-                    model->SetEnemyHP(model->GetEnemyHP() - 0.25 * ENEMY_MAX_HP);
+                    model->SetEnemyHP(model->GetEnemyHP() - 1);
                 }
             }
             else
@@ -379,7 +379,7 @@ std::function<void(raylib::Vector2)> GameViewModel::getUpdatePlayerAnimationRect
                 texture_up.Draw(raylib::Rectangle(0, 0, texture_up.width, texture_up.height), raylib::Vector2(model->GetPlayerPosition().x - 50, model->GetPlayerPosition().y - 100));
                 if (CheckCollisionRecs(model->GetEnemyColliderBox(), raylib::Rectangle(model->GetPlayerPosition().x - 50, model->GetPlayerPosition().y - 100, texture_up.width, texture_up.height)) && model->GetEnemyIsDead() == false)
                 {
-                    model->SetEnemyHP(model->GetEnemyHP() - 0.25 * ENEMY_MAX_HP);
+                    model->SetEnemyHP(model->GetEnemyHP() - 1);
                 }
             }
         }
@@ -391,7 +391,7 @@ std::function<void(raylib::Vector2)> GameViewModel::getUpdatePlayerAnimationRect
                 texture_up.Draw(raylib::Rectangle(0, 0, texture_up.width, texture_up.height), raylib::Vector2(model->GetPlayerPosition().x - 10, model->GetPlayerPosition().y + 50));
                 if (CheckCollisionRecs(model->GetEnemyColliderBox(), raylib::Rectangle(model->GetPlayerPosition().x - 10, model->GetPlayerPosition().y + 50, texture_up.width, texture_up.height)) && model->GetEnemyIsDead() == false)
                 {
-                    model->SetEnemyHP(model->GetEnemyHP() - 0.25 * ENEMY_MAX_HP);
+                    model->SetEnemyHP(model->GetEnemyHP() - 1);
                 }
             }
             else
@@ -400,7 +400,7 @@ std::function<void(raylib::Vector2)> GameViewModel::getUpdatePlayerAnimationRect
                 texture_up.Draw(raylib::Rectangle(0, 0, texture_up.width, texture_up.height), raylib::Vector2(model->GetPlayerPosition().x - 40, model->GetPlayerPosition().y + 50));
                 if (CheckCollisionRecs(model->GetEnemyColliderBox(), raylib::Rectangle(model->GetPlayerPosition().x - 40, model->GetPlayerPosition().y + 50, texture_up.width, texture_up.height)) && model->GetEnemyIsDead() == false)
                 {
-                    model->SetEnemyHP(model->GetEnemyHP() - 0.25 * ENEMY_MAX_HP);
+                    model->SetEnemyHP(model->GetEnemyHP() - 1);
                 }
             }
         }
@@ -410,7 +410,7 @@ std::function<void(raylib::Vector2)> GameViewModel::getUpdatePlayerAnimationRect
             texture_up.Draw(raylib::Rectangle(0, 0, texture_up.width, texture_up.height), raylib::Vector2(model->GetPlayerPosition().x - 150, model->GetPlayerPosition().y));
             if (CheckCollisionRecs(model->GetEnemyColliderBox(), raylib::Rectangle(model->GetPlayerPosition().x - 150, model->GetPlayerPosition().y, texture_up.width, texture_up.height)) && model->GetEnemyIsDead() == false)
             {
-                model->SetEnemyHP(model->GetEnemyHP() - 0.25 * ENEMY_MAX_HP);
+                model->SetEnemyHP(model->GetEnemyHP() - 1);
             }
         }
         else if (model->GetPlayerAnimatorState() == ATTACKING_RIGHT)
@@ -419,7 +419,7 @@ std::function<void(raylib::Vector2)> GameViewModel::getUpdatePlayerAnimationRect
             texture_up.Draw(raylib::Rectangle(0, 0, texture_up.width, texture_up.height), raylib::Vector2(model->GetPlayerPosition().x + 130, model->GetPlayerPosition().y));
             if (CheckCollisionRecs(model->GetEnemyColliderBox(), raylib::Rectangle(model->GetPlayerPosition().x + 130, model->GetPlayerPosition().y, texture_up.width, texture_up.height)) && model->GetEnemyIsDead() == false)
             {
-                model->SetEnemyHP(model->GetEnemyHP() - 0.25 * ENEMY_MAX_HP);
+                model->SetEnemyHP(model->GetEnemyHP() - 1);
             }
         }
         if (model->GetEnemyHP() <= 0)
@@ -670,7 +670,7 @@ std::function<void()> GameViewModel::getUpdateEnemyAnimationRect()
         temp = LoadTexture(model->GetEnemyAnimationPath().c_str());
         if (!model->GetEnemyIsDead())
             temp.Draw(model->GetEnemySourceRec(), model->GetEnemyPosition());
-        // std::cout << "ENEMY HP " << model->GetEnemyHP() << std::endl;
+        std::cout << "ENEMY HP " << model->GetEnemyHP() << std::endl;
         if (model->GetEnemyIsFacingRight() && model->GetEnemyAnimationCurrentFrame() == 1 && model->GetEnemyAnimationIsStop())
             model->SetEnemyAnimationCurrentFrame(0);
         if (model->GetEnemyIsFacingRight())

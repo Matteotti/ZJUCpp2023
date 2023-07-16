@@ -6,7 +6,7 @@
 #include "animation.h"
 #include "customCollider.h"
 
-#define ENEMY_MAX_HP 8
+#define ENEMY_MAX_HP 60
 #define ENEMY_COLLIDER_SIZE_X 106.0f
 #define ENEMY_COLLIDER_SIZE_Y 125.0f
 #define ENEMY_COLLIDER_BIAS_X 5.0f
