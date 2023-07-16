@@ -7,6 +7,7 @@
 
 #include "../model/GameModel.h"
 #include "../../includes/direction.h"
+#include "../../includes/enemy.h"
 #include "raylib-cpp.hpp"
 #include "raylib.h"
 #include <iostream>
@@ -16,6 +17,7 @@ class GameViewModel
 {
 private:
     GameModel *model;
+    raylib::Texture2DUnmanaged temp;
 
 public:
     explicit GameViewModel();
@@ -27,6 +29,7 @@ public:
     std::vector<CustomCollider *> CheckCollisionWithAll(CustomCollider *target, ColliderTag targetTag);
     std::vector<CustomCollider *> CheckCollisionWithAll(CustomCollider *target);
     void UpdateAnimationInfo(std::string path, int frameCount, float frameTime_, bool stop_);
+    void UpdateEnemyAnimationInfo(std::string path, int frameCount, float frameTime_, bool stop_);
 
     // void setMapModel(MapModel *mapModel);
     std::function<void(direction)> getMovePlayerCommand();
@@ -43,6 +46,17 @@ public:
     std::function<void(AnimatorState)> getAttackTopCommand();
     std::function<void(AnimatorState)> getAttackDownCommand();
     std::function<void(raylib::Vector2)> getDrawPlayerWithBias();
+
+    std::function<void()> getUpdateEnemyAnimState();
+    std::function<void()> getUpdateEnemySpeed();
+    std::function<void()> getUpdateEnemySpeedPhysically();
+    std::function<void()> getUpdateEnemyAnimation();
+    std::function<void()> getUpdateEnemyPosition();
+    std::function<void()> getUpdateEnemyColliderPosition();
+    std::function<void()> getUpdateEnemyAnimationFrame();
+    std::function<void()> getUpdateEnemyAnimationRect();
+    std::function<void()> getCheckCollisionWithPlayer();
+    std::function<void()> getUpdateEnemyWallCheck();
     // void DeleteMap();
 };
 

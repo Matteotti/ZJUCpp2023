@@ -14,6 +14,7 @@
 #include "../../includes/direction.h"
 #include "../../includes/animation.h"
 #include "../../includes/player.h"
+#include "../../includes/enemy.h"
 
 class Button
 {
@@ -273,6 +274,17 @@ private:
     std::function<void()> attackTopCommand;
     std::function<void()> attackDownCommand;
 
+    std::function<void()> updateEnemyAnimStateCommand;
+    std::function<void()> updateEnemySpeedCommand;
+    std::function<void()> updateEnemySpeedPhysicallyCommand;
+    std::function<void()> updateEnemyAnimationCommand;
+    std::function<void()> updateEnemyPositionCommand;
+    std::function<void()> updateEnemyColliderPositionCommand;
+    std::function<void()> updateEnemyAnimationFrameCommand;
+    std::function<void()> updateEnemyAnimationRectCommand;
+    std::function<void()> checkCollisionWithPlayerCommand;
+    std::function<void()> updateEnemyWallCheckCommand;
+
 public:
     GameView();
     void SetCommon(std::shared_ptr<GameCommon> gameCommon);
@@ -282,7 +294,8 @@ public:
     void UpdatePlayerMove();
     void UpdatePlayerJump();
     void UpdatePlayerAttack(bool isFacingRight);
-    void Update();
+    void UpdatePlayer();
+    void UpdateEnemy();
 
     UI ui;
     Menu menu;
@@ -302,6 +315,16 @@ public:
     void SetPlayerUpdateAnimationRectCommand(std::function<void(raylib::Vector2)> command);
     void SetPlayerAttackCommand(std::function<void(direction)> command);
     void SetDrawPlayerCommand(std::function<void()> command);
+    void SetUpdateEnemyAnimState(std::function<void()> command);
+    void SetUpdateEnemySpeed(std::function<void()> command);
+    void SetUpdateEnemySpeedPhysically(std::function<void()> command);
+    void SetUpdateEnemyAnimation(std::function<void()> command);
+    void SetUpdateEnemyPosition(std::function<void()> command);
+    void SetUpdateEnemyColliderPosition(std::function<void()> command);
+    void SetUpdateEnemyAnimationFrame(std::function<void()> command);
+    void SetUpdateEnemyAnimationRect(std::function<void()> command);
+    void SetCheckCollisionWithPlayer(std::function<void()> command);
+    void SetUpdateEnemyWallCheck(std::function<void()> command);
     std::shared_ptr<GameCommon> getGameCommonPtr()
     {
         return gameCommonPtr;

@@ -413,18 +413,17 @@ void GameModel::SetMapName(std::string mapname)
     this->mapName = mapname;
 }
 
-
 void GameModel::SetMapModel(const std::string mapName, std::string path, int frameCount, raylib::Vector2 position)
 {
     this->mapCollider = new CustomCollider();
     this->mapName = mapName;
-    //this->mapCommonPtr = std::make_shared<MapCommon>(position, path, frameCount);
+    // this->mapCommonPtr = std::make_shared<MapCommon>(position, path, frameCount);
     this->SetMapAnimationInfoPath(path);
     this->SetMapAnimationInfoFrameCount(frameCount);
     raylib::Texture2DUnmanaged texture = raylib::Texture2DUnmanaged(path);
-    this->mapCommonPtr = std::make_shared<MapCommon>(position, path, frameCount,texture.width / frameCount,texture.height);
+    this->mapCommonPtr = std::make_shared<MapCommon>(position, path, frameCount, texture.width / frameCount, texture.height);
     this->SetColliderName(mapName);
-    this->SetColliderColliderBox(position.x,position.y, mapCommonPtr->GetMapWidth(), mapCommonPtr->GetMapHeight());
+    this->SetColliderColliderBox(position.x, position.y, mapCommonPtr->GetMapWidth(), mapCommonPtr->GetMapHeight());
     this->SetColliderTag(ColliderTag::ENVIRONMENT);
     colliders_.push_back(this->mapCollider);
     this->gameCommonPtr->MapPushBack(*mapCommonPtr);
@@ -440,9 +439,284 @@ std::string GameModel::GetMapName()
     return mapName;
 }
 
+raylib::Vector2 GameModel::GetEnemyPosition()
+{
+    return enemy->position;
+}
 
+void GameModel::SetEnemyPosition(raylib::Vector2 position_)
+{
+    enemy->position = position_;
+}
 
+raylib::Vector2 GameModel::GetEnemyCurrentSpeed()
+{
+    return enemy->currentSpeed;
+}
 
+void GameModel::SetEnemyCurrentSpeed(raylib::Vector2 currentSpeed_)
+{
+    enemy->currentSpeed = currentSpeed_;
+}
 
+EnemyAnimState GameModel::GetEnemyAnimState()
+{
+    return enemy->animState;
+}
 
+void GameModel::SetEnemyAnimState(EnemyAnimState animState_)
+{
+    enemy->animState = animState_;
+}
+
+std::string GameModel::GetEnemyColliderName()
+{
+    return enemy->enemyCollider->colliderName;
+}
+
+void GameModel::SetEnemyColliderName(std::string name)
+{
+    enemy->enemyCollider->colliderName = name;
+}
+
+std::string GameModel::GetEnemyAnimationPath()
+{
+    return enemy->path;
+}
+
+void GameModel::SetEnemyAnimationPath(std::string path_)
+{
+    enemy->path = path_;
+}
+
+raylib::Rectangle GameModel::GetEnemySourceRec()
+{
+    return enemy->sourceRec;
+}
+
+void GameModel::SetEnemySourceRec(raylib::Rectangle sourceRec_)
+{
+    enemy->sourceRec = sourceRec_;
+}
+
+bool GameModel::GetEnemyIsFacingRight()
+{
+    return enemy->isFacingRight;
+}
+
+void GameModel::SetEnemyIsFacingRight(bool isFacingRight_)
+{
+    enemy->isFacingRight = isFacingRight_;
+}
+
+float GameModel::GetEnemyJumpCounter()
+{
+    return enemy->jumpCounter;
+}
+
+void GameModel::SetEnemyJumpCounter(float jumpCounter_)
+{
+    enemy->jumpCounter = jumpCounter_;
+}
+
+int GameModel::GetEnemyAnimationFrameCount()
+{
+    return enemy->enemyAnimationInfo->frameCount;
+}
+
+void GameModel::SetEnemyAnimationFrameCount(int frameCount_)
+{
+    enemy->enemyAnimationInfo->frameCount = frameCount_;
+}
+
+int GameModel::GetEnemyAnimationCurrentFrame()
+{
+    return enemy->enemyAnimationInfo->currentFrame;
+}
+
+void GameModel::SetEnemyAnimationCurrentFrame(int currentFrame_)
+{
+    enemy->enemyAnimationInfo->currentFrame = currentFrame_;
+}
+
+float GameModel::GetEnemyAnimationFrameWidth()
+{
+    return enemy->enemyAnimationInfo->frameWidth;
+}
+
+void GameModel::SetEnemyAnimationFrameWidth(float frameWidth_)
+{
+    enemy->enemyAnimationInfo->frameWidth = frameWidth_;
+}
+
+float GameModel::GetEnemyAnimationFrameHeight()
+{
+    return enemy->enemyAnimationInfo->frameHeight;
+}
+
+void GameModel::SetEnemyAnimationFrameHeight(float frameHeight_)
+{
+    enemy->enemyAnimationInfo->frameHeight = frameHeight_;
+}
+
+float GameModel::GetEnemyAnimationFrameTimeCounter()
+{
+    return enemy->enemyAnimationInfo->frameTimeCounter;
+}
+
+void GameModel::SetEnemyAnimationFrameTimeCounter(float frameTimeCounter_)
+{
+    enemy->enemyAnimationInfo->frameTimeCounter = frameTimeCounter_;
+}
+
+raylib::Rectangle GameModel::GetEnemyColliderBox()
+{
+    return enemy->enemyCollider->colliderBox;
+}
+
+void GameModel::SetEnemyColliderBox(raylib::Rectangle colliderBox_)
+{
+    enemy->enemyCollider->colliderBox = colliderBox_;
+}
+
+void GameModel::SetEnemyColliderBoxPosition(raylib::Vector2 deltaPosition_)
+{
+    enemy->enemyCollider->colliderBox.x += deltaPosition_.x;
+    enemy->enemyCollider->colliderBox.y += deltaPosition_.y;
+}
+
+ColliderTag GameModel::GetEnemyColliderTag()
+{
+    return enemy->enemyCollider->colliderTag;
+}
+
+void GameModel::SetEnemyColliderTag(ColliderTag tag_)
+{
+    enemy->enemyCollider->colliderTag = tag_;
+}
+
+CustomCollider *GameModel::GetEnemyLeftWallCheck()
+{
+    return enemyLeftWallCheck_;
+}
+void GameModel::SetEnemyLeftWallCheck(CustomCollider *leftWallCheck)
+{
+    enemyLeftWallCheck_ = leftWallCheck;
+}
+void GameModel::SetEnemyLeftWallCheckPosition(raylib::Vector2 deltaPosition)
+{
+    enemyLeftWallCheck_->colliderBox.x += deltaPosition.x;
+    enemyLeftWallCheck_->colliderBox.y += deltaPosition.y;
+}
+CustomCollider *GameModel::GetEnemyRightWallCheck()
+{
+    return enemyRightWallCheck_;
+}
+void GameModel::SetEnemyRightWallCheck(CustomCollider *rightWallCheck)
+{
+    enemyRightWallCheck_ = rightWallCheck;
+}
+void GameModel::SetEnemyRightWallCheckPosition(raylib::Vector2 deltaPosition)
+{
+    enemyRightWallCheck_->colliderBox.x += deltaPosition.x;
+    enemyRightWallCheck_->colliderBox.y += deltaPosition.y;
+}
+CustomCollider *GameModel::GetEnemyCeilingCheck()
+{
+    return enemyCeilingCheck_;
+}
+void GameModel::SetEnemyCeilingCheck(CustomCollider *ceilingCheck)
+{
+    enemyCeilingCheck_ = ceilingCheck;
+}
+void GameModel::SetEnemyCeilingCheckPosition(raylib::Vector2 deltaPosition)
+{
+    enemyCeilingCheck_->colliderBox.x += deltaPosition.x;
+    enemyCeilingCheck_->colliderBox.y += deltaPosition.y;
+}
+CustomCollider *GameModel::GetEnemyGroundCheck()
+{
+    return enemyGroundCheck_;
+}
+void GameModel::SetEnemyGroundCheck(CustomCollider *groundCheck)
+{
+    enemyGroundCheck_ = groundCheck;
+}
+void GameModel::SetEnemyGroundCheckPosition(raylib::Vector2 deltaPosition)
+{
+    enemyGroundCheck_->colliderBox.x += deltaPosition.x;
+    enemyGroundCheck_->colliderBox.y += deltaPosition.y;
+}
+bool GameModel::GetEnemyIsGrounded()
+{
+    return enemy->isGrounded;
+}
+void GameModel::SetEnemyIsGrounded(bool isGrounded_)
+{
+    enemy->isGrounded = isGrounded_;
+}
+bool GameModel::GetEnemyIsLeftWalled()
+{
+    return enemy->isLeftWalled;
+}
+void GameModel::SetEnemyIsLeftWalled(bool isLeftWalled_)
+{
+    enemy->isLeftWalled = isLeftWalled_;
+}
+bool GameModel::GetEnemyIsRightWalled()
+{
+    return enemy->isRightWalled;
+}
+void GameModel::SetEnemyIsRightWalled(bool isRightWalled_)
+{
+    enemy->isRightWalled = isRightWalled_;
+}
+bool GameModel::GetEnemyIsCeilinged()
+{
+    return enemy->isCeilinged;
+}
+void GameModel::SetEnemyIsCeilinged(bool isCeilinged_)
+{
+    enemy->isCeilinged = isCeilinged_;
+}
+float GameModel::GetEnemyAnimationFrameTime()
+{
+    return enemy->enemyAnimationInfo->frameTime;
+}
+void GameModel::SetEnemyAnimationFrameTime(float frameTime_)
+{
+    enemy->enemyAnimationInfo->frameTime = frameTime_;
+}
+bool GameModel::GetEnemyAnimationIsStop()
+{
+    return enemy->enemyAnimationInfo->stop;
+}
+void GameModel::SetEnemyAnimationIsStop(bool stop_)
+{
+    enemy->enemyAnimationInfo->stop = stop_;
+}
+AnimationInfo *GameModel::GetEnemyAnimationInfo()
+{
+    return enemy->enemyAnimationInfo;
+}
+void GameModel::SetEnemyAnimationInfo(AnimationInfo *animationInfo_)
+{
+    enemy->enemyAnimationInfo = animationInfo_;
+}
+CustomCollider *GameModel::GetEnemyCollider()
+{
+    return enemy->enemyCollider;
+}
+void GameModel::SetEnemyCollider(CustomCollider *collider_)
+{
+    enemy->enemyCollider = collider_;
+}
+EnemyInModel *GameModel::GetEnemy()
+{
+    return enemy;
+}
+void GameModel::SetEnemy(EnemyInModel *enemy_)
+{
+    this->enemy = enemy_;
+}
 #pragma endregion
