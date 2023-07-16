@@ -189,6 +189,7 @@ int main()
     model->SetEnemyIsRightWalled(false);
     model->SetEnemyIsCeilinged(false);
     model->SetEnemyJumpCounter(0.0f);
+    model->SetEnemyHP(ENEMY_MAX_HP);
 #pragma endregion
 
 #pragma region InitEnemyWallCheck
