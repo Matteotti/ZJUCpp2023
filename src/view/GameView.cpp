@@ -56,15 +56,7 @@ void GameView::UpdatePlayerAttack(bool isFacingRight)
 {
     if (IsKeyPressed(KEY_Z))
     {
-        if (IsKeyDown(KEY_RIGHT))
-        {
-            playerAttackCommand(RIGHT);
-        }
-        else if (IsKeyDown(KEY_LEFT))
-        {
-            playerAttackCommand(LEFT);
-        }
-        else if (IsKeyDown(KEY_UP))
+        if (IsKeyDown(KEY_UP))
         {
             playerAttackCommand(UP);
         }
@@ -86,7 +78,13 @@ void GameView::UpdatePlayerAttack(bool isFacingRight)
     }
 }
 
-void GameView::Update()
+void GameView::UpdateCamera(Camera2D *camera, raylib::Vector2 position, int width, int height)
+{
+    camera->offset = (Vector2){width / 2.0f, height / 2.0f};
+    camera->target = position;
+}
+
+void GameView::UpdatePlayer()
 {
     playerUpdateJumpSpeedCommand();
     playerCheckWallCommand();
@@ -94,8 +92,24 @@ void GameView::Update()
     playerAniamtionUpdateCommand();
     playerUpdatePositionCommand();
     playerUpdateAnimationFrameCommand();
+    UpdatePlayerAttack(gameCommonPtr->GetPlayerIsFacingRight());
+    UpdateCamera(&camera, raylib::Vector2(gameCommonPtr->GetPlayerPosition().x, gameCommonPtr->GetPlayerPosition().y - 100), 1600, 900);
     playerUpdateAnimationRectCommand(raylib::Vector2(PLAYER_ANIMATION_BIAS_X, 0));
     // drawPlayerCommand();
+}
+
+void GameView::UpdateEnemy()
+{
+    updateEnemyAnimStateCommand();
+    updateEnemySpeedCommand();
+    updateEnemyWallCheckCommand();
+    updateEnemySpeedPhysicallyCommand();
+    updateEnemyAnimationCommand();
+    updateEnemyPositionCommand();
+    updateEnemyColliderPositionCommand();
+    updateEnemyAnimationFrameCommand();
+    updateEnemyAnimationRectCommand();
+    checkCollisionWithPlayerCommand();
 }
 
 void GameView::SetPlayerMoveCommand(std::function<void(direction)> command)
@@ -152,6 +166,56 @@ void GameView::SetDrawPlayerCommand(std::function<void()> command)
     drawPlayerCommand = command;
 }
 
+void GameView::SetUpdateEnemyAnimState(std::function<void()> command)
+{
+    updateEnemyAnimStateCommand = command;
+}
+
+void GameView::SetUpdateEnemySpeed(std::function<void()> command)
+{
+    updateEnemySpeedCommand = command;
+}
+
+void GameView::SetUpdateEnemySpeedPhysically(std::function<void()> command)
+{
+    updateEnemySpeedPhysicallyCommand = command;
+}
+
+void GameView::SetUpdateEnemyAnimation(std::function<void()> command)
+{
+    updateEnemyAnimationCommand = command;
+}
+
+void GameView::SetUpdateEnemyPosition(std::function<void()> command)
+{
+    updateEnemyPositionCommand = command;
+}
+
+void GameView::SetUpdateEnemyColliderPosition(std::function<void()> command)
+{
+    updateEnemyColliderPositionCommand = command;
+}
+
+void GameView::SetUpdateEnemyAnimationFrame(std::function<void()> command)
+{
+    updateEnemyAnimationFrameCommand = command;
+}
+
+void GameView::SetUpdateEnemyAnimationRect(std::function<void()> command)
+{
+    updateEnemyAnimationRectCommand = command;
+}
+
+void GameView::SetCheckCollisionWithPlayer(std::function<void()> command)
+{
+    checkCollisionWithPlayerCommand = command;
+}
+
+void GameView::SetUpdateEnemyWallCheck(std::function<void()> command)
+{
+    updateEnemyWallCheckCommand = command;
+}
+
 void GameView::Draw(
     std::string path,
     raylib::Vector2 position,
@@ -159,6 +223,7 @@ void GameView::Draw(
 {
     temp = LoadTexture(path.c_str());
     temp.Draw(src, position);
+    // temp.Unload();
 }
 
 void GameView::SetCommon(std::shared_ptr<GameCommon> gameCommon)

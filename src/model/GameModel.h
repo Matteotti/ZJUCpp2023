@@ -15,6 +15,7 @@
 #include "../../includes/customCollider.h"
 #include "../../includes/player.h"
 #include "../../includes/animation.h"
+#include "../../includes/enemy.h"
 
 class GameModel
 {
@@ -22,10 +23,15 @@ class GameModel
 private:
     std::shared_ptr<GameCommon> gameCommonPtr;
     PlayerInModel *player = static_cast<PlayerInModel *>(malloc(sizeof(PlayerInModel)));
+    EnemyInModel *enemy = static_cast<EnemyInModel *>(malloc(sizeof(EnemyInModel)));
     CustomCollider *leftWallCheck_ = static_cast<CustomCollider *>(malloc(sizeof(CustomCollider)));
     CustomCollider *rightWallCheck_ = static_cast<CustomCollider *>(malloc(sizeof(CustomCollider)));
     CustomCollider *ceilingCheck_ = static_cast<CustomCollider *>(malloc(sizeof(CustomCollider)));
     CustomCollider *groundCheck_ = static_cast<CustomCollider *>(malloc(sizeof(CustomCollider)));
+    CustomCollider *enemyLeftWallCheck_ = static_cast<CustomCollider *>(malloc(sizeof(CustomCollider)));
+    CustomCollider *enemyRightWallCheck_ = static_cast<CustomCollider *>(malloc(sizeof(CustomCollider)));
+    CustomCollider *enemyCeilingCheck_ = static_cast<CustomCollider *>(malloc(sizeof(CustomCollider)));
+    CustomCollider *enemyGroundCheck_ = static_cast<CustomCollider *>(malloc(sizeof(CustomCollider)));
     std::vector<CustomCollider *> colliders_;
     AnimationInfo *animationInfo;
 
@@ -36,9 +42,9 @@ private:
     int frameCount = 0;
     /* int mapWidth;
     int mapHeight; */
-    AnimationInfo* mapAnimationInfo;
-    CustomCollider* mapCollider;
-    //std::vector<MapCommon> maplist;
+    AnimationInfo *mapAnimationInfo;
+    CustomCollider *mapCollider;
+    // std::vector<MapCommon> maplist;
     /* std::vector<int> mapWidthList;
     std::vector<int> mapHeightList; */
 
@@ -103,6 +109,8 @@ public:
     void SetPlayerAnimationFrameWidth(float frameWidth);
     float GetPlayerAnimationFrameHeight();
     void SetPlayerAnimationFrameHeight(float frameHeight);
+    float GetPlayerInvincibleCounter();
+    void SetPlayerInvincibleCounter(float invincibleCounter);
     float GetPlayerAnimationFrameTime();
     void SetPlayerAnimationFrameTime(float frameTime);
     float GetPlayerAnimationFrameTimeCounter();
@@ -125,12 +133,28 @@ public:
     CustomCollider *GetGroundCheck();
     void SetGroundCheck(CustomCollider *groundCheck);
     void SetGroundCheckPosition(raylib::Vector2 deltaPosition);
+    EnemyInModel *GetEnemy();
+    void SetEnemy(EnemyInModel *enemy);
+    std::string GetEnemyAnimationPath();
+    void SetEnemyAnimationPath(std::string path_);
+    CustomCollider *GetEnemyLeftWallCheck();
+    void SetEnemyLeftWallCheck(CustomCollider *leftWallCheck);
+    void SetEnemyLeftWallCheckPosition(raylib::Vector2 deltaPosition);
+    CustomCollider *GetEnemyRightWallCheck();
+    void SetEnemyRightWallCheck(CustomCollider *rightWallCheck);
+    void SetEnemyRightWallCheckPosition(raylib::Vector2 deltaPosition);
+    CustomCollider *GetEnemyCeilingCheck();
+    void SetEnemyCeilingCheck(CustomCollider *ceilingCheck);
+    void SetEnemyCeilingCheckPosition(raylib::Vector2 deltaPosition);
+    CustomCollider *GetEnemyGroundCheck();
+    void SetEnemyGroundCheck(CustomCollider *groundCheck);
+    void SetEnemyGroundCheckPosition(raylib::Vector2 deltaPosition);
 
     void SetAnimationInfoPath(std::string path);
     void SetAnimationInfoFrameCount(int frameCount);
     // friend class MapModel;
 
-    //map
+    // map
     void SetMapModel(const std::string mapName, std::string path, int frameCount, raylib::Vector2 positionn);
     std::shared_ptr<MapCommon> GetMapCommonPtr();
     std::string GetMapName();
@@ -152,6 +176,55 @@ public:
     void SetColliderType(ColliderType type);
     void SetMapName(std::string mapname);
 
+    raylib::Vector2 GetEnemyPosition();
+    void SetEnemyPosition(raylib::Vector2 position);
+    raylib::Vector2 GetEnemyCurrentSpeed();
+    void SetEnemyCurrentSpeed(raylib::Vector2 currentSpeed);
+    EnemyAnimState GetEnemyAnimState();
+    void SetEnemyAnimState(EnemyAnimState animState);
+    std::string GetEnemyColliderName();
+    AnimationInfo *GetEnemyAnimationInfo();
+    void SetEnemyAnimationInfo(AnimationInfo *animationInfo);
+    CustomCollider *GetEnemyCollider();
+    void SetEnemyCollider(CustomCollider *collider);
+    void SetEnemyColliderName(std::string name);
+    raylib::Rectangle GetEnemySourceRec();
+    void SetEnemySourceRec(raylib::Rectangle sourceRec);
+    bool GetEnemyIsFacingRight();
+    void SetEnemyIsFacingRight(bool isFacingRight);
+    float GetEnemyJumpCounter();
+    void SetEnemyJumpCounter(float jumpCounter);
+    int GetEnemyAnimationFrameCount();
+    void SetEnemyAnimationFrameCount(int frameCount);
+    int GetEnemyAnimationCurrentFrame();
+    void SetEnemyAnimationCurrentFrame(int currentFrame);
+    float GetEnemyAnimationFrameWidth();
+    void SetEnemyAnimationFrameWidth(float frameWidth);
+    float GetEnemyAnimationFrameHeight();
+    void SetEnemyAnimationFrameHeight(float frameHeight);
+    float GetEnemyAnimationFrameTimeCounter();
+    void SetEnemyAnimationFrameTimeCounter(float frameTimeCounter);
+    raylib::Rectangle GetEnemyColliderBox();
+    void SetEnemyColliderBox(raylib::Rectangle colliderBox);
+    void SetEnemyColliderBoxPosition(raylib::Vector2 deltaPosition);
+    ColliderTag GetEnemyColliderTag();
+    void SetEnemyColliderTag(ColliderTag tag);
+    bool GetEnemyIsGrounded();
+    float GetEnemyAnimationFrameTime();
+    void SetEnemyAnimationFrameTime(float frameTime);
+    bool GetEnemyAnimationIsStop();
+    void SetEnemyAnimationIsStop(bool stop);
+    void SetEnemyIsGrounded(bool isGrounded);
+    bool GetEnemyIsLeftWalled();
+    void SetEnemyIsLeftWalled(bool isLeftWalled);
+    bool GetEnemyIsRightWalled();
+    void SetEnemyIsRightWalled(bool isRightWalled);
+    bool GetEnemyIsCeilinged();
+    void SetEnemyIsCeilinged(bool isCeilinged);
+    int GetEnemyHP();
+    void SetEnemyHP(int hp_);
+    void SetEnemyIsDead(bool isDead_);
+    bool GetEnemyIsDead();
 };
 
 #endif // CPPGAMEJAM_GAMEMODEL_H
