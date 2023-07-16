@@ -42,6 +42,7 @@ public:
 
     std::function<void(direction)> getPlayerAttackCommand();
     std::function<void(raylib::Vector2)> getDrawPlayerWithBias();
+    
     // void DeleteMap();
 };
 

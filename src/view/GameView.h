@@ -251,6 +251,7 @@ class GameView
 private:
     int HorizontalInput = 0;
     int VerticalInput = 0;
+    
 
     std::function<void()> updateViewCommand;
     std::function<void()> increaseScoreCommand;
@@ -274,6 +275,7 @@ private:
     std::function<void()> attackDownCommand;
 
 public:
+    Camera2D camera = {0};
     GameView();
     void SetCommon(std::shared_ptr<GameCommon> gameCommon);
     void DrawExample(int score, bool gameOver);
@@ -306,6 +308,7 @@ public:
     {
         return gameCommonPtr;
     }
+    void UpdateCamera(Camera2D *camera, raylib::Vector2 position, int width, int height);
     
     
 

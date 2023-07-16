@@ -271,7 +271,7 @@ std::function<void()> GameViewModel::getPlayerAnimationUpdate()
             UpdateAnimationInfo("../assets/sprites/Attack/attackleft.png", 5);
             break;
         case ATTACKING_RIGHT:
-            UpdateAnimationInfo("../assets/sprites/Attack/attackright.png", 5);
+            UpdateAnimationInfo("../assets/sprites/Attack/attackleft.png", 5);
             break;
         }
 
@@ -347,6 +347,42 @@ std::function<void(raylib::Vector2)> GameViewModel::getUpdatePlayerAnimationRect
         model->SetPlayerSourceRec(sourceRec);
         raylib::Texture2DUnmanaged texture = LoadTexture(model->GetPlayerAnimationPath().c_str());
         texture.Draw(model->GetPlayerSourceRec(), model->GetPlayerPosition());
+        if (model->GetPlayerAnimatorState() == ATTACKING_TOP)
+        {
+            raylib::Texture2DUnmanaged texture_up = raylib::Texture2DUnmanaged("../assets/sprites/Attack/up.png");
+            if (model->GetGameCommonPtr()->GetPlayerIsFacingRight())
+            {
+                texture_up.Draw(raylib::Rectangle(0, 0, texture_up.width,texture_up.height),raylib::Vector2(model->GetPlayerPosition().x-30,model->GetPlayerPosition().y-100));
+            }
+            else
+            {
+                texture_up.Draw(raylib::Rectangle(0, 0, texture_up.width,texture_up.height),raylib::Vector2(model->GetPlayerPosition().x-50,model->GetPlayerPosition().y-100));
+            }
+            
+        }
+        else if(model->GetPlayerAnimatorState() == ATTACKING_BOTTOM)
+        {
+            if (model->GetGameCommonPtr()->GetPlayerIsFacingRight())
+            {
+                raylib::Texture2DUnmanaged texture_up = raylib::Texture2DUnmanaged("../assets/sprites/Attack/down_right.png");
+                texture_up.Draw(raylib::Rectangle(0, 0, texture_up.width,texture_up.height),raylib::Vector2(model->GetPlayerPosition().x-10,model->GetPlayerPosition().y+50));
+            }
+            else
+            {
+                raylib::Texture2DUnmanaged texture_up = raylib::Texture2DUnmanaged("../assets/sprites/Attack/down_left.png");
+                texture_up.Draw(raylib::Rectangle(0, 0, texture_up.width,texture_up.height),raylib::Vector2(model->GetPlayerPosition().x-40,model->GetPlayerPosition().y+50));
+            }
+        }
+        else if(model->GetPlayerAnimatorState() == ATTACKING_LEFT)
+        {
+            raylib::Texture2DUnmanaged texture_up = raylib::Texture2DUnmanaged("../assets/sprites/Attack/left.png");
+            texture_up.Draw(raylib::Rectangle(0, 0, texture_up.width,texture_up.height),raylib::Vector2(model->GetPlayerPosition().x-150,model->GetPlayerPosition().y)); 
+        }
+        else if(model->GetPlayerAnimatorState() == ATTACKING_RIGHT)
+        {
+            raylib::Texture2DUnmanaged texture_up = raylib::Texture2DUnmanaged("../assets/sprites/Attack/right.png");
+            texture_up.Draw(raylib::Rectangle(0, 0, texture_up.width,texture_up.height),raylib::Vector2(model->GetPlayerPosition().x+130,model->GetPlayerPosition().y)); 
+        }
         if (model->GetGameCommonPtr()->GetPlayerIsFacingRight() && model->GetPlayerAnimationCurrentFrame() == 1 && model->GetPlayerAnimationIsStop())
             model->SetPlayerAnimationCurrentFrame(0);
         if (model->GetGameCommonPtr()->GetPlayerIsFacingRight())
