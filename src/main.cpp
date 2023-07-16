@@ -256,7 +256,7 @@ int main()
         view->UpdatePlayerMove();
         view->UpdatePlayerJump();
         view->UpdatePlayer();
-        //view->UpdateEnemy();
+        view->UpdateEnemy();
 
         EndMode2D();
         EndDrawing();
