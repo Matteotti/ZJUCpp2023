@@ -7,8 +7,8 @@
 #include "customCollider.h"
 
 #define ENEMY_MAX_HP 8
-#define ENEMY_COLLIDER_SIZE_X 108.0f
-#define ENEMY_COLLIDER_SIZE_Y 132.0f
+#define ENEMY_COLLIDER_SIZE_X 106.0f
+#define ENEMY_COLLIDER_SIZE_Y 125.0f
 #define ENEMY_COLLIDER_BIAS_X 5.0f
 #define ENEMY_COLLIDER_BIAS_Y 5.0f
 #define ENEMY_MIN_JUMP_GAP 5.0f
