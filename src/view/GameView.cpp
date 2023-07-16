@@ -93,7 +93,9 @@ void GameView::UpdateCamera(Camera2D *camera, raylib::Vector2 position,int width
     camera->target = position;
 }
 
-void GameView::Update()
+
+
+void GameView::UpdatePlayer()
 {
     playerUpdateJumpSpeedCommand();
     playerCheckWallCommand();
@@ -104,6 +106,20 @@ void GameView::Update()
     UpdateCamera(&camera, raylib::Vector2(gameCommonPtr->GetPlayerPosition().x,gameCommonPtr->GetPlayerPosition().y-100), 1600, 900);
     playerUpdateAnimationRectCommand(raylib::Vector2(PLAYER_ANIMATION_BIAS_X, 0));
     // drawPlayerCommand();
+}
+
+void GameView::UpdateEnemy()
+{
+    updateEnemyAnimStateCommand();
+    updateEnemySpeedCommand();
+    updateEnemyWallCheckCommand();
+    updateEnemySpeedPhysicallyCommand();
+    updateEnemyAnimationCommand();
+    updateEnemyPositionCommand();
+    updateEnemyColliderPositionCommand();
+    updateEnemyAnimationFrameCommand();
+    updateEnemyAnimationRectCommand();
+    checkCollisionWithPlayerCommand();
 }
 
 void GameView::SetPlayerMoveCommand(std::function<void(direction)> command)
@@ -158,6 +174,56 @@ void GameView::SetPlayerAttackCommand(std::function<void(direction)> command)
 void GameView::SetDrawPlayerCommand(std::function<void()> command)
 {
     drawPlayerCommand = command;
+}
+
+void GameView::SetUpdateEnemyAnimState(std::function<void()> command)
+{
+    updateEnemyAnimationCommand = command;
+}
+
+void GameView::SetUpdateEnemySpeed(std::function<void()> command)
+{
+    updateEnemySpeedCommand = command;
+}
+
+void GameView::SetUpdateEnemySpeedPhysically(std::function<void()> command)
+{
+    updateEnemySpeedPhysicallyCommand = command;
+}
+
+void GameView::SetUpdateEnemyAnimation(std::function<void()> command)
+{
+    updateEnemyAnimationCommand = command;
+}
+
+void GameView::SetUpdateEnemyPosition(std::function<void()> command)
+{
+    updateEnemyPositionCommand = command;
+}
+
+void GameView::SetUpdateEnemyColliderPosition(std::function<void()> command)
+{
+    updateEnemyColliderPositionCommand = command;
+}
+
+void GameView::SetUpdateEnemyAnimationFrame(std::function<void()> command)
+{
+    updateEnemyAnimationFrameCommand = command;
+}
+
+void GameView::SetUpdateEnemyAnimationRect(std::function<void()> command)
+{
+    updateEnemyAnimationRectCommand = command;
+}
+
+void GameView::SetCheckCollisionWithPlayer(std::function<void()> command)
+{
+    checkCollisionWithPlayerCommand = command;
+}
+
+void GameView::SetUpdateEnemyWallCheck(std::function<void()> command)
+{
+    updateEnemyWallCheckCommand = command;
 }
 
 void GameView::Draw(

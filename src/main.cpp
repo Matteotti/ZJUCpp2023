@@ -28,6 +28,7 @@ int main()
 
     // Init map
 
+#pragma region map init
     model->SetMapModel("ground_1", "../assets/sprites/Map/road3.png", 1, raylib::Vector2(0, 700));
     model->SetMapModel("ground_2", "../assets/sprites/Map/road3.png", 1, raylib::Vector2(279, 700));
     //model->SetMapModel("ground_3", "../assets/sprites/Map/road3.png", 1, raylib::Vector2(279, 600));
@@ -53,6 +54,7 @@ int main()
 
 
 
+#pragma endregion
 
 #pragma region InitPlayer
     model->SetPlayerPosition(raylib::Vector2(400, 0));
@@ -140,15 +142,100 @@ int main()
     view->SetPlayerUpdatePositionCommand(viewModel->getPlayerUpdatePosition());
     view->SetPlayerUpdateAnimationFrameCommand(viewModel->getUpdateAnimationFrame());
     view->SetPlayerUpdateAnimationRectCommand(viewModel->getUpdatePlayerAnimationRect());
-    view->SetPlayerAttackCommand(viewModel->getPlayerAttackCommand());
+    // view->SetPlayerAttackCommand(viewModel->getPlayerAttackCommand());
 
+    view->SetUpdateEnemyAnimState(viewModel->getUpdateEnemyAnimState());
+    view->SetUpdateEnemySpeed(viewModel->getUpdateEnemySpeed());
+    view->SetUpdateEnemySpeedPhysically(viewModel->getUpdateEnemySpeedPhysically());
+    view->SetUpdateEnemyAnimation(viewModel->getUpdateEnemyAnimation());
+    view->SetUpdateEnemyPosition(viewModel->getUpdateEnemyPosition());
+    view->SetUpdateEnemyColliderPosition(viewModel->getUpdateEnemyColliderPosition());
+    view->SetUpdateEnemyAnimationFrame(viewModel->getUpdateEnemyAnimationFrame());
+    view->SetUpdateEnemyAnimationRect(viewModel->getUpdateEnemyAnimationRect());
+    view->SetCheckCollisionWithPlayer(viewModel->getCheckCollisionWithPlayer());
+    view->SetUpdateEnemyWallCheck(viewModel->getUpdateEnemyWallCheck());
+
+#pragma endregion
+
+#pragma region InitEnemy
+    EnemyInModel *enemy = reinterpret_cast<EnemyInModel *>(malloc(sizeof(EnemyInModel)));
+    memset(enemy, 0, sizeof(EnemyInModel));
+    model->SetEnemy(enemy);
+    model->SetEnemyPosition(raylib::Vector2(100, 0));
+    model->SetEnemyCurrentSpeed(raylib::Vector2(0, 0));
+    model->SetEnemyAnimState(EnemyAnimState::ENEMY_WALK);
+    model->SetEnemySourceRec(raylib::Rectangle(0, 0, 108, 132));
+    AnimationInfo *enemyAnimationInfo = reinterpret_cast<AnimationInfo *>(malloc(sizeof(AnimationInfo)));
+    memset(enemyAnimationInfo, 0, sizeof(AnimationInfo));
+    model->SetEnemyAnimationInfo(enemyAnimationInfo);
+    model->SetEnemyAnimationIsStop(false);
+    model->SetEnemyAnimationFrameCount(4);
+    model->SetEnemyAnimationCurrentFrame(0);
+    model->SetEnemyAnimationPath("../assets/sprites/Enemy/ZombieRunnerWalk.png");
+    model->SetEnemyAnimationFrameTimeCounter(0.0f);
+    model->SetEnemyAnimationFrameTime(ANIMATION_FRAME_TIME);
+    raylib::Texture2DUnmanaged enemyTexture = LoadTexture(model->GetEnemyAnimationPath().c_str());
+    model->SetEnemyAnimationFrameWidth(enemyTexture.width / model->GetEnemyAnimationFrameCount());
+    model->SetEnemyAnimationFrameHeight(enemyTexture.height);
+    enemyTexture.Unload();
+    CustomCollider *enemyCollider = reinterpret_cast<CustomCollider *>(malloc(sizeof(CustomCollider)));
+    memset(enemyCollider, 0, sizeof(CustomCollider));
+    model->SetEnemyCollider(enemyCollider);
+    model->SetEnemyColliderName("enemy");
+    model->SetEnemyColliderBox(raylib::Rectangle(model->GetEnemyPosition().x, model->GetEnemyPosition().y, ENEMY_COLLIDER_SIZE_X, ENEMY_COLLIDER_SIZE_Y));
+    model->SetEnemyColliderTag(ColliderTag::ENEMY);
+    model->AddCollider(model->GetEnemyCollider());
+    model->SetEnemyIsFacingRight(true);
+    model->SetEnemyIsGrounded(false);
+    model->SetEnemyIsLeftWalled(false);
+    model->SetEnemyIsRightWalled(false);
+    model->SetEnemyIsCeilinged(false);
+    model->SetEnemyJumpCounter(0.0f);
+#pragma endregion
+
+#pragma region InitEnemyWallCheck
+    CustomCollider *enemyLeftCheck = reinterpret_cast<CustomCollider *>(malloc(sizeof(CustomCollider)));
+    memset(enemyLeftCheck, 0, sizeof(CustomCollider));
+    enemyLeftCheck->colliderName = "enemyLeftCheck";
+    enemyLeftCheck->colliderBox = raylib::Rectangle(model->GetEnemyPosition().x - ENEMY_COLLIDER_BIAS_X, model->GetEnemyPosition().y, ENEMY_COLLIDER_BIAS_X, ENEMY_COLLIDER_SIZE_Y);
+    enemyLeftCheck->colliderTag = ColliderTag::NONE;
+    enemyLeftCheck->colliderType = ColliderType::RECT;
+    model->SetEnemyLeftWallCheck(enemyLeftCheck);
+    model->AddCollider(enemyLeftCheck);
+
+    CustomCollider *enemyRightCheck = reinterpret_cast<CustomCollider *>(malloc(sizeof(CustomCollider)));
+    memset(enemyRightCheck, 0, sizeof(CustomCollider));
+    enemyRightCheck->colliderName = "enemyRightCheck";
+    enemyRightCheck->colliderBox = raylib::Rectangle(model->GetEnemyPosition().x + ENEMY_COLLIDER_SIZE_X, model->GetEnemyPosition().y, ENEMY_COLLIDER_BIAS_X, ENEMY_COLLIDER_SIZE_Y);
+    enemyRightCheck->colliderTag = ColliderTag::NONE;
+    enemyRightCheck->colliderType = ColliderType::RECT;
+    model->SetEnemyRightWallCheck(enemyRightCheck);
+    model->AddCollider(enemyRightCheck);
+
+    CustomCollider *enemyTopCheck = reinterpret_cast<CustomCollider *>(malloc(sizeof(CustomCollider)));
+    memset(enemyTopCheck, 0, sizeof(CustomCollider));
+    enemyTopCheck->colliderName = "enemyTopCheck";
+    enemyTopCheck->colliderBox = raylib::Rectangle(model->GetEnemyPosition().x, model->GetEnemyPosition().y - ENEMY_COLLIDER_BIAS_Y, ENEMY_COLLIDER_SIZE_X, ENEMY_COLLIDER_BIAS_Y);
+    enemyTopCheck->colliderTag = ColliderTag::NONE;
+    enemyTopCheck->colliderType = ColliderType::RECT;
+    model->SetEnemyCeilingCheck(enemyTopCheck);
+    model->AddCollider(enemyTopCheck);
+
+    CustomCollider *enemyBottomCheck = reinterpret_cast<CustomCollider *>(malloc(sizeof(CustomCollider)));
+    memset(enemyBottomCheck, 0, sizeof(CustomCollider));
+    enemyBottomCheck->colliderName = "enemyBottomCheck";
+    enemyBottomCheck->colliderBox = raylib::Rectangle(model->GetEnemyPosition().x, model->GetEnemyPosition().y + ENEMY_COLLIDER_SIZE_Y, ENEMY_COLLIDER_SIZE_X, ENEMY_COLLIDER_BIAS_Y);
+    enemyBottomCheck->colliderTag = ColliderTag::NONE;
+    enemyBottomCheck->colliderType = ColliderType::RECT;
+    model->SetEnemyGroundCheck(enemyBottomCheck);
+    model->AddCollider(enemyBottomCheck);
 #pragma endregion
 
     viewModel->setModel(model);
     view->SetCommon(model->GetGameCommonPtr());
     // view.SetCommon(model.GetGameCommonPtr());
 
-    SetTargetFPS(144);
+    SetTargetFPS(60);
 
     view->camera.target = view->getGameCommonPtr()->GetPlayerPosition();
     view->camera.offset = (Vector2){ screenWidth/2.0f, screenHeight/2.0f };
@@ -167,9 +254,9 @@ int main()
         }
 
         view->UpdatePlayerMove();
-        view->UpdatePlayerAttack(view->getGameCommonPtr()->GetPlayerIsFacingRight());
-        view->UpdatePlayerJump(); 
-        view->Update();
+        view->UpdatePlayerJump();
+        view->UpdatePlayer();
+        view->UpdateEnemy();
 
         EndMode2D();
         EndDrawing();

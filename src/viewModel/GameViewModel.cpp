@@ -68,6 +68,22 @@ void GameViewModel::UpdateAnimationInfo(std::string path, int frameCount, float 
     }
 }
 
+// TOOL METHOD: Update Animation With Path & FrameCount
+void GameViewModel::UpdateEnemyAnimationInfo(std::string path, int frameCount, float frameTime_ = ANIMATION_FRAME_TIME, bool stop_ = false)
+{
+    if (path != model->GetEnemyAnimationPath())
+    {
+        model->SetEnemyAnimationPath(path);
+        raylib::Texture2DUnmanaged texture = LoadTexture(path.c_str());
+        model->SetEnemyAnimationCurrentFrame(0);
+        model->SetEnemyAnimationFrameTimeCounter(0);
+        model->SetEnemyAnimationFrameWidth(texture.width / frameCount);
+        model->SetEnemyAnimationFrameHeight(texture.height);
+        model->SetEnemyAnimationFrameTimeCounter(frameTime_);
+        UnloadTexture(texture);
+    }
+}
+
 // STD::FUNCTIONS Execute when wasd is pressed, need a parameter of direction
 std::function<void(direction)> GameViewModel::getMovePlayerCommand()
 {
@@ -345,8 +361,8 @@ std::function<void(raylib::Vector2)> GameViewModel::getUpdatePlayerAnimationRect
             model->SetPlayerAnimationCurrentFrame(1);
         raylib::Rectangle sourceRec = raylib::Rectangle(model->GetPlayerAnimationCurrentFrame() * model->GetPlayerAnimationFrameWidth(), 0.0f, model->GetPlayerAnimationFrameWidth(), model->GetPlayerAnimationFrameHeight());
         model->SetPlayerSourceRec(sourceRec);
-        raylib::Texture2DUnmanaged texture = LoadTexture(model->GetPlayerAnimationPath().c_str());
-        texture.Draw(model->GetPlayerSourceRec(), model->GetPlayerPosition());
+        temp = LoadTexture(model->GetPlayerAnimationPath().c_str());
+        temp.Draw(model->GetPlayerSourceRec(), model->GetPlayerPosition());
         if (model->GetPlayerAnimatorState() == ATTACKING_TOP)
         {
             raylib::Texture2DUnmanaged texture_up = raylib::Texture2DUnmanaged("../assets/sprites/Attack/up.png");
@@ -420,27 +436,6 @@ std::function<void()> GameViewModel::getDrawPlayerCommand()
     };
 }
 
-/* std::function<void(AnimatorState)> GameViewModel::getAttackTopCommand()
-{
-    return [this](AnimatorState currentstate) -> void
-    {
-        if (currentstate != ATTACKING_TOP)
-        {
-            model->SetPlayerAnimatorState(ATTACKING_TOP);
-        }
-    };
-}
-std::function<void(AnimatorState)> GameViewModel::getAttackDownCommand()
-{
-    return [this](AnimatorState currentstate) -> void
-    {
-        if (currentstate != ATTACKING_BOTTOM)
-        {
-            model->SetPlayerAnimatorState(ATTACKING_BOTTOM);
-        }
-    };
-} */
-
 std::function<void(direction)> GameViewModel::getPlayerAttackCommand()
 {
     return [this](direction direction_) -> void
@@ -476,6 +471,196 @@ std::function<void(direction)> GameViewModel::getPlayerAttackCommand()
                 model->SetPlayerAnimatorState(ATTACKING_RIGHT);
                 getPlayerAnimationUpdate();
             }
+        }
+    };
+}
+/* std::function<void(AnimatorState)> GameViewModel::getAttackTopCommand()
+{
+    return [this](AnimatorState currentstate) -> void
+    {
+        if (currentstate != ATTACKING_TOP)
+        {
+            model->SetPlayerAnimatorState(ATTACKING_TOP);
+        }
+    };
+}
+std::function<void(AnimatorState)> GameViewModel::getAttackDownCommand()
+{
+    return [this](AnimatorState currentstate) -> void
+    {
+        if (currentstate != ATTACKING_BOTTOM)
+        {
+            model->SetPlayerAnimatorState(ATTACKING_BOTTOM);
+        }
+    };
+}*/
+
+std::function<void()> GameViewModel::getUpdateEnemyAnimState()
+{
+    return [this]() -> void
+    {
+        if (model->GetEnemyJumpCounter() >= ENEMY_MIN_JUMP_GAP)
+        {
+            model->SetEnemyCurrentSpeed(raylib::Vector2(model->GetEnemyCurrentSpeed().x, ENEMY_JUMP_SPEED));
+            model->SetEnemyJumpCounter(0);
+        }
+        else
+        {
+            model->SetEnemyJumpCounter(model->GetEnemyJumpCounter() + GetFrameTime());
+        }
+    };
+}
+
+std::function<void()> GameViewModel::getUpdateEnemySpeed()
+{
+    return [this]() -> void
+    {
+        bool isPlayerRight = model->GetPlayerPosition().x > model->GetEnemyPosition().x;
+        if (isPlayerRight)
+        {
+            model->SetEnemyCurrentSpeed(raylib::Vector2(ENEMY_SPEED, model->GetEnemyCurrentSpeed().y));
+        }
+        else
+        {
+            model->SetEnemyCurrentSpeed(raylib::Vector2(-ENEMY_SPEED, model->GetEnemyCurrentSpeed().y));
+        }
+    };
+}
+
+std::function<void()> GameViewModel::getUpdateEnemyWallCheck()
+{
+    return [this]() -> void
+    {
+        std::vector<CustomCollider *> left = CheckCollisionWithAll(model->GetEnemyLeftWallCheck(), ColliderTag::ENVIRONMENT);
+        std::vector<CustomCollider *> right = CheckCollisionWithAll(model->GetEnemyRightWallCheck(), ColliderTag::ENVIRONMENT);
+        std::vector<CustomCollider *> ceiling = CheckCollisionWithAll(model->GetEnemyCeilingCheck(), ColliderTag::ENVIRONMENT);
+        std::vector<CustomCollider *> ground = CheckCollisionWithAll(model->GetEnemyGroundCheck(), ColliderTag::ENVIRONMENT);
+        model->SetEnemyIsLeftWalled(left.size() > 0);
+        model->SetEnemyIsRightWalled(right.size() > 0);
+        model->SetEnemyIsCeilinged(ceiling.size() > 0);
+        model->SetEnemyIsGrounded(ground.size() > 0);
+    };
+}
+
+std::function<void()> GameViewModel::getUpdateEnemySpeedPhysically()
+{
+    return [this]() -> void
+    {
+        if (!model->GetEnemyIsGrounded())
+        {
+            model->SetEnemyCurrentSpeed(raylib::Vector2(model->GetEnemyCurrentSpeed().x, model->GetEnemyCurrentSpeed().y + ENEMY_GRAVITY * GetFrameTime()));
+        }
+        if (model->GetEnemyIsGrounded() && model->GetEnemyCurrentSpeed().y > 0)
+        {
+            model->SetEnemyCurrentSpeed(raylib::Vector2(model->GetEnemyCurrentSpeed().x, 0));
+        }
+        if (model->GetEnemyIsLeftWalled() && model->GetEnemyCurrentSpeed().x < 0)
+        {
+            model->SetEnemyCurrentSpeed(raylib::Vector2(0, model->GetEnemyCurrentSpeed().y));
+        }
+        if (model->GetEnemyIsRightWalled() && model->GetEnemyCurrentSpeed().x > 0)
+        {
+            model->SetEnemyCurrentSpeed(raylib::Vector2(0, model->GetEnemyCurrentSpeed().y));
+        }
+        if (model->GetEnemyIsCeilinged() && model->GetEnemyCurrentSpeed().y < 0)
+        {
+            model->SetEnemyCurrentSpeed(raylib::Vector2(model->GetEnemyCurrentSpeed().x, 0));
+        }
+    };
+}
+
+std::function<void()> GameViewModel::getUpdateEnemyAnimation()
+{
+    return [this]() -> void
+    {
+        switch (model->GetEnemyAnimState())
+        {
+        case ENEMY_WALK:
+            UpdateEnemyAnimationInfo("../assets/sprites/Enemy/ZombieRunnerIdle.png", 4);
+            break;
+        case ENEMY_DEAD:
+            UpdateEnemyAnimationInfo("../assets/sprites/Enemy/ZombieRunnerDead.png", 9, ANIMATION_FRAME_TIME, true);
+            break;
+        }
+    };
+}
+
+std::function<void()> GameViewModel::getUpdateEnemyPosition()
+{
+    return [this]() -> void
+    {
+        model->SetEnemyPosition(raylib::Vector2(model->GetEnemyPosition().x + model->GetEnemyCurrentSpeed().x, model->GetEnemyPosition().y + model->GetEnemyCurrentSpeed().y));
+    };
+}
+
+std::function<void()> GameViewModel::getUpdateEnemyColliderPosition()
+{
+    return [this]() -> void
+    {
+        model->SetEnemyColliderBoxPosition(model->GetEnemyCurrentSpeed());
+        model->SetEnemyLeftWallCheckPosition(model->GetEnemyCurrentSpeed());
+        model->SetEnemyRightWallCheckPosition(model->GetEnemyCurrentSpeed());
+        model->SetEnemyCeilingCheckPosition(model->GetEnemyCurrentSpeed());
+        model->SetEnemyGroundCheckPosition(model->GetEnemyCurrentSpeed());
+    };
+}
+
+std::function<void()> GameViewModel::getUpdateEnemyAnimationFrame()
+{
+    return [this]() -> void
+    {
+        model->SetEnemyAnimationFrameTimeCounter(model->GetEnemyAnimationFrameTimeCounter() + GetFrameTime());
+        if (model->GetEnemyAnimationFrameTimeCounter() >= model->GetEnemyAnimationFrameTime())
+        {
+            model->SetEnemyAnimationFrameTimeCounter(0);
+            model->SetEnemyAnimationCurrentFrame(model->GetEnemyAnimationCurrentFrame() + 1);
+            if (model->GetEnemyAnimationCurrentFrame() >= model->GetEnemyAnimationFrameCount())
+            {
+                if (!model->GetEnemyAnimationIsStop())
+                    model->SetEnemyAnimationCurrentFrame(0);
+                else if (model->GetEnemyAnimationIsStop())
+                    model->SetEnemyAnimationCurrentFrame(model->GetEnemyAnimationFrameCount() - 1);
+            }
+        }
+    };
+}
+
+std::function<void()> GameViewModel::getUpdateEnemyAnimationRect()
+{
+    return [this]() -> void
+    {
+        if (model->GetEnemyIsFacingRight())
+        {
+            model->SetEnemyAnimationFrameWidth(-1 * model->GetEnemyAnimationFrameWidth());
+            model->SetEnemyPosition(raylib::Vector2(model->GetEnemyPosition().x + ENEMY_BIAS, model->GetEnemyPosition().y));
+            model->SetEnemyAnimationCurrentFrame(model->GetEnemyAnimationFrameCount() - model->GetEnemyAnimationCurrentFrame() - 1);
+        }
+        if (model->GetEnemyIsFacingRight() && model->GetEnemyAnimationCurrentFrame() == 0 && model->GetEnemyAnimationIsStop())
+            model->SetEnemyAnimationCurrentFrame(1);
+        raylib::Rectangle sourceRec = raylib::Rectangle(model->GetEnemyAnimationCurrentFrame() * model->GetEnemyAnimationFrameWidth(), 0.0f, model->GetEnemyAnimationFrameWidth(), model->GetEnemyAnimationFrameHeight());
+        model->SetEnemySourceRec(sourceRec);
+        temp = LoadTexture(model->GetEnemyAnimationPath().c_str());
+        temp.Draw(model->GetEnemySourceRec(), model->GetEnemyPosition());
+        if (model->GetEnemyIsFacingRight() && model->GetEnemyAnimationCurrentFrame() == 1 && model->GetEnemyAnimationIsStop())
+            model->SetEnemyAnimationCurrentFrame(0);
+        if (model->GetEnemyIsFacingRight())
+        {
+            model->SetEnemyAnimationFrameWidth(-1 * model->GetEnemyAnimationFrameWidth());
+            model->SetEnemyPosition(raylib::Vector2(model->GetEnemyPosition().x - ENEMY_BIAS, model->GetEnemyPosition().y));
+            model->SetEnemyAnimationCurrentFrame(model->GetEnemyAnimationFrameCount() - model->GetEnemyAnimationCurrentFrame() - 1);
+        }
+    };
+}
+
+std::function<void()> GameViewModel::getCheckCollisionWithPlayer()
+{
+    return [this]() -> void
+    {
+        std::vector<CustomCollider *> player = CheckCollisionWithAll(model->GetEnemyCollider(), ColliderTag::PLAYER);
+        if (player.size() > 0)
+        {
+            std::cout << "HIT!" << std::endl;
+            model->SetPlayerHP(model->GetPlayerHP() - 1);
         }
     };
 }
